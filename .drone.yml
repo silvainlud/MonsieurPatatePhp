@@ -91,7 +91,7 @@ steps:
       - git push mirror --tags
     environment:
       remoteurl:
-        from_secret: Git
+        from_secret: remoteurl
 
 trigger:
   branch:
