@@ -1,0 +1,49 @@
+isDocker := $(shell docker info > /dev/null 2>&1 && echo 1)
+user := $(shell id -u)
+group := $(shell id -g)
+
+
+ifeq ($(isDocker), 1)
+	dc := USER_ID=$(user) GROUP_ID=$(group) docker-compose
+	de := docker-compose exec
+	dr := $(dc) run --rm
+	sy := $(de) php bin/console
+	node := $(dr) node
+	php := $(dr) --no-deps php
+else
+	sy := php bin/console
+	node :=
+	php :=
+endif
+
+
+.DEFAULT_GOAL := help
+.PHONY: help
+help: ## Affiche cette aide
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+
+.PHONY: dev
+dev: ## Lance le serveur de développement
+	$(dc) up -d
+
+.PHONY: lint
+lint: vendor/autoload.php ## Analyse le code
+	$(dockerRun) ./vendor/bin/phpstan analyse  --memory-limit=-1
+
+.PHONY: lintb
+lintb: vendor/autoload.php ## Analyse le code (sans docker)
+	./vendor/bin/phpstan analyse  --memory-limit=-1
+
+.PHONY: format
+format: ## Formate le code
+	$(dockerRun) ./vendor/bin/phpcbf -q
+	$(dockerRun) ./vendor/bin/php-cs-fixer fix --allow-risky=yes --config ".php-cs-fixer.dist.php"
+
+.PHONY: test
+test: ## Lancer les tests unitaire
+	$(dockerRun) ./bin/phpunit
+
+.PHONY: image
+image: ## Constrction d'une image docker
+	docker build tools/docker/php -t registry.silvain.eu:5000/silvain.eu/monsieurpatatephp:latest
+	docker push registry.silvain.eu:5000/silvain.eu/monsieurpatatephp:latest

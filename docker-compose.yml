@@ -1,0 +1,61 @@
+version: '3.4'
+
+services:
+  nginx:
+    image: nginx
+    ports:
+      - 8000:80
+    depends_on:
+      - php
+    volumes:
+      - ./public:/usr/share/nginx/html/public
+      - ./tools/docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+  php:
+    image: registry.silvain.eu:5000/silvain.eu/monsieurpatatephp:latest
+    volumes:
+      - .:/var/www
+    working_dir: /var/www
+    links:
+      - redis
+      - mailcatcher
+      - database
+
+  database:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+
+  #  php_messenger:
+  #    build:
+  #      context: tools/docker/php/8.0
+  #    command: bash -c "pwd && php bin/console messenger:consume async -vv"
+  #    volumes:
+  #      - ./var/www/node_modules
+  #      - .:/var/www:cached
+  #      - vendor:/var/www/vendor
+  #      - var:/var/www/var/cache
+  #    working_dir: /var/www
+  #    links:
+  #      - redis
+  #      - mailcatcher
+  #      - database
+
+  yarn:
+    image: node:10.23.0-alpine3.10
+    working_dir: /var/www
+    volumes:
+      - .:/var/www:delegated
+    command: /bin/sh -c "npm install && yarn watch"
+
+  redis:
+    image: redis:5-alpine
+
+  mailcatcher:
+    image: schickling/mailcatcher
+    ports:
+      - 1081:1080
+
+volumes:
+  var:
+  vendor:
+  node_modules:

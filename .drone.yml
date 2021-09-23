@@ -1,0 +1,101 @@
+---
+kind: pipeline
+type: docker
+name: Test
+
+workspace:
+  path: /drone/src
+
+
+steps:
+  - name: SymfonyCheckSecurity
+    image: registry.silvain.eu:5000/silvain.eu/monsieurpatatephp:latest
+    commands:
+      - symfony security:check
+  - name: Composer
+    image: registry.silvain.eu:5000/silvain.eu/monsieurpatatephp:latest
+    commands:
+      - composer install --prefer-dist --no-ansi --no-interaction --no-progress
+    volumes:
+      - name: composer
+        path: /drone/src/vendor/
+#  - name: Yarn
+#    image: node
+#    commands:
+#      - yarn install --ignore-engines
+#      - yarn encore dev
+#    volumes:
+#      - name: node
+#        path: /drone/src/node_modules/
+#      - name: build
+#        path: /drone/src/public/build/
+  - name: Lint
+    image: registry.silvain.eu:5000/silvain.eu/monsieurpatatephp:latest
+    commands:
+      - make lint
+    volumes:
+      - name: composer
+        path: /drone/src/vendor/
+    depends_on:
+      - Composer
+#  - name: phpunit
+#    image: registry.silvain.eu:5000/silvain.eu/monsieurpatatephp:latest
+#    commands:
+#      - php bin/phpunit
+#    depends_on:
+#      - Yarn
+#      - Composer
+#      - Lint
+#    volumes:
+#      - name: node
+#        path: /drone/src/node_modules/
+#      - name: build
+#        path: /drone/src/public/build/
+#      - name: composer
+#        path: /drone/src/vendor/
+
+volumes:
+  - name: composer
+    temp: { }
+  - name: node
+    temp: { }
+  - name: build
+    temp: { }
+
+trigger:
+  event:
+    exclude:
+      - promote
+
+---
+kind: pipeline
+type: docker
+name: Mirror
+
+steps:
+  - name: Sync
+    image: alpine/git
+    commands:
+      - which ssh-agent || ( apt-get update -y && apt-get install openssh-client git -y )
+      - eval $(ssh-agent -s)
+      - mkdir -p ~/.ssh
+      - chmod 700 ~/.ssh
+      - echo "$remoteurl" | tr -d '\r' | ssh-add -
+      - ssh-keyscan github.com >> ~/.ssh/known_hosts
+      - chmod 644 ~/.ssh/known_hosts
+      - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" >> ~/.ssh/config'
+      - git remote add mirror git@github.com:silvain-eu/MonsieurPatatePhp.git
+      - git fetch --all
+      - git checkout main
+      - git push mirror main
+      - git push mirror --tags
+    environment:
+      remoteurl:
+        from_secret: Git
+
+trigger:
+  branch:
+    - main
+  event:
+    exclude:
+      - promote
