@@ -47,3 +47,7 @@ test: ## Lancer les tests unitaire
 image: ## Constrction d'une image docker
 	docker build tools/docker/php -t registry.silvain.eu:5000/silvain.eu/monsieurpatatephp:latest
 	docker push registry.silvain.eu:5000/silvain.eu/monsieurpatatephp:latest
+
+.PHONY: php
+php: ## Accéder au conteneur php
+	docker run  -w /app --rm -it -e "TERM=xterm-256color" -v $(PWD):/app registry.silvain.eu:5000/silvain.eu/monsieurpatatephp:latest bash
