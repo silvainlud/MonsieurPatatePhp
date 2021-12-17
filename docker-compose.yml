@@ -43,11 +43,11 @@ services:
   #      - database
 
   yarn:
-    image: node:10.23.0-alpine3.10
+    image: node
     working_dir: /var/www
     volumes:
       - .:/var/www:delegated
-    command: /bin/sh -c "npm install && yarn watch"
+    command: /bin/sh -c "yarn install && yarn encore dev --watch"
 
   redis:
     image: redis:5-alpine
