@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Security;
+namespace App\Http\Security;
 
-use App\Entity\User;
+use App\Domain\User\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use KnpU\OAuth2ClientBundle\Security\Authenticator\OAuth2Authenticator;

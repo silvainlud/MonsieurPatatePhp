@@ -1,5 +1,10 @@
 controllers:
-    resource: ../../src/Controller/
+    resource: ../../src/Http/Main/Controller
+    type: annotation
+
+security_controllers:
+    resource: ../../src/Http/Security/Controller
+    prefix: /login
     type: annotation
 
 kernel:

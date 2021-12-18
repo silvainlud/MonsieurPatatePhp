@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Entity;
+namespace App\Domain\Section\Entity;
 
 use DateTime;
 use Doctrine\Common\Collections\Collection;

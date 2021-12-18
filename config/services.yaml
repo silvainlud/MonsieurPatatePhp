@@ -22,11 +22,11 @@ services:
             - '../src/Tests/'
 
 
-    App\Twig\ViteAssetExtension:
+    App\Infrastructure\ViteAsset\ViteAssetExtension:
         arguments:
             $isDev: '%env(VITE_DEV)%'
             $manifest: '%kernel.project_dir%/public/assets/manifest.json'
 
-    App\Service\OauthDiscordUrl:
+    App\Infrastructure\Discord\OauthDiscordUrl:
         arguments:
             $clientId: '%env(OAUTH_DISCORD_ID)%'

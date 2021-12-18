@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Service;
+namespace App\Infrastructure\Discord;
 
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
