@@ -19,16 +19,16 @@ steps:
     volumes:
       - name: composer
         path: /drone/src/vendor/
-#  - name: Yarn
-#    image: node
-#    commands:
-#      - yarn install --ignore-engines
-#      - yarn encore dev
-#    volumes:
-#      - name: node
-#        path: /drone/src/node_modules/
-#      - name: build
-#        path: /drone/src/public/build/
+  - name: Yarn
+    image: node
+    commands:
+      - yarn install --ignore-engines
+      - yarn build
+    volumes:
+      - name: node
+        path: /drone/src/node_modules/
+      - name: build
+        path: /drone/src/public/build/
   - name: Lint
     image: registry.silvain.eu:5000/silvain.eu/monsieurpatatephp:latest
     commands:
