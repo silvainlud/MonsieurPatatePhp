@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-{% include '_head.html.twig' %}
+<head>
+    {{ vite_asset('security.js', []) }}
+    {% include '_head.html.twig' %}
+</head>
+
 
 <body class="login">
 <div class="login-body">

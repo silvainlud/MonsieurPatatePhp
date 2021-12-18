@@ -21,7 +21,7 @@ export default defineConfig({
             },
             input: {
                 'app.js': './assets/app.js',
-                // 'security/app.js': './assets/app.js',
+                'security.js': './assets/security.js',
             }
         }
     }
