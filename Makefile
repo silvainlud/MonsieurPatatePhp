@@ -36,7 +36,7 @@ lintb: vendor/autoload.php ## Analyse le code (sans docker)
 
 .PHONY: format
 format: ## Formate le code
-	$(dockerRun) ./vendor/bin/phpcbf -q
+	$(dockerRun) ./vendor/bin/phpcbf -q || exit 0
 	$(dockerRun) ./vendor/bin/php-cs-fixer fix --allow-risky=yes --config ".php-cs-fixer.dist.php"
 
 .PHONY: test
