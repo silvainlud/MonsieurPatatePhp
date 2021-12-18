@@ -12,8 +12,8 @@ use Doctrine\ORM\Mapping\OneToMany;
 #[Entity]
 class WorkCategory
 {
-    #[Id, GeneratedValue(strategy: "UUID")]
-    #[Column(type: "uuid")]
+    #[Id, GeneratedValue(strategy: "AUTO")]
+    #[Column(type: "string")]
     protected string $id;
 
     #[Column(type: "string", length: 25)]
@@ -21,5 +21,4 @@ class WorkCategory
 
     #[OneToMany(mappedBy: "work_category", targetEntity: Work::class)]
     protected Collection $works;
-
 }

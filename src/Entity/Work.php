@@ -11,8 +11,8 @@ use Doctrine\ORM\Mapping\ManyToOne;
 #[Entity]
 class Work
 {
-    #[Id, GeneratedValue(strategy: "UUID")]
-    #[Column(type: "uuid")]
+    #[Id, GeneratedValue(strategy: "AUTO")]
+    #[Column(type: "string")]
     protected string $id;
 
     #[Column(type: "string", length: 25)]
@@ -33,8 +33,6 @@ class Work
     #[Column(type: "string", length: 25)]
     protected string $serverId;
 
-    #[ManyToOne(targetEntity: WorkCategory::class,inversedBy: "works")] 
+    #[ManyToOne(targetEntity: WorkCategory::class, inversedBy: "works")]
     private WorkCategory $work_category;
-
-
 }

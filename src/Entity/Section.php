@@ -19,8 +19,8 @@ class Section
     public const visibility_restrict = "RESTRICT";
     public const visibilities = [self::visibility_show, self::visibility_hide, self::visibility_restrict];
 
-    #[Id, GeneratedValue(strategy: "UUID")]
-    #[Column(type: "uuid")]
+    #[Id, GeneratedValue(strategy: "AUTO")]
+    #[Column(type: "string")]
     protected string $id;
 
     #[Column(type: "string", length: 25)]

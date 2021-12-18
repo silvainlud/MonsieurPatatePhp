@@ -9,8 +9,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class IndexController extends AbstractController
 {
     #[Route("/", name: "index")]
-    public function Index() : Response
+    public function Index(): Response
     {
-        return $this->render("react.html.twig");
+        return $this->render("login.html.twig");
     }
 }
