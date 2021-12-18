@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Doctrine\Common\Collections\Collection;
@@ -12,13 +14,13 @@ use Doctrine\ORM\Mapping\OneToMany;
 #[Entity]
 class WorkCategory
 {
-    #[Id, GeneratedValue(strategy: "AUTO")]
-    #[Column(type: "string")]
+    #[Id, GeneratedValue(strategy: 'AUTO')]
+    #[Column(type: 'string')]
     protected string $id;
 
-    #[Column(type: "string", length: 25)]
+    #[Column(type: 'string', length: 25)]
     protected string $name;
 
-    #[OneToMany(mappedBy: "work_category", targetEntity: Work::class)]
+    #[OneToMany(mappedBy: 'work_category', targetEntity: Work::class)]
     protected Collection $works;
 }

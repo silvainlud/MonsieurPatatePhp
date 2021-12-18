@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping\Column;
@@ -11,22 +13,21 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[Entity]
 class User implements UserInterface
 {
-    #[Id, GeneratedValue(strategy: "AUTO")]
-    #[Column(type: "integer")]
+    #[Id, GeneratedValue(strategy: 'AUTO')]
+    #[Column(type: 'integer')]
     private int $id;
 
-    #[Column(type: "string", length: 25)]
+    #[Column(type: 'string', length: 25)]
     private string $username;
 
-    #[Column(type: "string", length: 25)]
+    #[Column(type: 'string', length: 25)]
     private string $email;
 
-    #[Column(type: "string", length: 32, nullable: false)]
+    #[Column(type: 'string', length: 32, nullable: false)]
     private string $avatar;
 
-    #[Column(type: "string", length: 25)]
+    #[Column(type: 'string', length: 25)]
     private string $discordId;
-
 
     public function getRoles(): array
     {

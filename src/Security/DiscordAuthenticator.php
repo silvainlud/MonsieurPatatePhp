@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace App\Security;
 
@@ -49,24 +50,21 @@ class DiscordAuthenticator extends OAuth2Authenticator
 
                 $email = $discordUser->getEmail();
 
-
                 $existingUser = $this->entityManager->getRepository(User::class)->findOneBy(['discordId' => $discordUser->getId()]);
-
 
                 if ($existingUser) {
                     return $existingUser;
                 }
 
-
                 $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $email]);
                 if ($user === null) {
-                    $user = (new User())->setEmail((string)$email);
+                    $user = (new User())->setEmail((string) $email);
                 }
 
-                $user->setAvatar((string)$discordUser->getAvatarHash());
-                $user->setUsername((string)$discordUser->getUsername());
-                $user->setDiscordId((string)$discordUser->getId());
-                $user->setAvatar((string)$discordUser->getAvatarHash());
+                $user->setAvatar((string) $discordUser->getAvatarHash());
+                $user->setUsername((string) $discordUser->getUsername());
+                $user->setDiscordId((string) $discordUser->getId());
+                $user->setAvatar((string) $discordUser->getAvatarHash());
                 $this->entityManager->persist($user);
                 $this->entityManager->flush();
 
