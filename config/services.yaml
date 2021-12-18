@@ -21,5 +21,11 @@ services:
             - '../src/Kernel.php'
             - '../src/Tests/'
 
+
+    App\Twig\ViteAssetExtension:
+        arguments:
+            $isDev: '%env(VITE_DEV)%'
+            $manifest: '%kernel.project_dir%/public/assets/manifest.json'
+#            $cache: '@vite_cache_pool'
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

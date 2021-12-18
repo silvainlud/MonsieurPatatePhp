@@ -26,6 +26,8 @@ services:
       MYSQL_ROOT_PASSWORD: root
     ports:
       - 3306:3306
+    volumes:
+      - db-data:/var/lib/mysql # persist data even
 
   #  php_messenger:
   #    build:
@@ -45,9 +47,13 @@ services:
   yarn:
     image: node
     working_dir: /var/www
+    tty: true
     volumes:
       - .:/var/www:delegated
-    command: /bin/sh -c "yarn install && yarn encore dev --watch"
+    command: /bin/sh -c "yarn install && yarn dev"
+    ports:
+      - 3000:3000
+      - 500:5000
 
   redis:
     image: redis:5-alpine
@@ -61,3 +67,5 @@ volumes:
   var:
   vendor:
   node_modules:
+  db-data:
+    driver: local
