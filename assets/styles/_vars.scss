@@ -1,0 +1,49 @@
+//Colors
+$purple_color: #7A69E6;
+$green_color: #27AE60;
+$medium_green_color: #228C4F;
+$yellow_color: #F9C043;
+$light_blue_color: #6A9AE8;
+$blue_color: #2980B9;
+$red_color: #FA5E5D;
+$dark_red_color: #ae3131;
+$light_black_color: #263547;
+$light_grey_color: #BFBFBF;
+$grey_color: #7F8C8D;
+
+$colors: (
+        'primary' : $light_blue_color,
+        'secondary' : $grey_color,
+        'purple' : $purple_color,
+        'green' : $green_color,
+        'medium-green' : $medium_green_color,
+        'yellow' : $yellow_color,
+        'light-blue' : $light_blue_color,
+        'blue' : $blue_color,
+        'red' : $red_color,
+        'danger' : $dark_red_color,
+        'light-black' : $light_black_color,
+        'light-grey' : $light_grey_color,
+        'grey' : $grey_color,
+        'discord' : #5865F2,
+);
+
+@each $class, $color in $colors {
+  .color-#{$class} {
+    color: var(--color-#{$class});
+  }
+}
+
+:root {
+  @each $class, $color in $colors {
+    --color-#{$class} : #{$color};
+  }
+
+  --color-main-background: #353b48;
+  --color-text: white;
+
+  --color-input-color: #ecf0f1;
+  --color-input-background: #4c5259;
+  --color-input-border: #353b48;
+  --color-input-border_focus: #4e525e;
+}

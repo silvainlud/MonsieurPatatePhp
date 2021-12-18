@@ -35,7 +35,7 @@ class DiscordAuthenticator extends OAuth2Authenticator
     public function supports(Request $request): ?bool
     {
         // continue ONLY if the current ROUTE matches the check ROUTE
-        return $request->attributes->get('_route') === 'connect_discord_check';
+        return $request->attributes->get('_route') === 'login_discord_check';
     }
 
     public function authenticate(Request $request): Passport

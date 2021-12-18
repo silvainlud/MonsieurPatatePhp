@@ -1,0 +1,43 @@
+@import "ui/btn";
+@import "ui/spacing";
+@import "ui/form";
+
+html {
+  height: 100%;
+  margin: 0;
+  font-family: Roboto, sans-serif;
+}
+
+body {
+  margin: 0;
+  overflow-y: scroll;
+  min-height: 100%;
+
+}
+
+* {
+  box-sizing: inherit;
+}
+
+h1 {
+  margin: 4px 0;
+  font-weight: 600;
+  font-size: 34px;
+}
+
+h2 {
+  margin: 4px 0 10px;
+  font-weight: 500;
+  font-size: 28px;
+}
+
+h3 {
+  margin: 4px 0;
+  font-weight: 500;
+  font-size: 24px;
+}
+
+p {
+  padding: 0;
+  margin: 4px 0;
+}
