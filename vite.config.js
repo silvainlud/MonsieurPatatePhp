@@ -20,8 +20,8 @@ export default defineConfig({
                 manualChunks: undefined // On ne veut pas créer un fichier vendors, car on n'a ici qu'un point d'entré
             },
             input: {
-                'app.js': './assets/app.js',
-                'security.js': './assets/security.js',
+                'app.js': './app.js',
+                'security.js': './security.js',
             }
         }
     }
