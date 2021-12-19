@@ -1,4 +1,10 @@
 <nav id="nav-left" class="nav-left">
+
+    <button id="nav-responsive_close">
+        <i class="fas fa-times"></i>
+        Fermer
+    </button>
+
     <div class="nav-header">
         <div class="nav-header_img">
             {% if current_guild().icon is null %}
@@ -10,41 +16,32 @@
         <div class="nav-header_content">
             <h1>{{ current_guild().name }}</h1>
             <p>
-                <span class="dot-circle" style="background-color: {{ current_user_highest_role(app.user).color|discord_color }}"></span>
+                <span class="dot-circle"
+                      style="background-color: {{ current_user_highest_role(app.user).color|discord_color }}"></span>
                 {{ current_user_highest_role(app.user).name }}
             </p>
         </div>
     </div>
     <div class="nav_left-content">
         <a class="menu-item" href="">
-            <div class="menu-item-link">
-                <div class="menu-item-link_icon"><i class="fas fa-home"></i></div>
-                <div class="menu-item-link_content">Tableau de bord</div>
-            </div>
+            <div class="menu-item_icon"><i class="fas fa-home"></i></div>
+            <div class="menu-item_content">Tableau de bord</div>
         </a>
         <a class="menu-item" href="">
-            <div class="menu-item-link">
-                <div class="menu-item-link_icon"><i class="fas fa-microchip"></i></div>
-                <div class="menu-item-link_content">Technologie</div>
-            </div>
+            <div class="menu-item_icon"><i class="fas fa-microchip"></i></div>
+            <div class="menu-item_content">Technologie</div>
         </a>
         <a class="menu-item" href="">
-            <div class="menu-item-link">
-                <div class="menu-item-link_icon"><i class="fas fa-skiing"></i></div>
-                <div class="menu-item-link_content">Compétences</div>
-            </div>
+            <div class="menu-item_icon"><i class="fas fa-skiing"></i></div>
+            <div class="menu-item_content">Compétences</div>
         </a>
         <a class="menu-item" href="">
-            <div class="menu-item-link">
-                <div class="menu-item-link_icon"><i class="fas fa-laptop"></i></div>
-                <div class="menu-item-link_content">Réalisations</div>
-            </div>
+            <div class="menu-item_icon"><i class="fas fa-laptop"></i></div>
+            <div class="menu-item_content">Réalisations</div>
         </a>
         <a class="menu-item" href="">
-            <div class="menu-item-link">
-                <div class="menu-item-link_icon"><i class="fas fa-cogs"></i></div>
-                <div class="menu-item-link_content">Services</div>
-            </div>
+            <div class="menu-item_icon"><i class="fas fa-cogs"></i></div>
+            <div class="menu-item_content">Services</div>
         </a>
     </div>
 </nav>

@@ -1,0 +1,118 @@
+$nav-left_width: 350px;
+.nav-left {
+  display: flex;
+  flex-direction: column;
+  width: $nav-left_width;
+  overflow: hidden;
+  background-color: var(--color-nav-left);
+  padding: 0 0 20px;
+  box-sizing: border-box;
+
+  position: absolute;
+  height: 100%;
+  transform: translateX(-$nav-left_width);
+  transition: transform 0.4s;
+
+  &.open {
+    transform: translateX(0);
+  }
+
+  button#nav-responsive_close {
+    background-color: rgba(255, 255, 255, 0.2);
+    transition: background-color 0.3s;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+
+    border: none;
+    color: var(--color-text);
+    padding: 15px;
+    font-size: 18px;
+  }
+
+  .nav-header {
+
+    background-color: rgba(255, 255, 255, 0.2);
+
+    margin: 20px 20px 0;
+    padding: 10px 15px;
+    border-radius: 5px;
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    grid-gap: 15px;
+
+    .nav-header_img {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      img {
+        width: 64px;
+        height: 64px;
+      }
+    }
+
+    .nav-header_content {
+      display: flex;
+      flex-direction: column;
+
+      h1 {
+        font-size: 24px;
+      }
+
+      .dot-circle {
+
+        content: '';
+        width: 13px;
+        height: 13px;
+        border-radius: 7.5px;
+        background-color: #69b6d5;
+        display: inline-block;
+
+
+      }
+
+    }
+
+  }
+
+  .nav_left-content {
+    display: flex;
+    flex-direction: column;
+
+    margin: 40px 20px 20px;
+
+    a.menu-item {
+      margin: 14px 0;
+      color: var(--color-text_hover);
+      text-decoration: none;
+      transition: color 0.3s;
+
+      font-size: 18px;
+      display: grid;
+      grid-gap: 20px;
+      grid-template-columns: 16px 1fr;
+
+
+      &:hover {
+        color: var(--color-text);
+      }
+    }
+  }
+
+
+}
+
+@media screen and (min-width: $dashboard_nav-left_responsive) {
+  .nav-left {
+    position: unset;
+    height: unset;
+    transform: translateX(0);
+
+    button#nav-responsive_close {
+      display: none;
+    }
+
+  }
+}
