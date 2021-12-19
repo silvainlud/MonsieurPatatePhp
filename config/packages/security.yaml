@@ -36,4 +36,4 @@ security:
   # Note: Only the *first* access control that matches will be used
   access_control:
     - { path: ^/login, roles: [ PUBLIC_ACCESS ] }
-    - { path: ^/, roles: [ IS_AUTHENTICATED_REMEMBERED ] }
+    - { path: ^/, roles: [ ROLE_USER ] }
