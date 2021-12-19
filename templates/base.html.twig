@@ -6,12 +6,21 @@
 </head>
 
 
-<body class="login">
+<body>
 
-<footer>
-    {% block footer %}{% endblock footer %}
-    Site réalisé par : Ludwig SILVAIN | Copyright © Ludwig SILVAIN {{ "now"|date("Y") }}
-</footer>
+{% include '_nav_left.html.twig' %}
+
+<main>
+    {% include '_nav_top.html.twig' %}
+
+    <div class="content"></div>
+
+    <footer>
+        {% block footer %}{% endblock footer %}
+        Site réalisé par : Ludwig SILVAIN | Copyright © Ludwig SILVAIN {{ "now"|date("Y") }}
+    </footer>
+</main>
+
 {% block script %}{% endblock %}
 </body>
 </html>

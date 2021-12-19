@@ -41,9 +41,13 @@ $colors: (
 
   --color-main-background: #353b48;
   --color-text: white;
+  --color-text_hover: #{darken(white, 25%)};
 
   --color-input-color: #ecf0f1;
   --color-input-background: #4c5259;
   --color-input-border: #353b48;
   --color-input-border_focus: #4e525e;
+
+  --color-nav-top: #4c5259;
+  --color-nav-left: #3e4549;
 }
