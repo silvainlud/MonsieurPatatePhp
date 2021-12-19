@@ -33,3 +33,15 @@ services:
   App\Infrastructure\Discord\OauthDiscordUrl:
     arguments:
       $clientId: '%env(OAUTH_DISCORD_ID)%'
+
+  App\Infrastructure\Parameter\IParameterService:
+    class: App\Infrastructure\Parameter\ParameterService
+    arguments:
+      $guildId: '%env(DISCORD_BOT_GUILD)%'
+
+
+  App\Infrastructure\Discord\DiscordUserService: ~
+
+  App\Infrastructure\Discord\IDiscordGuildService:
+    class: App\Infrastructure\Discord\DiscordGuildService
+
