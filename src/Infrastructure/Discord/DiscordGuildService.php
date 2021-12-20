@@ -21,10 +21,11 @@ class DiscordGuildService implements IDiscordGuildService
     private const EXPIRE_CURRENT_GUILD_ROLES = 259200;
 
     public function __construct(
-        private HttpClientInterface $discordClient,
+        private HttpClientInterface    $discordClient,
         private CacheItemPoolInterface $cache,
-        private IParameterService $parameterService
-    ) {
+        private IParameterService      $parameterService
+    )
+    {
     }
 
     public function getCurrentGuild(): DiscordGuild
@@ -38,7 +39,7 @@ class DiscordGuildService implements IDiscordGuildService
             }
 
             $data = json_decode($response->getContent(false));
-            $guild = (new DiscordGuild($data->id))->setName($data->name)->setIcon($data->icon);
+            $guild = (new DiscordGuild(intval($data->id)))->setName($data->name)->setIcon($data->icon);
             $i->set($guild);
             $i->expiresAfter(self::EXPIRE_CURRENT_GUILD);
             $this->cache->save($i);
@@ -63,11 +64,15 @@ class DiscordGuildService implements IDiscordGuildService
                 return [];
             }
             $data = array_reduce(json_decode($response->getContent(false)), function (array $acc, \stdClass $d) {
-                $acc[] = (new DiscordRole((int) ($d->id)))->setName($d->name)->setPosition($d->position)->setColor($d->color);
+                $acc[] = (new DiscordRole((int)($d->id)))
+                    ->setName($d->name)
+                    ->setPosition($d->position)
+                    ->setColor($d->color)
+                    ->setPermission($d->permissions);
 
                 return $acc;
             }, []);
-            usort($data, fn (DiscordRole $a, DiscordRole $b) => $a->getPosition() > $b->getPosition() ? 1 : ($a->getPosition() === $b->getPosition() ? 0 : -1));
+            usort($data, fn(DiscordRole $a, DiscordRole $b) => $a->getPosition() > $b->getPosition() ? -1 : ($a->getPosition() === $b->getPosition() ? 0 : 1));
 
             $i->set($data);
             $i->expiresAfter(self::EXPIRE_CURRENT_GUILD_ROLES);

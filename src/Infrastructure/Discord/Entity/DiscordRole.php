@@ -10,6 +10,7 @@ class DiscordRole
     private string $name;
     private int $position;
     private int $color;
+    private int $permission;
 
     public function __construct(int $id)
     {
@@ -53,6 +54,18 @@ class DiscordRole
     public function setColor(int $color): self
     {
         $this->color = $color;
+
+        return $this;
+    }
+
+    public function getPermission(): int
+    {
+        return $this->permission;
+    }
+
+    public function setPermission(int $permission): self
+    {
+        $this->permission = $permission;
 
         return $this;
     }
