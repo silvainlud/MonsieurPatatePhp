@@ -1,0 +1,104 @@
+<?php
+
+namespace App\Domain\Guild\Entity;
+
+use App\Domain\Section\Entity\Section;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\OneToMany;
+use JetBrains\PhpStorm\Pure;
+
+#[Entity]
+class GuildSettings
+{
+    #[Id, Column(name: "GuildId", type: 'string', length: 25)]
+    private string $serverId;
+
+    #[Column(type: 'string', length: 25, nullable: true)]
+    private ?string $announceChannelId;
+
+    #[Column(type: 'string', length: 25, nullable: true)]
+    private ?string $sectionMessageId;
+
+    #[Column(type: 'string', length: 25, nullable: true)]
+    private ?string $workChannelId;
+
+    /** @var Collection<Section> */
+    #[OneToMany(mappedBy: "guildSettings", targetEntity: Section::class, cascade: ["persist"])]
+    private Collection $sections;
+
+    #[Pure] public function __construct(string $serverId)
+    {
+        $this->serverId = $serverId;
+        $this->announceChannelId = null;
+        $this->sectionMessageId = null;
+        $this->workChannelId = null;
+        $this->sections = new ArrayCollection();
+    }
+
+    public function getServerId(): string
+    {
+        return $this->serverId;
+    }
+
+    public function getAnnounceChannelId(): ?string
+    {
+        return $this->announceChannelId;
+    }
+
+    public function setAnnounceChannelId(?string $announceChannelId): self
+    {
+        $this->announceChannelId = $announceChannelId;
+
+        return $this;
+    }
+
+    public function getSectionMessageId(): ?string
+    {
+        return $this->sectionMessageId;
+    }
+
+    public function setSectionMessageId(?string $sectionMessageId): self
+    {
+        $this->sectionMessageId = $sectionMessageId;
+
+        return $this;
+    }
+
+    public function getWorkChannelId(): ?string
+    {
+        return $this->workChannelId;
+    }
+
+    public function setWorkChannelId(?string $workChannelId): self
+    {
+        $this->workChannelId = $workChannelId;
+
+        return $this;
+    }
+
+    public function getSections(): Collection
+    {
+        return $this->sections;
+    }
+
+    public function addSection(Section $section): self
+    {
+        if (!$this->sections->contains($section))
+            $this->sections->add($section);
+
+        return $this;
+    }
+
+    public function removeSection(Section $section): self
+    {
+        if ($this->sections->contains($section))
+            $this->sections->removeElement($section);
+
+        return $this;
+    }
+
+}
