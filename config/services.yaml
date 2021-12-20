@@ -22,8 +22,8 @@ services:
       - '../src/Tests/'
 
   app_infrastructure:
-    namespace: App\Infrastructure\
-    resource: '%kernel.project_dir%/src/Infrastructure/*/{Message,Subscriber,Twig}/*'
+    namespace: App\
+    resource: '%kernel.project_dir%/src/{Infrastructure,Domain}/*/{Message,Subscriber,Twig,Command,Voter}/*'
 
   App\Infrastructure\ViteAsset\ViteAssetExtension:
     arguments:
