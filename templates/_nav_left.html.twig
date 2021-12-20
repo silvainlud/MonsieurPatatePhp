@@ -39,9 +39,11 @@
             <div class="menu-item_icon"><i class="fas fa-laptop"></i></div>
             <div class="menu-item_content">Réalisations</div>
         </a>
-        <a class="menu-item" href="">
-            <div class="menu-item_icon"><i class="fas fa-cogs"></i></div>
-            <div class="menu-item_content">Services</div>
-        </a>
+        {% if is_granted("ROLE_ADMIN_DISCORD") %}
+            <a class="menu-item" href="{{ path('config_work_channel') }}">
+                <div class="menu-item_icon"><i class="fas fa-cogs"></i></div>
+                <div class="menu-item_content">Configuration</div>
+            </a>
+        {% endif %}
     </div>
 </nav>
