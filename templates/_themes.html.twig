@@ -1,0 +1,71 @@
+{% use 'form_div_layout.html.twig' %}
+
+{%- block form_errors -%}
+    {%- if errors|length > 0 -%}
+        <ul class="form-error">
+            {%- for error in errors -%}
+                <li>{{ error.message }}</li>
+            {%- endfor -%}
+        </ul>
+    {%- endif -%}
+{%- endblock form_errors -%}
+
+{%- block form -%}
+    {{ form_start(form) }}
+    <div class="form-row text-">
+        {{- form_errors(form) -}}
+    </div>
+    {% for child in form|filter(child => not child.rendered) %}
+        {{- form_row(child) -}}
+    {% endfor %}
+    {{ form_end(form) }}
+{%- endblock form -%}
+
+{%- block form_row -%}
+    {% set row_attr = row_attr|merge({class : row_attr.class|default('form-group')}) %}
+    {%- set widget_attr = {required : false} -%}
+    {%- if help is not empty -%}
+        {%- set widget_attr = {attr: {'aria-describedby': id ~"_help"}} -%}
+    {%- endif -%}
+    <div{% with {attr: row_attr} %}{{ block('attributes') }}{% endwith %}>
+        {{- form_label(form) -}}
+        {{- form_widget(form, widget_attr) -}}
+        {{- form_help(form) -}}
+        {{- form_errors(form) -}}
+    </div>
+{%- endblock form_row -%}
+
+{%- block button_row -%}
+    {%- set row_attr = row_attr|merge({class: (row_attr.class|default('form-submit'))|trim}) -%}
+    {{- parent() -}}
+{% endblock %}
+
+{%- block button_widget -%}
+    {%- set attr = attr|merge({class: (attr.class|default('') ~ ' btn')|trim}) -%}
+    {{- parent() -}}
+{%- endblock button_widget -%}
+
+{%- block checkbox_row -%}
+    {% set row_attr = row_attr|merge({class : row_attr.class|default('form-check')}) %}
+    {%- set widget_attr = {required : false} -%}
+    {%- if help is not empty -%}
+        {%- set widget_attr = {attr: {'aria-describedby': id ~"_help"}} -%}
+    {%- endif -%}
+    <div{% with {attr: row_attr} %}{{ block('attributes') }}{% endwith %}>
+        {{- form_widget(form, widget_attr) -}}
+        {% with {"label_html" : true} %}{{- block('form_label') -}}{% endwith %}
+        {{- form_help(form) -}}
+        {{- form_errors(form) -}}
+    </div>
+
+{%- endblock checkbox_row -%}
+
+
+{%- block choice_widget_expanded -%}
+    {%- for child in form %}
+        <div {% with {attr: row_attr|merge({class: (row_attr.class|default('') ~ ' form-check')|trim})} %}{{ block('widget_container_attributes') }}{% endwith %} >
+            {{- form_widget(child) -}}
+            {{- form_label(child, null, {translation_domain: choice_translation_domain}) -}}
+        </div>
+    {% endfor %}
+{%- endblock choice_widget_expanded -%}
