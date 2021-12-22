@@ -204,6 +204,11 @@
     "@babel/helper-validator-identifier" "^7.15.7"
     to-fast-properties "^2.0.0"
 
+"@orchidjs/sifter@^0.9.0":
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/@orchidjs/sifter/-/sifter-0.9.0.tgz#07eab78de2ac1799d2c169bf1f2e3e746d86c32c"
+  integrity sha512-NDYPhjdydJNbwDRvMFyUFFeImj1a+CJAwpjh/goKmvTHi726DPAJ1nW0X05p/GsorQgXHwhgDPyu6WaYqd4cRA==
+
 "@rollup/pluginutils@^4.1.1":
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/@rollup/pluginutils/-/pluginutils-4.1.2.tgz#ed5821c15e5e05e32816f5fb9ec607cdf5a75751"
@@ -879,6 +884,13 @@ to-regex-range@^5.0.1:
   integrity sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==
   dependencies:
     is-number "^7.0.0"
+
+tom-select@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/tom-select/-/tom-select-2.0.0.tgz#751ac1087cce29bd40e09f1a604e9ad69451fc86"
+  integrity sha512-ArECm8bNnv8GMTpvSQawesKX6IDv32cylqivjbghwCddYwfngmz+nOtEhQZkEye7BY415eutqhb4XYim2EL8Hg==
+  dependencies:
+    "@orchidjs/sifter" "^0.9.0"
 
 vite@^2.3.8:
   version "2.7.3"
