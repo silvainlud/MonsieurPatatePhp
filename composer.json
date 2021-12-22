@@ -50,6 +50,7 @@
   "require-dev": {
     "doctrine/deprecations": "^0.5.3",
     "friendsofphp/php-cs-fixer": "3.*",
+    "jetbrains/phpstorm-attributes": "^1.0",
     "phpstan/phpstan": "^0.12.99",
     "phpstan/phpstan-doctrine": "^0.12.27",
     "phpstan/phpstan-mockery": "^0.12.11",

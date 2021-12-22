@@ -118,6 +118,9 @@
     "guzzlehttp/psr7": {
         "version": "2.1.0"
     },
+    "jetbrains/phpstorm-attributes": {
+        "version": "1.0"
+    },
     "knpuniversity/oauth2-client-bundle": {
         "version": "2.9",
         "recipe": {
