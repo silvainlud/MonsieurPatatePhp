@@ -1,6 +1,10 @@
 @import "ui/btn";
 @import "ui/spacing";
 @import "ui/form";
+@import "ui/grid";
+@import "ui/text";
+@import "ui/stack";
+@import "ui/card";
 
 html {
   height: 100%;
@@ -22,22 +26,28 @@ body {
 h1 {
   margin: 4px 0;
   font-weight: 600;
-  font-size: 34px;
+  font-size: 38px;
 }
 
 h2 {
   margin: 4px 0 10px;
   font-weight: 500;
-  font-size: 28px;
+  font-size: 32px;
 }
 
 h3 {
   margin: 4px 0;
   font-weight: 500;
-  font-size: 24px;
+  font-size: 26px;
+}
+h4 {
+  margin: 4px 0;
+  font-weight: 500;
+  font-size: 22px;
 }
 
 p {
   padding: 0;
   margin: 4px 0;
+  font-size: 16px;
 }

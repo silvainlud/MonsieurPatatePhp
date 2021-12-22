@@ -1,6 +1,7 @@
 @import "vars";
 @import "ui";
 
+@import "components/content-container";
 @import "components/menu-left";
 @import "components/menu-top";
 
@@ -12,13 +13,14 @@ body {
   flex-direction: row;
 
 
-  main {
+  div.main-content {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
+    max-width: 100%;
 
 
-    .content {
+    main {
       flex-grow: 1;
     }
 

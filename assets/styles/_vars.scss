@@ -1,3 +1,5 @@
+$nav-left_width: 350px;
+
 //Colors
 $purple_color: #7A69E6;
 $green_color: #27AE60;
@@ -43,12 +45,15 @@ $colors: (
 
   --color-main-background: #353b48;
   --color-text: white;
+  --color-text_inverse: black;
   --color-text_hover: #{darken(white, 25%)};
 
   --color-input-color: #ecf0f1;
   --color-input-background: #4c5259;
-  --color-input-border: #353b48;
-  --color-input-border_focus: #4e525e;
+  --color-input-background_disabled: #656c74;
+  --color-input-border: #232834;
+  --color-input-border_disabled: #232834;
+  --color-input-border_focus: #767a86;
 
   --color-nav-top: #4c5259;
   --color-nav-left: #3e4549;

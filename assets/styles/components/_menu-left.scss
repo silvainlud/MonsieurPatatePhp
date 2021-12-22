@@ -1,8 +1,9 @@
-$nav-left_width: 350px;
+
 .nav-left {
   display: flex;
   flex-direction: column;
   width: $nav-left_width;
+  min-width: $nav-left_width;
   overflow: hidden;
   background-color: var(--color-nav-left);
   padding: 0 0 20px;
@@ -12,6 +13,7 @@ $nav-left_width: 350px;
   height: 100%;
   transform: translateX(-$nav-left_width);
   transition: transform 0.4s;
+  z-index: 2;
 
   &.open {
     transform: translateX(0);

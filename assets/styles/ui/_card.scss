@@ -1,0 +1,10 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  background: rgba(255,255,255,0.07);
+  border-radius: 5px;
+
+  & > .card-body {
+    padding: 20px 20px 14px;
+  }
+}
