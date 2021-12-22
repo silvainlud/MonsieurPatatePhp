@@ -10,7 +10,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
@@ -20,10 +19,10 @@ use Doctrine\ORM\Mapping\UniqueConstraint;
 use Symfony\Component\Uid\Uuid;
 
 #[Entity]
-#[Table(options: ["collate" => "utf8mb4_unicode_ci", "charset" => "utf8mb4"])]
+#[Table(options: ['collate' => 'utf8mb4_unicode_ci', 'charset' => 'utf8mb4'])]
 //#[UniqueConstraint(name: "emoji_guild_unique", columns: ["server_id", "emoji"])]
-#[UniqueConstraint(name: "name_guild_unique", columns: ["server_id", "name"])]
-#[UniqueConstraint(name: "category_guild_unique", columns: ["server_id", "category_id"])]
+#[UniqueConstraint(name: 'name_guild_unique', columns: ['server_id', 'name'])]
+#[UniqueConstraint(name: 'category_guild_unique', columns: ['server_id', 'category_id'])]
 class Section
 {
     public const visibility_show = 'SHOW';
@@ -34,10 +33,6 @@ class Section
     #[Id]
     #[Column(type: 'string')]
     protected string $id;
-
-    #[ManyToOne(targetEntity: GuildSettings::class, inversedBy: "sections")]
-    #[JoinColumn(name: "server_id", referencedColumnName: "GuildId")]
-    private GuildSettings $guildSettings;
 
     #[Column(type: 'string', length: 25)]
     protected string $categoryId;
@@ -66,8 +61,12 @@ class Section
     #[Column(type: 'string', length: 25, nullable: true)]
     protected ?string $announceChannelId;
 
-    #[OneToMany(mappedBy: 'section', targetEntity: RoleAllowSection::class, cascade: ["persist"])]
+    #[OneToMany(mappedBy: 'section', targetEntity: RoleAllowSection::class, cascade: ['persist'])]
     protected Collection $allowRoles;
+
+    #[ManyToOne(targetEntity: GuildSettings::class, inversedBy: 'sections')]
+    #[JoinColumn(name: 'server_id', referencedColumnName: 'GuildId')]
+    private GuildSettings $guildSettings;
 
     public function __construct()
     {
@@ -111,16 +110,18 @@ class Section
 
     public function addAllowRole(RoleAllowSection $section): self
     {
-        if (!$this->allowRoles->contains($section))
+        if (!$this->allowRoles->contains($section)) {
             $this->allowRoles->add($section);
+        }
 
         return $this;
     }
 
     public function removeAllowRole(RoleAllowSection $section): self
     {
-        if ($this->allowRoles->contains($section))
+        if ($this->allowRoles->contains($section)) {
             $this->allowRoles->removeElement($section);
+        }
 
         return $this;
     }
