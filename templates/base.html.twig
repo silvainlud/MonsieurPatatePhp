@@ -10,16 +10,18 @@
 
 {% include '_nav_left.html.twig' %}
 
-<main>
+<div class="main-content">
     {% include '_nav_top.html.twig' %}
 
-    <div class="content"></div>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
 
     <footer>
         {% block footer %}{% endblock footer %}
         Site réalisé par : Ludwig SILVAIN | Copyright © Ludwig SILVAIN {{ "now"|date("Y") }}
     </footer>
-</main>
+</div>
 
 {% block script %}{% endblock %}
 </body>
