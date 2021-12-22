@@ -15,7 +15,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class DiscordUserService implements IDiscordUserService
 {
     private const CACHE_KEY_USER_ROLES = 'user_roles_';
-    private const EXPIRE_USER_ROLES = 259200;
+    private const EXPIRE_USER_ROLES = 3600;
 
     public function __construct(
         private IParameterService $parameterService,
