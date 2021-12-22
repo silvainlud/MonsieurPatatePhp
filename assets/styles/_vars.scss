@@ -57,4 +57,9 @@ $colors: (
 
   --color-nav-top: #4c5259;
   --color-nav-left: #3e4549;
+
+
+  --table-color: var(--color-text);
+  --table-border: var(--color-input-border);
+  --table-head-background: var(--color-input-background);
 }

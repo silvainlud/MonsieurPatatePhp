@@ -10,6 +10,53 @@
                 {{ form(form) }}
             </div>
         </div>
+        <div class="card mt-5">
+            <div class="card-body">
+                <div class="hstack">
+                    <h2 class="text-center">Catégories de devoirs</h2>
+                    <div class="stack-spacer"></div>
+                    <a href="{{ path('config', {
+                        (constant('App\\Http\\Main\\Controller\\ConfigurationController::QUERY_HIDDEN_CATEGORIES')) : true
+                    }) }}" class="btn btn-small">Ceux cachés</a>
+                    <a href="{{ path('work_category_add') }}" class="btn btn-small">Ajouter</a>
+                </div>
+
+
+                <table>
+                    <thead>
+                    <tr>
+                        <td>Nom</td>
+                        <td>Activé</td>
+                        <td class="text-right">Action</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for c in categories %}
+                        <tr>
+                            <td>{{ c.name }}</td>
+                            <td>
+                                {% if c.active %}
+                                    <span class="color-green">Oui</span>
+                                {% else %}
+                                    <span class="color-red">Non</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div class="hstack stack-end stack-vcenter">
+                                    <a href="{{ path('work_category_edit', {'category': c.id}) }}"
+                                       class="btn btn-small">Editer</a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="3">Pas de catégories :(</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
 {% endblock %}
