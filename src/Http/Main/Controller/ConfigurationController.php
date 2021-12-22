@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Main\Controller;
 
 use App\Domain\Guild\Entity\GuildSettings;
-use App\Http\Main\Form\Configuration\GuildSettingsType;
+use App\Domain\Guild\Form\GuildSettingsType;
 use App\Infrastructure\Parameter\IParameterService;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;

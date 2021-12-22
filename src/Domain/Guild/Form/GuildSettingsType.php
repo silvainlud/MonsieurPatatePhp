@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Main\Form\Configuration;
+namespace App\Domain\Guild\Form;
 
 use App\Domain\Guild\Entity\GuildSettings;
 use App\Infrastructure\Discord\Entity\Channel\AbstractDiscordChannel;
