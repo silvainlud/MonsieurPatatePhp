@@ -43,7 +43,7 @@ RUN docker-php-ext-install intl
 RUN docker-php-ext-install xml
 RUN docker-php-ext-install ctype
 RUN docker-php-ext-install mbstring
-RUN docker-php-ext-install readline
+RUN #docker-php-ext-install readline
 RUN docker-php-ext-install simplexml
 RUN docker-php-ext-install phar
 RUN docker-php-ext-install curl
