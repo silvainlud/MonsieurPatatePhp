@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Discord;
 
+use App\Infrastructure\Discord\Entity\Channel\AbstractDiscordChannel;
 use App\Infrastructure\Discord\Entity\DiscordGuild;
 use App\Infrastructure\Discord\Entity\DiscordRole;
 
@@ -15,4 +16,7 @@ interface IDiscordGuildService
     public function getRoles(): array;
 
     public function getCurrentGuildIcon(): string;
+
+    /** @return AbstractDiscordChannel[] */
+    public function getChannels(int $guildId): array;
 }
