@@ -5,16 +5,18 @@ declare(strict_types=1);
 namespace App\Domain\Work\Entity;
 
 use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\CustomIdGenerator;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[Entity]
 class Work
 {
-    #[Id, GeneratedValue(strategy: 'AUTO')]
-    #[Column(type: 'string')]
+    #[Id, GeneratedValue(strategy: 'CUSTOM'), CustomIdGenerator(class: UuidGenerator::class)]
+    #[Column(type: 'uuid', unique: true)]
     protected string $id;
 
     #[Column(type: 'string', length: 25)]
