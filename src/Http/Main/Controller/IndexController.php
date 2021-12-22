@@ -15,4 +15,10 @@ class IndexController extends AbstractController
     {
         return $this->render('base.html.twig');
     }
+
+    #[Route('/_ui', name: 'ui')]
+    public function ui(): Response
+    {
+        return $this->render('ui.html.twig');
+    }
 }

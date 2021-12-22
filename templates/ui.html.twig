@@ -1,0 +1,369 @@
+{% extends 'base.html.twig' %}
+
+{% set colors = ["primary","secondary","purple","green","medium-green","yellow","light-blue","blue","red","danger","light-grey","light-black", "grey"] %}
+
+{% set images = ["favicon.png","favicon.ico", "images/Discord-Logo-White.svg"] %}
+
+{% block content %}
+    <div class="content content-center">
+        <div class="grid2">
+            <div>
+                <h1>Titre de premier niveau</h1>
+                <h2>Titre de second niveau</h2>
+                <h3>Titre de troisième niveau</h3>
+                <h4>Titre de quatrième niveau</h4>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. A aliquam consequatur dolor est ex,
+                    excepturi
+                    explicabo iusto libero minus nostrum obcaecati omnis perferendis provident reprehenderit sapiente,
+                    soluta unde
+                    veniam voluptates?
+                </p>
+            </div>
+            <div>
+                <div class="hero-title">Titre .hero-title</div>
+                <p class="hero-text">.hero-text ipsum dolor sit amet, consectetur adipisicing elit. Adipisci atque
+                    dolorem eligendi esse et porro repellendus? Autem consectetur deserunt dolor laborum, tenetur unde!
+                    Facilis hic ipsa, iste itaque quam quidem.</p>
+
+                <div>
+                    <p class="text-danger">Texte d'alerte .text-danger</p>
+                    <p class="text-muted">Texte d'alerte .text-muted</p>
+                    <p class="text-crossed">Texte d'alerte .text-crossed</p>
+                </div>
+                <hr class="hr-left">
+            </div>
+        </div>
+        <div>
+            <h2 class="mt-5">Couleurs</h2>
+            <div class="hstack">
+                {% for color in colors %}
+                    <div class="m-2">
+                        <small class="text-muted">{{ color }}</small>
+                        <div style="width: 70px;height: 70px;background:var(--color-{{ color }});"></div>
+                    </div>
+                {% endfor %}
+            </div>
+            <h3>Fluent</h3>
+            <div class="hstack">
+                {% for color in colors %}
+                    <div class="m-2">
+                        <small class="text-muted">fluent-{{ color }}</small>
+                        <div style="width: 70px;height: 70px;background:var(--color-fluent-{{ color }});"></div>
+                    </div>
+                {% endfor %}
+            </div>
+            <h3>Transparent</h3>
+            <div class="hstack">
+                {% for color in colors %}
+                    <div class="m-2">
+                        <small class="text-muted">trans-{{ color }}</small>
+                        <div style="width: 70px;height: 70px;background:var(--color-trans-{{ color }});"></div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div>
+            <h2 class="mt-5">Séparateur</h2>
+            <div class="vstack" style="max-width: 100%">
+                {% for s in ['right', 'left', 'center'] %}
+                    <div class="m-2 text-{{ s }}">
+                        <small class="text-muted">.hr-{{ s }}</small>
+                        <hr class="hr-{{ s }} hr-50">
+                    </div>
+                {% endfor %}
+                {% for s in [100,90,75,50,25] %}
+                    <div class="m-2 text-center">
+                        <small class="text-muted">.hr-{{ s }}</small>
+                        <hr class="hr-{{ s }} ">
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div>
+            <h2 class="mt-5">Boutons</h2>
+            <div class="hstack">
+                {% for color in colors %}
+                    <button class="m-2 btn btn-{{ color }}">.btn btn-{{ color }}</button>
+                {% endfor %}
+            </div>
+            <h3 class="mt-4">.btn-text</h3>
+            <div class="hstack">
+                {% for color in colors %}
+                    <button class="m-2 btn-text btn-{{ color }}">
+                        .btn-text btn-{{ color }}
+                    </button>
+                {% endfor %}
+            </div>
+{#            <div class="hstack mt-4">#}
+{#                {% for color in colors %}#}
+{#                    <button class="m-2 btn-text btn-{{ color }}">#}
+{#                        {{ icon(icons[loop.index]) }} <span>.btn-text btn-{{ color }}</span>#}
+{#                    </button>#}
+{#                {% endfor %}#}
+{#            </div>#}
+        </div>
+        <div>
+            <h2 class="h1 mb-2">Carte</h2>
+            <div class="hstack">
+                <div class="m-2">
+                    <small class="text-muted">.card</small>
+                    <div class="card" style="width: 400px">
+                        <div class="card-body">
+                            <h2>Titre de la carte</h2>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad blanditiis consectetur cum
+                                debitis facilis fugiat illo impedit maiores sequi soluta sunt tempora vel, veritatis.
+                                Aperiam nesciunt quaerat quam quas quasi.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <h2 class="mt-5">Formulaire</h2>
+            <h3>Input</h3>
+            <div class="hstack">
+                <div>
+                    <small class="text-muted">.form-group > input</small>
+                    <div class="card">
+                        <div class="form-group card-body">
+                            <label for="form-input">Label</label>
+                            <input type="text" id="form-input" placeholder="placeholder">
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <small class="text-muted">.form-group > input:disabled</small>
+                    <div class="card">
+                        <div class="form-group card-body">
+                            <label for="form-input">Label</label>
+                            <input type="text" id="form-input" placeholder="placeholder" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <small class="text-muted">.form-group > input.input-light</small>
+                    <div class="form-group">
+                        <label for="form-input">Label</label>
+                        <input type="text" id="form-input" class="input-light" placeholder="placeholder">
+                    </div>
+                </div>
+            </div>
+            <h3>Checkbox</h3>
+            <div class="hstack">
+                <div>
+                    <small class="text-muted">.form-check</small>
+                    <div class="card">
+                        <div class="form-check card-body">
+                            <input type="checkbox" name="_remember_me" id="remember_me" checked/>
+                            <label for="remember_me">.form-check</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h3>Zone de formulaire</h3>
+            <div>
+                <h4>.form</h4>
+                <div class="card">
+                    <form class="card-body">
+                        <div class="form-group">
+                            <label>.form-group</label>
+                            <input type="text" name=""/>
+                        </div>
+                        <div class="form-group">
+                            <label>.form-group</label>
+                            <input type="text" name=""/>
+                        </div>
+                        <div class="form-row">
+                            <label>.form-row</label>
+                            <input type="text" name=""/>
+                        </div>
+
+                        <div class="form-row">
+                            <label>textaera</label>
+                            <textarea></textarea>
+                        </div>
+
+                        <div class="form-row form-check">
+                            <input type="checkbox" id="form-zone_1_check_1"/>
+                            <label for="form-zone_1_check_1">.form-row.form-check</label>
+                        </div>
+                        <div class="form-row form-check">
+                            <input type="checkbox" id="form-zone_1_check_2"/>
+                            <label for="form-zone_1_check_2">.form-row.form-check</label>
+                        </div>
+                        <div class="form-row form-check form-check-end">
+                            <input type="checkbox" id="form-zone_1_check_3"/>
+                            <label for="form-zone_1_check_3">.form-row.form-check.form-check-end</label>
+                        </div>
+                        <div class="form-row form-check">
+                            <input type="radio" id="form-zone_1_radio_1" name="radio_1" value="radio_1" checked/>
+                            <label for="form-zone_1_radio_1">.form-row.form-check : Radio 1</label>
+                        </div>
+                        <div class="form-row form-check">
+                            <input type="radio" id="form-zone_1_radio_2" name="radio_1" value="radio_2"/>
+                            <label for="form-zone_1_radio_2">.form-row.form-check : Radio 2</label>
+                        </div>
+                        <div class="form-row form-check">
+                            <input type="radio" id="form-zone_1_radio_3" name="radio_1" value="radio_3"/>
+                            <label for="form-zone_1_radio_3">.form-row.form-check : Radio 3</label>
+                        </div>
+                        <div class="form-submit">
+                            <a href="#" class="btn btn-red">Annuler</a>
+                            <a href="#" class="btn btn-green">
+                                <i class="fas fa-check"></i>
+                                Envoyer
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div>
+            <h2 class="mt-5">Tableau</h2>
+            <table>
+                <thead>
+                <tr>
+                    {% for j in 1..5 %}
+                        <td>Header #{{ j }}</td>
+                    {% endfor %}
+                </tr>
+                </thead>
+                <tbody>
+                {% for i in 1..4 %}
+                    <tr>
+                        {% for j in 1..5 %}
+                            <td>Value #({{ i }},{{ j }})</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+{#        <div>#}
+{#            <h2 class="mt-5">Icones (svg)</h2>#}
+{#            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); grid-gap: 30px 20px">#}
+{#                {% for i in icons %}#}
+{#                    <div class="vstack stack-vcenter">#}
+{#                        {{ icon(i, 32) }}#}
+{#                        <small class="text-muted mt-2 text-center">{{ i }}</small>#}
+{#                    </div>#}
+
+{#                {% endfor %}#}
+{#            </div>#}
+{#            <h3 class="mt-4">.icon-circle</h3>#}
+{#            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(128px, 1fr)); grid-gap: 30px 20px">#}
+{#                {% for i in colors %}#}
+{#                    <div class="vstack stack-vcenter">#}
+{#                        <div class="icon-circle icon-circle-{{- i }}">#}
+{#                            {{ icon(icons[loop.index+4]) }}#}
+{#                        </div>#}
+{#                        <small class="text-muted mt-2 text-center">&.icon-circle-{{- i }}</small>#}
+{#                    </div>#}
+{#                {% endfor %}#}
+{#            </div>#}
+{#            {% for s in [128,64,48,32,24] %}#}
+{#                <h4 class="mt-4">.icon-circle-{{ s }}</h4>#}
+{#                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(128px, 1fr)); grid-gap: 30px 20px">#}
+{#                    {% for i in 0..3 %}#}
+{#                        <div class="vstack stack-vcenter">#}
+{#                            <div class="icon-circle icon-circle-{{- s }} icon-circle-{{- colors[(i+(loop.parent.loop.index-1)*4)%(colors|length)] }}">#}
+{#                                {{ icon(icons[(i+(loop.parent.loop.index-1)*4)%(icons|length)]) }}#}
+{#                            </div>#}
+{#                            <small class="text-muted mt-2 text-center">&.icon-circle-{{- s }}</small>#}
+{#                        </div>#}
+{#                    {% endfor %}#}
+{#                </div>#}
+{#            {% endfor %}#}
+{#        </div>#}
+        <div>
+            <h2 class="mt-5">Stack</h2>
+            <h3>.hstack</h3>
+            <div class="hstack">
+                {% for i in 0..10 %}
+                    <div style="width: 100px; height: 100px; background: var(--color-primary)"></div>
+                {% endfor %}
+
+                {% for i in 0..10 %}
+                    <div style="width: {{ i*10+10 }}px; height: {{ i*10+10 }}px; background: var(--color-primary)"></div>
+                {% endfor %}
+            </div>
+            <h4>.stack-vcenter</h4>
+            <div class="hstack stack-vcenter">
+                {% for i in 0..10 %}
+                    <div style="width: {{ i*10+10 }}px; height: {{ i*10+10 }}px; background: var(--color-primary)"></div>
+                {% endfor %}
+            </div>
+            {% for c in ["start","end", "center"] %}
+                <h4>.stack-{{ c }}</h4>
+                <div class="hstack stack-{{ c }}">
+                    {% for i in 1..3 %}
+                        <div style="width: 100px; height: 100px; background: var(--color-primary)"></div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+            <h3>.vstack</h3>
+            <div class="vstack">
+                {% for i in 0..2 %}
+                    <div style="width: 100%; height: 100px; background: var(--color-primary)"></div>
+                {% endfor %}
+            </div>
+            <h4>.stack-vcenter</h4>
+            <div class="vstack stack-vcenter">
+                {% for i in 0..2 %}
+                    <div style="width: {{ i*10+10 }}px; height: {{ i*10+10 }}px; background: var(--color-primary)"></div>
+                {% endfor %}
+            </div>
+        </div>
+        <div>
+            <h2 class="mt-5">Grilles</h2>
+            {% for i in [2,3,4,5] %}
+                <h3>.grid{{ i }}</h3>
+                <div class="grid{{ i }}">
+                    {% for i in 0..(i*2 -1 ) %}
+                        <div style="width: 100%; height: 50px; background: var(--color-primary)"></div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+            <h3>.grid-rfull | .grid-cspan</h3>
+            <div class="grid5">
+                <div style="width: 100%; height: 50px; background: var(--color-primary)" class="grid-rfull">
+                    .grid-rfull
+                </div>
+                <div style="width: 100%; height: 50px; background: var(--color-primary)" class="grid-cspan-3">
+                    .grid-cspan-3
+                </div>
+                {% for i in 0..6 %}
+                    <div style="width: 100%; height: 50px; background: var(--color-primary)"></div>
+                {% endfor %}
+            </div>
+        </div>
+        <div>
+            <h2 class="mt-5">Images</h2>
+            <div class="grid5">
+                {% for i in images %}
+                    <div class="vstack">
+                        <img src="{{ i }}" alt="{{ i }}"
+                             style="width: 100%; max-height: 90px;object-fit: contain">
+                        <small class="text-muted text-center">{{ i }}</small>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="content content-center" style="flex-grow: 0">
+        <h2 class="text-left mt-10">Content</h2>
+        <h3 class="text-left">.content.content-center</h3>
+    </div>
+    <div class="content content-center" style="background: var(--color-primary) ;flex-grow: 0; height: 100px"></div>
+    <div class="content content-center" style="flex-grow: 0">
+        <h2 class="text-left mt-10">Content</h2>
+        <h3 class="text-left">.content.content.content-four</h3>
+    </div>
+    <div class="content content-four"
+         style="background: var(--color-primary) ;flex-grow: 0; height: 100px; padding: 20px 0">
+        <div style="background: var(--color-secondary) ;flex-grow: 0; height: 100px"></div>
+        <div style="background: var(--color-secondary) ;flex-grow: 0; height: 100px"></div>
+    </div>
+{% endblock %}
