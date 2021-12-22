@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Domain\Guild\Entity;
 
 use App\Domain\Section\Entity\Section;
@@ -14,7 +16,7 @@ use JetBrains\PhpStorm\Pure;
 #[Entity]
 class GuildSettings
 {
-    #[Id, Column(name: "GuildId", type: 'string', length: 25)]
+    #[Id, Column(name: 'GuildId', type: 'string', length: 25)]
     private string $serverId;
 
     #[Column(type: 'string', length: 25, nullable: true)]
@@ -24,18 +26,23 @@ class GuildSettings
     private ?string $sectionMessageId;
 
     #[Column(type: 'string', length: 25, nullable: true)]
-    private ?string $workChannelId;
+    private ?string $workAnnounceChannelId;
+
+    #[Column(type: 'string', length: 25, nullable: true)]
+    private ?string $workRecallChannelId;
 
     /** @var Collection<Section> */
-    #[OneToMany(mappedBy: "guildSettings", targetEntity: Section::class, cascade: ["persist"])]
+    #[OneToMany(mappedBy: 'guildSettings', targetEntity: Section::class, cascade: ['persist'])]
     private Collection $sections;
 
-    #[Pure] public function __construct(string $serverId)
+    #[Pure]
+    public function __construct(string $serverId)
     {
         $this->serverId = $serverId;
         $this->announceChannelId = null;
         $this->sectionMessageId = null;
-        $this->workChannelId = null;
+        $this->workAnnounceChannelId = null;
+        $this->workRecallChannelId = null;
         $this->sections = new ArrayCollection();
     }
 
@@ -68,14 +75,14 @@ class GuildSettings
         return $this;
     }
 
-    public function getWorkChannelId(): ?string
+    public function getWorkAnnounceChannelId(): ?string
     {
-        return $this->workChannelId;
+        return $this->workAnnounceChannelId;
     }
 
-    public function setWorkChannelId(?string $workChannelId): self
+    public function setWorkAnnounceChannelId(?string $workAnnounceChannelId): self
     {
-        $this->workChannelId = $workChannelId;
+        $this->workAnnounceChannelId = $workAnnounceChannelId;
 
         return $this;
     }
@@ -87,18 +94,31 @@ class GuildSettings
 
     public function addSection(Section $section): self
     {
-        if (!$this->sections->contains($section))
+        if (!$this->sections->contains($section)) {
             $this->sections->add($section);
+        }
 
         return $this;
     }
 
     public function removeSection(Section $section): self
     {
-        if ($this->sections->contains($section))
+        if ($this->sections->contains($section)) {
             $this->sections->removeElement($section);
+        }
 
         return $this;
     }
 
+    public function getWorkRecallChannelId(): ?string
+    {
+        return $this->workRecallChannelId;
+    }
+
+    public function setWorkRecallChannelId(?string $workRecallChannelId): self
+    {
+        $this->workRecallChannelId = $workRecallChannelId;
+
+        return $this;
+    }
 }
