@@ -34,14 +34,13 @@ class Work
     #[Column(type: 'datetime')]
     protected DateTime $dueDate;
 
-    #[Column(type: 'string', length: 25)]
-    protected string $categoryId;
-
-    #[Column(type: 'string', length: 25)]
-    protected GuildSettings $guild;
-
     #[ManyToOne(targetEntity: GuildSettings::class)]
     #[JoinColumn(name: 'server_id', referencedColumnName: 'GuildId')]
+    protected GuildSettings $guild;
+
+
+    #[ManyToOne(targetEntity: WorkCategory::class, inversedBy: "works")]
+    #[JoinColumn(name: 'work_category_id')]
     private WorkCategory $work_category;
 
     public function __construct()
@@ -95,17 +94,6 @@ class Work
         return $this;
     }
 
-    public function getCategoryId(): string
-    {
-        return $this->categoryId;
-    }
-
-    public function setCategoryId(string $categoryId): self
-    {
-        $this->categoryId = $categoryId;
-
-        return $this;
-    }
 
     public function getWorkCategory(): WorkCategory
     {
