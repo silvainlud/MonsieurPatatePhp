@@ -20,14 +20,12 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/config/')]
 class ConfigurationController extends AbstractController
 {
-    public const QUERY_HIDDEN_CATEGORIES = "display_hidden_categories";
-
+    public const QUERY_HIDDEN_CATEGORIES = 'display_hidden_categories';
 
     public function __construct(
-        private IParameterService      $parameterService,
+        private IParameterService $parameterService,
         private EntityManagerInterface $em
-    )
-    {
+    ) {
     }
 
     #[Route('', name: 'config')]
@@ -38,11 +36,11 @@ class ConfigurationController extends AbstractController
             $guildSettings = new GuildSettings($this->parameterService->getGuildId());
         }
 
-
-        if ((bool)$request->query->get(self::QUERY_HIDDEN_CATEGORIES, null) === true)
+        if ((bool) $request->query->get(self::QUERY_HIDDEN_CATEGORIES, null) === true) {
             $categories = $this->em->getRepository(WorkCategory::class)->findBy([], ['name' => 'asc']);
-        else
-            $categories = $this->em->getRepository(WorkCategory::class)->findBy(["active" => true], ['name' => 'asc']);
+        } else {
+            $categories = $this->em->getRepository(WorkCategory::class)->findBy(['active' => true], ['name' => 'asc']);
+        }
 
         $form = $this->createForm(GuildSettingsType::class, $guildSettings);
         $form->handleRequest($request);
@@ -55,17 +53,17 @@ class ConfigurationController extends AbstractController
 
         return $this->render('config/workChannel.html.twig', [
             'form' => $form->createView(),
-            "categories" => $categories,
+            'categories' => $categories,
         ]);
     }
 
-    #[Route("work-category/add", name: "work_category_add")]
-    #[Route("work-category/edit/{category}", name: "work_category_edit")]
+    #[Route('work-category/add', name: 'work_category_add')]
+    #[Route('work-category/edit/{category}', name: 'work_category_edit')]
     public function modifyWorkCategory(Request $request, ?WorkCategory $category = null): Response
     {
-
-        if ($category === null)
+        if ($category === null) {
             $category = new WorkCategory();
+        }
         $form = $this->createForm(WorkCategoryType::class, $category);
 
         $form->handleRequest($request);
@@ -73,12 +71,11 @@ class ConfigurationController extends AbstractController
             $this->em->persist($category);
             $this->em->flush();
 
-            return $this->redirectToRoute("config");
+            return $this->redirectToRoute('config');
         }
 
-        return $this->render("config/work_category/form.html.twig", [
-            "form" => $form->createView(),
+        return $this->render('config/work_category/form.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
-
 }

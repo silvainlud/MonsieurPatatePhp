@@ -7,6 +7,7 @@
     "php": ">=8.0",
     "ext-ctype": "*",
     "ext-iconv": "*",
+    "ext-pdo": "*",
     "composer/package-versions-deprecated": "1.11.99.4",
     "doctrine/annotations": "^1.0",
     "doctrine/doctrine-bundle": "^2.4",
@@ -14,7 +15,7 @@
     "doctrine/orm": "^2.9",
     "knpuniversity/oauth2-client-bundle": "^2.9",
     "phpdocumentor/reflection-docblock": "^5.2",
-    "sensio/framework-extra-bundle": "^6.1",
+    "sensio/framework-extra-bundle": "^6.2",
     "symfony/asset": "6.0.*",
     "symfony/console": "6.0.*",
     "symfony/dotenv": "6.0.*",
@@ -44,8 +45,7 @@
     "symfony/yaml": "6.0.*",
     "twig/extra-bundle": "^2.12|^3.0",
     "twig/twig": "^2.12|^3.0",
-    "wohali/oauth2-discord-new": "^1.1",
-    "ext-pdo": "*"
+    "wohali/oauth2-discord-new": "^1.1"
   },
   "require-dev": {
     "doctrine/deprecations": "^0.5.3",

@@ -26,7 +26,7 @@ class WorkCategory
     #[NotBlank, Length(max: 25)]
     protected string $name;
 
-    #[Column(name: "active", type: "boolean", options: ["default" => true])]
+    #[Column(name: 'active', type: 'boolean', options: ['default' => true])]
     protected bool $active;
 
     #[OneToMany(mappedBy: 'work_category', targetEntity: Work::class)]
@@ -73,18 +73,19 @@ class WorkCategory
 
     public function addWork(Work $work): self
     {
-        if (!$this->works->contains($work))
+        if (!$this->works->contains($work)) {
             $this->works->add($work);
+        }
 
         return $this;
     }
 
     public function removeWork(Work $work): self
     {
-        if ($this->works->contains($work))
+        if ($this->works->contains($work)) {
             $this->works->removeElement($work);
+        }
 
         return $this;
     }
-
 }

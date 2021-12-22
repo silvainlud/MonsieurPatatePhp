@@ -115,7 +115,7 @@ class DiscordGuildService implements IDiscordGuildService
             foreach ($guildChannels as $c) {
                 $nc = $this->_getChannel($c);
                 if ($nc instanceof ICategoryChannelParent && $c->parent_id !== null) {
-                    $ps = array_filter($data, fn (AbstractDiscordChannel $o) => $o->getId() === (int)$c->parent_id);
+                    $ps = array_filter($data, fn (AbstractDiscordChannel $o) => $o->getId() === (int) $c->parent_id);
                     if (\count($ps) !== 0) {
                         $nc->setParent($ps[array_key_first($ps)]);
                     }

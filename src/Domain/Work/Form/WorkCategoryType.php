@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Domain\Work\Form;
 
 use App\Domain\Work\Entity\WorkCategory;
@@ -15,20 +17,20 @@ class WorkCategoryType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add("name", TextType::class, ["label" => "Nom de la catégorie", 'row_attr' => ["class" => "form-row"]])
-            ->add("active", CheckboxType::class, ["label" => "Activer la catégorie"])
-            ->add("submit", SubmitType::class, ["label" => "Sauvegarder"]);
+            ->add('name', TextType::class, ['label' => 'Nom de la catégorie', 'row_attr' => ['class' => 'form-row']])
+            ->add('active', CheckboxType::class, ['label' => 'Activer la catégorie'])
+            ->add('submit', SubmitType::class, ['label' => 'Sauvegarder']);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            "data_class" => WorkCategory::class,
+            'data_class' => WorkCategory::class,
         ]);
     }
 
     public function getBlockPrefix(): string
     {
-        return "work_category_form";
+        return 'work_category_form';
     }
 }

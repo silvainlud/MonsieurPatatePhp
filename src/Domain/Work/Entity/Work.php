@@ -38,8 +38,7 @@ class Work
     #[JoinColumn(name: 'server_id', referencedColumnName: 'GuildId')]
     protected GuildSettings $guild;
 
-
-    #[ManyToOne(targetEntity: WorkCategory::class, inversedBy: "works")]
+    #[ManyToOne(targetEntity: WorkCategory::class, inversedBy: 'works')]
     #[JoinColumn(name: 'work_category_id')]
     private WorkCategory $work_category;
 
@@ -93,7 +92,6 @@ class Work
 
         return $this;
     }
-
 
     public function getWorkCategory(): WorkCategory
     {
