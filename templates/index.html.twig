@@ -35,10 +35,10 @@
                     <div class="card-body">
                         <div class="hstack stack-vcenter stack-nowrap">
                             <h3>{{ i.title }}</h3>
-                            <span class="text-muted">{{ i.location }}</span>
                             <div class="stack-spacer"></div>
                             <span><i class="fa fa-calendar-alt mr-2"></i> {{ i.dateStart|format_datetime(pattern="EEE d MMM HH'h'mm",locale='fr') }} - {{ i.dateEnd|format_datetime(pattern="HH'h'mm",locale='fr') }}</span>
                         </div>
+                        <p class="text-muted">{{ i.location }} - {{ i.teacher }}</p>
                         <div class="text-justify mt-4">
                             {{ i.description|nl2br }}
                         </div>
