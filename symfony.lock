@@ -124,6 +124,9 @@
     "jetbrains/phpstorm-attributes": {
         "version": "1.0"
     },
+    "johngrogg/ics-parser": {
+        "version": "v3.0.0"
+    },
     "knpuniversity/oauth2-client-bundle": {
         "version": "2.9",
         "recipe": {

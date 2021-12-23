@@ -13,6 +13,7 @@
     "doctrine/doctrine-bundle": "^2.4",
     "doctrine/doctrine-migrations-bundle": "^3.2",
     "doctrine/orm": "^2.9",
+    "johngrogg/ics-parser": "^3.0",
     "knpuniversity/oauth2-client-bundle": "^2.9",
     "league/commonmark": "^2.1",
     "phpdocumentor/reflection-docblock": "^5.2",
@@ -48,7 +49,8 @@
     "twig/intl-extra": "^3.3",
     "twig/markdown-extra": "^3.3",
     "twig/twig": "^2.12|^3.0",
-    "wohali/oauth2-discord-new": "^1.1"
+    "wohali/oauth2-discord-new": "^1.1",
+    "ext-curl": "*"
   },
   "require-dev": {
     "doctrine/deprecations": "^0.5.3",
