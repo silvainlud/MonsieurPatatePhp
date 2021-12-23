@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <div class="grid2">
+        <div class="vstack">
+            <div class="hstack stack-vcenter px-2">
+                <h2><i class="fas fa-briefcase"></i> Devoirs</h2>
+                <div class="stack-spacer"></div>
+                <a href="{{ path('work_add') }}" class="btn btn-small">Ajouter</a>
+            </div>
+            {% for w in works %}
+                <div class="card">
+                    <div class="card-body">
+                        <div class="hstack stack-vcenter">
+                            <h3><a href="{{ path('work_edit', {'id': w.id}) }}">{{ w.name }}</a></h3>
+                            <span class="text-muted">{{ w.workCategory.name }}</span>
+                            <div class="stack-spacer"></div>
+                            <span><i class="fa fa-calendar-alt mr-2"></i> {{ w.creationDate|format_datetime(pattern="d MMM hh'h'mm",locale='fr') }}</span>
+                        </div>
+                        <div class="text-justify">
+                            {{ w.description|markdown_to_html }}
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <p class="text-center">Pas de devoirs :(</p>
+            {% endfor %}
+        </div>
+        <div class="vstack">
+            <div class="hstack stack-vcenter px-2">
+                <h2><i class="fas fa-business-time"></i> Planification</h2>
+                <div class="stack-spacer"></div>
+                <a href="{{ path('work_add') }}" class="btn btn-small">Ajouter</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
