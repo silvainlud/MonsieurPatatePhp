@@ -23,7 +23,7 @@ services:
 
   app_infrastructure:
     namespace: App\
-    resource: '%kernel.project_dir%/src/{Infrastructure,Domain}/*/{Message,Subscriber,Twig,Command,Voter,Form}/*'
+    resource: '%kernel.project_dir%/src/{Infrastructure,Domain}/*/{Message,Subscriber,Twig,Command,Voter,Form,Repository}/*'
 
   App\Infrastructure\ViteAsset\ViteAssetExtension:
     arguments:

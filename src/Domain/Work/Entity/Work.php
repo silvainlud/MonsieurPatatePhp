@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Work\Entity;
 
 use App\Domain\Guild\Entity\GuildSettings;
+use App\Domain\Work\Repository\WorkRepository;
 use DateTime;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\CustomIdGenerator;
@@ -15,7 +16,7 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
-#[Entity]
+#[Entity(repositoryClass: WorkRepository::class)]
 class Work
 {
     #[Id, GeneratedValue(strategy: 'CUSTOM'), CustomIdGenerator(class: UuidGenerator::class)]
