@@ -7,4 +7,6 @@ namespace App\Infrastructure\Parameter;
 interface IParameterService
 {
     public function getGuildId(): string;
+
+    public function getPlanningWebSite(): string;
 }

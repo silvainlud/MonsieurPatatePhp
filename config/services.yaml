@@ -38,6 +38,7 @@ services:
     class: App\Infrastructure\Parameter\ParameterService
     arguments:
       $guildId: '%env(DISCORD_BOT_GUILD)%'
+      $planningWebSite: '%env(APP_CALENDAR_SITE_URL)%'
 
 
   App\Infrastructure\Discord\DiscordUserService: ~

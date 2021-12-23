@@ -31,6 +31,10 @@
             <div class="menu-item_icon"><i class="fas fa-plus"></i></div>
             <div class="menu-item_content">Ajouter un devoir</div>
         </a>
+        <a class="menu-item" href="{{ path('planning_index') }}" target="_blank">
+            <div class="menu-item_icon"><i class="fas fa-calendar-alt"></i></div>
+            <div class="menu-item_content">Emplois du temps</div>
+        </a>
         {% if is_granted("ROLE_ADMIN_DISCORD") %}
             <a class="menu-item" href="{{ path('config') }}">
                 <div class="menu-item_icon"><i class="fas fa-cogs"></i></div>
