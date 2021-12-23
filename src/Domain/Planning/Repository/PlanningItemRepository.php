@@ -15,12 +15,22 @@ class PlanningItemRepository extends ServiceEntityRepository
     }
 
     /** @return PlanningItem[] */
-    public function findByUuidNotIn(array $uuids) : array
+    public function findByUuidNotIn(array $uuids): array
     {
         $qd = $this->createQueryBuilder("i");
         $qd->andWhere($qd->expr()->not($qd->expr()->in("i.id", ":uuids")))
             ->setParameter("uuids", $uuids);
 
         return $qd->getQuery()->getResult();
+    }
+
+    /** @return PlanningItem[] */
+    public function findFuture(int $limit = 20): array
+    {
+        return $this->createQueryBuilder("i")
+            ->andWhere("i.dateStart > :now")->setParameter("now", new \DateTime())
+            ->addOrderBy("i.dateStart", "ASC")
+            ->addOrderBy("i.dateEnd", "ASC")
+            ->setMaxResults($limit)->getQuery()->getResult();
     }
 }

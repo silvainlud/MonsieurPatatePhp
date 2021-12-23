@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
-    <div class="grid2">
+    <div class="grid2" style="grid-gap: 30px">
         <div class="vstack">
             <div class="hstack stack-vcenter px-2">
                 <h2><i class="fas fa-briefcase"></i> Devoirs</h2>
@@ -15,7 +15,7 @@
                             <h3><a href="{{ path('work_edit', {'id': w.id}) }}">{{ w.name }}</a></h3>
                             <span class="text-muted">{{ w.workCategory.name }}</span>
                             <div class="stack-spacer"></div>
-                            <span><i class="fa fa-calendar-alt mr-2"></i> {{ w.creationDate|format_datetime(pattern="d MMM hh'h'mm",locale='fr') }}</span>
+                            <span><i class="fa fa-calendar-alt mr-2"></i> {{ w.creationDate|format_datetime(pattern="EEE d MMM HH'h'mm",locale='fr') }}</span>
                         </div>
                         <div class="text-justify">
                             {{ w.description|markdown_to_html }}
@@ -28,10 +28,23 @@
         </div>
         <div class="vstack">
             <div class="hstack stack-vcenter px-2">
-                <h2><i class="fas fa-business-time"></i> Planification</h2>
-                <div class="stack-spacer"></div>
-                <a href="{{ path('work_add') }}" class="btn btn-small">Ajouter</a>
+                <h2><i class="fas fa-business-time"></i> Emploi du temps</h2>
             </div>
+            {% for i in items %}
+                <div class="card mb-5">
+                    <div class="card-body">
+                        <div class="hstack stack-vcenter stack-nowrap">
+                            <h3>{{ i.title }}</h3>
+                            <span class="text-muted">{{ i.location }}</span>
+                            <div class="stack-spacer"></div>
+                            <span><i class="fa fa-calendar-alt mr-2"></i> {{ i.dateStart|format_datetime(pattern="EEE d MMM HH'h'mm",locale='fr') }} - {{ i.dateEnd|format_datetime(pattern="HH'h'mm",locale='fr') }}</span>
+                        </div>
+                        <div class="text-justify mt-4">
+                            {{ i.description|nl2br }}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
         </div>
     </div>
 {% endblock %}

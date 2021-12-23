@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Main\Controller;
 
 use App\Domain\Planning\IPlanningConverterService;
+use App\Domain\Planning\Repository\PlanningItemRepository;
 use App\Domain\Work\Entity\WorkCategory;
 use App\Domain\Work\Repository\WorkRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class IndexController extends AbstractController
 {
 
-    public function __construct(private WorkRepository $workRepository, private IPlanningConverterService $converterService)
+    public function __construct(private WorkRepository $workRepository, private PlanningItemRepository $planningItemRepository)
     {
     }
 
@@ -22,11 +23,11 @@ class IndexController extends AbstractController
     public function Index(): Response
     {
         $works = $this->workRepository->findCurrentWork();
-
-        $this->converterService->reload();
+        $items = $this->planningItemRepository->findFuture();
 
         return $this->render('index.html.twig', [
             "works" => $works,
+            "items" => $items,
         ]);
     }
 
