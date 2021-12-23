@@ -26,7 +26,7 @@ class Work
     #[Column(type: 'string', length: 25)]
     protected string $name;
 
-    #[Column(type: 'string')]
+    #[Column(type: 'text')]
     protected string $description;
 
     #[Column(type: 'datetime')]
