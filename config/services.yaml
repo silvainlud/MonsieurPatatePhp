@@ -46,8 +46,8 @@ services:
   App\Infrastructure\Discord\IDiscordGuildService:
     class: App\Infrastructure\Discord\DiscordGuildService
 
-  App\Domain\Planning\IPlanningConverterService:
-    class: App\Domain\Planning\PlanningConverterService
+  App\Domain\Planning\IPlanningSynchronizeService:
+    class: App\Domain\Planning\PlanningSynchronizeService
     arguments:
       $calendarUrl: '%env(APP_CALENDAR_URL)%'
 
