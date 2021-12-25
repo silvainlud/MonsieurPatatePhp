@@ -42,6 +42,9 @@ class Work
     #[Column(type: 'string', length: 40, nullable: true)]
     protected ?string $messageId;
 
+    #[Column(type: 'datetime', nullable: true)]
+    protected ?DateTime $recallDate;
+
     #[ManyToOne(targetEntity: WorkCategory::class, inversedBy: 'works')]
     #[JoinColumn(name: 'work_category_id')]
     private WorkCategory $work_category;
@@ -49,6 +52,7 @@ class Work
     public function __construct()
     {
         $this->creationDate = new DateTime();
+        $this->recallDate = null;
         $this->messageId = null;
     }
 
@@ -130,6 +134,18 @@ class Work
     public function setMessageId(?string $messageId): self
     {
         $this->messageId = $messageId;
+
+        return $this;
+    }
+
+    public function getRecallDate(): ?DateTime
+    {
+        return $this->recallDate;
+    }
+
+    public function setRecallDate(?DateTime $recallDate): self
+    {
+        $this->recallDate = $recallDate;
 
         return $this;
     }
