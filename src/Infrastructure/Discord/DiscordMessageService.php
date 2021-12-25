@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Discord;
 
+use DateTime;
+use DateTimeInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -12,23 +14,31 @@ class DiscordMessageService implements IDiscordMessageService
 {
     public function __construct(
         private HttpClientInterface $discordClient,
-    ) {
+    )
+    {
     }
 
     public function sendEmbeds(
-        string $channelId,
-        ?string $title = null,
-        ?string $description = null,
-        string $authorName = 'Monsieur Patate',
-        ?string $authorUrl = 'https://silvain.eu',
-        ?string $authorIconUrl = 'https://silvain.eu/favicon_256.png',
-        bool $retry = true
-    ): string|false {
+        string    $channelId,
+        ?string   $title = null,
+        ?string   $description = null,
+        string    $authorName = 'Monsieur Patate',
+        ?string   $authorUrl = 'https://silvain.eu',
+        ?string   $authorIconUrl = 'https://silvain.eu/favicon_256.png',
+        ?DateTime $timestamp = null,
+        ?string   $footerText = null,
+        bool      $retry = true
+    ): string|false
+    {
         return $this->send($channelId, [
             'embeds' => [
                 [
                     'title' => $title,
                     'description' => $description,
+                    "timestamp" => $timestamp?->format(DateTimeInterface::W3C),
+                    "footer" => [
+                        "text" => $footerText
+                    ],
                     'author' => [
                         'name' => $authorName,
                         'url' => $authorUrl,
@@ -36,7 +46,7 @@ class DiscordMessageService implements IDiscordMessageService
                     ],
                 ],
             ],
-        ]);
+        ], $retry);
     }
 
     public function send(string $channelId, array $options, bool $retry = true): string|false
@@ -47,7 +57,7 @@ class DiscordMessageService implements IDiscordMessageService
             return $res->id;
         }
         if ($res->message === 'You are being rate limited.' && $retry && property_exists($res, 'retry_after')) {
-            sleep((int) round((int) $res->retry_after / 1000 + 1, mode: \PHP_ROUND_HALF_UP));
+            sleep((int)round((int)$res->retry_after / 1000 + 1, mode: \PHP_ROUND_HALF_UP));
 
             return $this->send($channelId, $options, false);
         }
