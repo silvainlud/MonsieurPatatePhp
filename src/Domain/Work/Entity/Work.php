@@ -39,12 +39,12 @@ class Work
     #[JoinColumn(name: 'server_id', referencedColumnName: 'GuildId')]
     protected GuildSettings $guild;
 
+    #[Column(type: 'string', length: 40, nullable: true)]
+    protected ?string $messageId;
+
     #[ManyToOne(targetEntity: WorkCategory::class, inversedBy: 'works')]
     #[JoinColumn(name: 'work_category_id')]
     private WorkCategory $work_category;
-
-    #[Column(type: 'string', length: 40, nullable: true)]
-    protected ?string $messageId;
 
     public function __construct()
     {

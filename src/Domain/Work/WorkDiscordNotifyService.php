@@ -16,15 +16,13 @@ class WorkDiscordNotifyService implements IWorkDiscordNotifyService
     public function __construct(
         private IDiscordMessageService $messageService,
         private EntityManagerInterface $em,
-        private IDiscordGuildService   $guildService,
-        private IParameterService      $parameterService
-    )
-    {
+        private IDiscordGuildService $guildService,
+        private IParameterService $parameterService
+    ) {
     }
 
     public function notifyAdd(Work $work): void
     {
-
         /** @var ?GuildSettings $guildSettings */
         $guildSettings = $this->em->getRepository(GuildSettings::class)->find($this->parameterService->getGuildId());
 
@@ -99,8 +97,9 @@ class WorkDiscordNotifyService implements IWorkDiscordNotifyService
                 $this->notifyRemove($work);
                 $this->notifyAdd($work);
             }
-        } else
+        } else {
             $this->notifyAdd($work);
+        }
     }
 
     public function notifyRemove(Work $work): void

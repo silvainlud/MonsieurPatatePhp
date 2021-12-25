@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Domain\Work\Subscriber;
 
 use App\Domain\Work\Event\WorkEvent;
@@ -15,9 +17,9 @@ class WorkNotifySubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            WorkEvent::PRE_ADD => "postAdd",
-            WorkEvent::POST_EDIT => "postEdit",
-            WorkEvent::POST_REMOVE => "postRemove",
+            WorkEvent::PRE_ADD => 'postAdd',
+            WorkEvent::POST_EDIT => 'postEdit',
+            WorkEvent::POST_REMOVE => 'postRemove',
         ];
     }
 

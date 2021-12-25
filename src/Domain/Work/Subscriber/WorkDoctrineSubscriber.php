@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Domain\Work\Subscriber;
 
 use App\Domain\Work\Entity\Work;
@@ -11,7 +13,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class WorkDoctrineSubscriber implements EventSubscriberInterface
 {
-
     public function __construct(private EventDispatcherInterface $dispatcher)
     {
     }
@@ -77,5 +78,4 @@ class WorkDoctrineSubscriber implements EventSubscriberInterface
             $this->dispatcher->dispatch(new WorkEvent($entity), WorkEvent::POST_REMOVE);
         }
     }
-
 }
