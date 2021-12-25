@@ -23,7 +23,7 @@ class DiscordMessageService implements IDiscordMessageService
         ?string $authorUrl = 'https://silvain.eu',
         ?string $authorIconUrl = 'https://silvain.eu/favicon_256.png',
         bool $retry = true
-    ): bool {
+    ): string|false {
         return $this->send($channelId, [
             'embeds' => [
                 [
@@ -39,14 +39,13 @@ class DiscordMessageService implements IDiscordMessageService
         ]);
     }
 
-    public function send(string $channelId, array $options, bool $retry = true): bool
+    public function send(string $channelId, array $options, bool $retry = true): string|false
     {
         $resp = $this->discordClient->request(Request::METHOD_POST, 'channels/' . $channelId . '/messages', ['json' => $options]);
-
-        if ($resp->getStatusCode() === Response::HTTP_OK) {
-            return true;
-        }
         $res = json_decode($resp->getContent(false));
+        if ($resp->getStatusCode() === Response::HTTP_OK) {
+            return $res->id;
+        }
         if ($res->message === 'You are being rate limited.' && $retry && property_exists($res, 'retry_after')) {
             sleep((int) round((int) $res->retry_after / 1000 + 1, mode: \PHP_ROUND_HALF_UP));
 

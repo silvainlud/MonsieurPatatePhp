@@ -14,7 +14,7 @@ interface IDiscordMessageService
         ?string $authorUrl = 'https://silvain.eu',
         ?string $authorIconUrl = 'https://silvain.eu/favicon_256.png',
         bool $retry = true
-    ): bool;
+    ): string|false;
 
-    public function send(string $channelId, array $options, bool $retry = true): bool;
+    public function send(string $channelId, array $options, bool $retry = true): string|false;
 }
