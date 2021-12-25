@@ -41,5 +41,7 @@ interface IDiscordMessageService
 
     public function edit(string $channelId, string $messageId, array $options, bool $retry = true): bool;
 
+    public function remove(string $channelId, string $messageId, bool $retry = true): bool;
+
     public function isMessageExist(string $channelId, string $messageId): bool;
 }
