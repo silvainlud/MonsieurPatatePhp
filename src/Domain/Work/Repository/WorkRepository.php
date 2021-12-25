@@ -27,4 +27,18 @@ class WorkRepository extends ServiceEntityRepository
             ->addOrderBy('w.name', 'ASC')
             ->setParameter('now', new \DateTime())->getQuery()->getResult();
     }
+
+    /** @return Work[] */
+    public function findNeedRecallWork(): array
+    {
+        return $this->createQueryBuilder('w')
+            ->join('w.work_category', 'cat')->addSelect('cat')
+            ->andWhere('w.dueDate >= :now')
+            ->andWhere('w.recallDate <= :now')
+            ->andWhere('cat.active = :active')
+            ->setParameter('active', true)
+            ->orderBy('w.dueDate', 'ASC')
+            ->addOrderBy('w.name', 'ASC')
+            ->setParameter('now', new \DateTime())->getQuery()->getResult();
+    }
 }
