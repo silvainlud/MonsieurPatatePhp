@@ -21,9 +21,9 @@ class DiscordMessageService implements IDiscordMessageService
         string $channelId,
         ?string $title = null,
         ?string $description = null,
-        string $authorName = 'Monsieur Patate',
-        ?string $authorUrl = 'https://silvain.eu',
-        ?string $authorIconUrl = 'https://silvain.eu/favicon_256.png',
+        string $authorName = IDiscordMessageService::DEFAULT_AUTHOR_NAME,
+        ?string $authorUrl = IDiscordMessageService::DEFAULT_AUTHOR_URL,
+        ?string $authorIconUrl = IDiscordMessageService::DEFAULT_AUTHOR_ICON_URL,
         ?DateTime $timestamp = null,
         ?string $footerText = null,
         bool $retry = true

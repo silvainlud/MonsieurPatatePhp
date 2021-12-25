@@ -10,7 +10,7 @@ interface IDiscordMessageService
 {
     const DEFAULT_AUTHOR_NAME = 'Monsieur Patate';
     const DEFAULT_AUTHOR_URL = 'https://silvain.eu';
-    const DEFAULT_AUTHOR_ICON_URL = 'https://silvain.eu/favicon_256.png';
+    const DEFAULT_AUTHOR_ICON_URL = 'https://upload.wikimedia.org/wikipedia/commons/2/21/Logoulcofondbleuclair.jpg?uselang=fr';
 
     public function sendEmbeds(
         string $channelId,
