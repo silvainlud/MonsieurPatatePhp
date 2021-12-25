@@ -61,3 +61,6 @@ services:
 
   App\Domain\Work\IWorkDiscordNotifyService:
     class: App\Domain\Work\WorkDiscordNotifyService
+
+  App\Domain\Work\IWorkService:
+    class: App\Domain\Work\WorkService
