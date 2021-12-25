@@ -1,0 +1,58 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Infrastructure\Discord;
+
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
+
+class DiscordMessageService implements IDiscordMessageService
+{
+    public function __construct(
+        private HttpClientInterface $discordClient,
+    ) {
+    }
+
+    public function sendEmbeds(
+        string $channelId,
+        ?string $title = null,
+        ?string $description = null,
+        string $authorName = 'Monsieur Patate',
+        ?string $authorUrl = 'https://silvain.eu',
+        ?string $authorIconUrl = 'https://silvain.eu/favicon_256.png',
+        bool $retry = true
+    ): bool {
+        return $this->send($channelId, [
+            'embeds' => [
+                [
+                    'title' => $title,
+                    'description' => $description,
+                    'author' => [
+                        'name' => $authorName,
+                        'url' => $authorUrl,
+                        'icon_url' => $authorIconUrl,
+                    ],
+                ],
+            ],
+        ]);
+    }
+
+    public function send(string $channelId, array $options, bool $retry = true): bool
+    {
+        $resp = $this->discordClient->request(Request::METHOD_POST, 'channels/' . $channelId . '/messages', ['json' => $options]);
+
+        if ($resp->getStatusCode() === Response::HTTP_OK) {
+            return true;
+        }
+        $res = json_decode($resp->getContent(false));
+        if ($res->message === 'You are being rate limited.' && $retry && property_exists($res, 'retry_after')) {
+            sleep((int) round((int) $res->retry_after / 1000 + 1, mode: \PHP_ROUND_HALF_UP));
+
+            return $this->send($channelId, $options, false);
+        }
+
+        return false;
+    }
+}

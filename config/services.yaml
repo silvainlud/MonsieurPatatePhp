@@ -46,6 +46,9 @@ services:
   App\Infrastructure\Discord\IDiscordGuildService:
     class: App\Infrastructure\Discord\DiscordGuildService
 
+  App\Infrastructure\Discord\IDiscordMessageService:
+    class: App\Infrastructure\Discord\DiscordMessageService
+
   App\Domain\Planning\IPlanningSynchronizeService:
     class: App\Domain\Planning\PlanningSynchronizeService
     arguments:
