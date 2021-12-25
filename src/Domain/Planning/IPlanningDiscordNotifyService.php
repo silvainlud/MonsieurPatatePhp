@@ -6,5 +6,5 @@ use App\Domain\Planning\Entity\PlanningLog;
 
 interface IPlanningDiscordNotifyService
 {
-    public function notifyLogs();
+    public function notifyLogs() :void;
 }

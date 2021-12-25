@@ -126,15 +126,17 @@ class PlanningDiscordNotifyService implements IPlanningDiscordNotifyService
             $res = json_decode($resp->getContent(false));
             if ($res->message === "You are being rate limited.") {
                 if ($retry) {
-                    sleep(round((int)$res->retry_after / 1000 + 1, mode: PHP_ROUND_HALF_UP));
+                    sleep((int)round((int)$res->retry_after / 1000 + 1, mode: PHP_ROUND_HALF_UP));
                     $this->notify($log, false);
                 }
             }
         }
     }
 
-    private function formateDate(\DateTime $date): string
+    private function formateDate(?\DateTime $date): string
     {
+        if ($date === null)
+            return  "???";
         return (string)$this->intlExtension->formatDateTime($this->twig, $date, pattern: "eeee d MMM HH'h'mm", locale: 'fr');
     }
 }
