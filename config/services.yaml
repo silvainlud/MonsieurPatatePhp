@@ -51,3 +51,7 @@ services:
     arguments:
       $calendarUrl: '%env(APP_CALENDAR_URL)%'
 
+   App\Domain\Planning\IPlanningDiscordNotifyService:
+    class: 'App\Domain\Planning\PlanningDiscordNotifyService'
+    arguments:
+      $intlExtension: "@twig.extension.intl"
