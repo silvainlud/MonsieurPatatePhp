@@ -14,5 +14,5 @@ interface IWorkDiscordNotifyService
 
     public function notifyRemove(Work $work): void;
 
-    public function processRecall(): void;
+    public function processRecall(): array;
 }

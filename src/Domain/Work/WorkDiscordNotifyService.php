@@ -6,9 +6,11 @@ namespace App\Domain\Work;
 
 use App\Domain\Guild\Entity\GuildSettings;
 use App\Domain\Work\Entity\Work;
+use App\Domain\Work\Repository\WorkRepository;
 use App\Infrastructure\Discord\IDiscordGuildService;
 use App\Infrastructure\Discord\IDiscordMessageService;
 use App\Infrastructure\Parameter\IParameterService;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 
 class WorkDiscordNotifyService implements IWorkDiscordNotifyService
@@ -17,7 +19,9 @@ class WorkDiscordNotifyService implements IWorkDiscordNotifyService
         private IDiscordMessageService $messageService,
         private EntityManagerInterface $em,
         private IDiscordGuildService $guildService,
-        private IParameterService $parameterService
+        private WorkRepository $workRepository,
+        private IParameterService $parameterService,
+        private IWorkService $workService,
     ) {
     }
 
@@ -43,7 +47,6 @@ class WorkDiscordNotifyService implements IWorkDiscordNotifyService
                 $work->getDescription(),
                 "Ajout d'un devoir",
                 authorUrl: $this->guildService->getCurrentGuildIcon(),
-                authorIconUrl: $this->guildService->getCurrentGuildIcon(),
                 timestamp: $work->getDueDate(),
                 footerText: $work->getWorkCategory()->getName()
             );
@@ -52,11 +55,6 @@ class WorkDiscordNotifyService implements IWorkDiscordNotifyService
                 $work->setMessageId($messageId);
             }
         }
-    }
-
-    public function processRecall(): void
-    {
-        // TODO: Implement processRecall() method.
     }
 
     public function notifyEdit(Work $work): void
@@ -88,7 +86,6 @@ class WorkDiscordNotifyService implements IWorkDiscordNotifyService
                 $work->getDescription(),
                 "Ajout d'un devoir",
                 authorUrl: $this->guildService->getCurrentGuildIcon(),
-                authorIconUrl: $this->guildService->getCurrentGuildIcon(),
                 timestamp: $work->getDueDate(),
                 footerText: $work->getWorkCategory()->getName()
             );
@@ -119,5 +116,41 @@ class WorkDiscordNotifyService implements IWorkDiscordNotifyService
         if ($msgId !== null && $this->messageService->isMessageExist($channelId, $msgId)) {
             $this->messageService->remove($channelId, $channelId);
         }
+    }
+
+    public function processRecall(): array
+    {
+        /** @var ?GuildSettings $guildSettings */
+        $guildSettings = $this->em->getRepository(GuildSettings::class)->find($this->parameterService->getGuildId());
+        if ($guildSettings === null) {
+            return [];
+        }
+
+        $channelId = $guildSettings->getWorkRecallChannelId();
+        if ($channelId === null) {
+            return [];
+        }
+
+        $now = new DateTime();
+        $works = $this->workRepository->findNeedRecallWork();
+        foreach ($works as $work) {
+            if ($work->getRecallDate() <= $now && $work->getDueDate() >= $now) {
+                $value = $this->messageService->sendEmbeds(
+                    $channelId,
+                    ':bell: ' . $work->getWorkCategory()->getName() . ' : ' . $work->getName(),
+                    "[Cliquez ici](https://discord.com/channels/{$this->parameterService->getGuildId()}/{$guildSettings->getWorkAnnounceChannelId()}/{$work->getMessageId()})",
+                    'Rappel',
+                    authorUrl: $this->guildService->getCurrentGuildIcon(),
+                    timestamp: $work->getDueDate(),
+                    footerText: $work->getWorkCategory()->getName()
+                );
+                if ($value !== false) {
+                    $this->workService->calculateNextRecallDate($work);
+                }
+            }
+        }
+        $this->em->flush();
+
+        return $works;
     }
 }
