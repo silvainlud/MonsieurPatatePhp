@@ -26,6 +26,11 @@ help: ## Affiche cette aide
 dev: ## Lance le serveur de développement
 	$(dc) up -d
 
+
+.PHONY: cmd
+cmd: ## BASH dans le conteneur php
+	$(dc) exec php bash
+
 .PHONY: lint
 lint: vendor/autoload.php ## Analyse le code
 	$(dockerRun) ./vendor/bin/phpstan analyse  --memory-limit=-1
