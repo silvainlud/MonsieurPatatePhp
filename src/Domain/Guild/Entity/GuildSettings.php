@@ -29,6 +29,9 @@ class GuildSettings
     private ?string $workAnnounceChannelId;
 
     #[Column(type: 'string', length: 25, nullable: true)]
+    private ?string $planningNotifyChannelId;
+
+    #[Column(type: 'string', length: 25, nullable: true)]
     private ?string $workRecallChannelId;
 
     /** @var Collection<Section> */
@@ -43,6 +46,7 @@ class GuildSettings
         $this->sectionMessageId = null;
         $this->workAnnounceChannelId = null;
         $this->workRecallChannelId = null;
+        $this->planningNotifyChannelId = null;
         $this->sections = new ArrayCollection();
     }
 
@@ -118,6 +122,18 @@ class GuildSettings
     public function setWorkRecallChannelId(?string $workRecallChannelId): self
     {
         $this->workRecallChannelId = $workRecallChannelId;
+
+        return $this;
+    }
+
+    public function getPlanningNotifyChannelId(): ?string
+    {
+        return $this->planningNotifyChannelId;
+    }
+
+    public function setPlanningNotifyChannelId(?string $planningNotifyChannelId): self
+    {
+        $this->planningNotifyChannelId = $planningNotifyChannelId;
 
         return $this;
     }

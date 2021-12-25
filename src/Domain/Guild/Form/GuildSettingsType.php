@@ -43,6 +43,13 @@ class GuildSettingsType extends AbstractType
                 'label' => 'Salon de rappel des devoirs',
                 'attr' => ['class' => 'ts-select'],
             ])
+            ->add('planningNotifyChannelId', ChoiceType::class, [
+                'choice_loader' => new CallbackChoiceLoader(fn () => $this->_formatChannel($this->_getChannels())),
+                'choice_translation_domain' => false,
+                'translation_domain' => false,
+                'label' => 'Salon d\'alerte pour l\'ADE',
+                'attr' => ['class' => 'ts-select'],
+            ])
             ->add('announceChannelId', ChoiceType::class, [
                 'choices' => $this->_formatChannel($this->guildService->getChannels((int) $this->parameterService->getGuildId())),
                 'choice_translation_domain' => false,

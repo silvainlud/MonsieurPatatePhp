@@ -4,15 +4,13 @@ declare(strict_types=1);
 
 namespace App\Domain\Planning;
 
+use App\Domain\Guild\Entity\GuildSettings;
 use App\Domain\Planning\Entity\PlanningItem;
 use App\Domain\Planning\Entity\PlanningLog;
 use App\Infrastructure\Discord\IDiscordGuildService;
 use App\Infrastructure\Discord\IDiscordMessageService;
 use App\Infrastructure\Parameter\IParameterService;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Twig\Environment;
 use Twig\Extra\Intl\IntlExtension;
 
@@ -25,18 +23,28 @@ class PlanningDiscordNotifyService implements IPlanningDiscordNotifyService
     public const HEADER_LOCATION = ':map: Salle';
 
     public function __construct(
-        private IParameterService      $parameterService,
+        private IParameterService $parameterService,
         private EntityManagerInterface $em,
-        private IntlExtension          $intlExtension,
-        private IDiscordGuildService   $guildService,
+        private IntlExtension $intlExtension,
+        private IDiscordGuildService $guildService,
         private IDiscordMessageService $messageService,
-        private Environment            $twig
-    )
-    {
+        private Environment $twig
+    ) {
     }
 
     public function notifyLogs(): void
     {
+        /** @var ?GuildSettings $guildSetting */
+        $guildSetting = $this->em->getRepository(GuildSettings::class)->find($this->parameterService->getGuildId());
+        if ($guildSetting === null) {
+            return;
+        }
+
+        $channelId = $guildSetting->getPlanningNotifyChannelId();
+        if ($channelId === null) {
+            return;
+        }
+
         $logs = $this->em->getRepository(PlanningLog::class)->findAll();
         usort($logs, function (PlanningLog $a, PlanningLog $b) {
             $aDate = $a->getDateStartNext() ?? $a->getDateStartPrevious();
@@ -46,12 +54,12 @@ class PlanningDiscordNotifyService implements IPlanningDiscordNotifyService
         });
 
         foreach ($logs as $log) {
-            $this->notify($log);
+            $this->notify($log, $channelId);
         }
         $this->em->flush();
     }
 
-    public function notify(PlanningLog $log, bool $retry = true): void
+    public function notify(PlanningLog $log, string $channelId): void
     {
         if ($log->isDiscordSend()) {
             if ($log->getDateCreate() < new \DateTime('- 1 months')) {
@@ -119,9 +127,14 @@ class PlanningDiscordNotifyService implements IPlanningDiscordNotifyService
                 break;
         }
 
-        $status = $this->messageService->sendEmbeds("794344786890719304", $title, $fields,
-            'ADE - Emplois du temps', $this->parameterService->getPlanningWebSite(),
-            $this->guildService->getCurrentGuildIcon());
+        $status = $this->messageService->sendEmbeds(
+            $channelId,
+            $title,
+            $fields,
+            'ADE - Emplois du temps',
+            $this->parameterService->getPlanningWebSite(),
+            $this->guildService->getCurrentGuildIcon()
+        );
 
         if ($status) {
             $log->setIsDiscordSend(true);
@@ -134,6 +147,6 @@ class PlanningDiscordNotifyService implements IPlanningDiscordNotifyService
             return '???';
         }
 
-        return (string)$this->intlExtension->formatDateTime($this->twig, $date, pattern: "eeee d MMM HH'h'mm", locale: 'fr');
+        return (string) $this->intlExtension->formatDateTime($this->twig, $date, pattern: "eeee d MMM HH'h'mm", locale: 'fr');
     }
 }
