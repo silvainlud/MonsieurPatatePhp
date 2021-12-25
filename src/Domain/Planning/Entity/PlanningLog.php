@@ -22,6 +22,13 @@ class PlanningLog
     private const DATE_TIME_COMPARE = "Y-m-d\TH:i:s";
     private const DATE_TIME_NOTIFY = "2 weeks";
 
+    public const FIELD_TITLE = "title";
+    public const FIELD_DESCRIPTION = "description";
+    public const FIELD_DATE_START = "dateStart";
+    public const FIELD_DATE_END = "dateEnd";
+    public const FIELD_TEACHER = "teacher";
+    public const FIELD_LOCATION = "location";
+
 
     #[Id, GeneratedValue(strategy: 'CUSTOM'), CustomIdGenerator(class: UuidGenerator::class)]
     #[Column(type: 'uuid', unique: true)]
@@ -112,17 +119,17 @@ class PlanningLog
             $this->setNext($next);
 
             if ($this->titlePrevious !== $this->titleNext)
-                $this->updatedField[] = "title";
+                $this->updatedField[] = self::FIELD_TITLE;
             if ($this->descriptionPrevious !== $this->descriptionNext)
-                $this->updatedField[] = "description";
+                $this->updatedField[] = self::FIELD_DESCRIPTION;
             if ($this->dateStartPrevious?->format(self::DATE_TIME_COMPARE) !== $this->dateStartNext?->format(self::DATE_TIME_COMPARE))
-                $this->updatedField[] = "dateStart";
+                $this->updatedField[] = self::FIELD_DATE_START;
             if ($this->dateEndPrevious?->format(self::DATE_TIME_COMPARE) !== $this->dateEndNext?->format(self::DATE_TIME_COMPARE))
-                $this->updatedField[] = "dateEnd";
+                $this->updatedField[] = self::FIELD_DATE_END;
             if ($this->teacherPrevious !== $this->teacherNext)
-                $this->updatedField[] = "teacher";
+                $this->updatedField[] = self::FIELD_TEACHER;
             if ($this->locationPrevious !== $this->locationNext)
-                $this->updatedField[] = "location";
+                $this->updatedField[] = self::FIELD_LOCATION;
 
             if (new DateTime(self::DATE_TIME_NOTIFY) < $next->getDateStart() && new DateTime(self::DATE_TIME_NOTIFY) < $prev->getDateStart())
                 $this->isDiscordSend = true;
@@ -166,6 +173,103 @@ class PlanningLog
             $prev->getTeacher() !== $next->getTeacher() ||
             $prev->getLocation() !== $next->getLocation();
 
+    }
+
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    public function getActionType(): string
+    {
+        return $this->actionType;
+    }
+
+    public function getDateCreate(): DateTime
+    {
+        return $this->dateCreate;
+    }
+
+    public function getDateEndNext(): ?DateTime
+    {
+        return $this->dateEndNext;
+    }
+
+    public function getDateEndPrevious(): ?DateTime
+    {
+        return $this->dateEndPrevious;
+    }
+
+    public function getDateStartNext(): ?DateTime
+    {
+        return $this->dateStartNext;
+    }
+
+    public function getDateStartPrevious(): ?DateTime
+    {
+        return $this->dateStartPrevious;
+    }
+
+    public function getDescriptionNext(): ?string
+    {
+        return $this->descriptionNext;
+    }
+
+    public function getDescriptionPrevious(): ?string
+    {
+        return $this->descriptionPrevious;
+    }
+
+    public function getLocationNext(): ?string
+    {
+        return $this->locationNext;
+    }
+
+    public function getLocationPrevious(): ?string
+    {
+        return $this->locationPrevious;
+    }
+
+    public function getPlanningUuid(): string
+    {
+        return $this->planningUuid;
+    }
+
+    public function getTeacherNext(): ?string
+    {
+        return $this->teacherNext;
+    }
+
+    public function getTeacherPrevious(): ?string
+    {
+        return $this->teacherPrevious;
+    }
+
+    public function getTitleNext(): ?string
+    {
+        return $this->titleNext;
+    }
+
+    public function getTitlePrevious(): ?string
+    {
+        return $this->titlePrevious;
+    }
+
+    public function getUpdatedField(): array
+    {
+        return $this->updatedField;
+    }
+
+    public function isDiscordSend(): bool
+    {
+        return $this->isDiscordSend;
+    }
+
+    public function setIsDiscordSend(bool $isDiscordSend): self
+    {
+        $this->isDiscordSend = $isDiscordSend;
+
+        return $this;
     }
 
 }
