@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Domain\Planning\Entity;
 
 use App\Domain\Planning\Repository\PlanningItemRepository;
@@ -11,31 +13,31 @@ use Doctrine\ORM\Mapping\Id;
 #[Entity(repositoryClass: PlanningItemRepository::class)]
 class PlanningItem
 {
-    #[Id, Column(type: "string", length: 64)]
+    #[Id, Column(type: 'string', length: 64)]
     protected string $id;
 
-    #[Column(type: "string", length: 255)]
+    #[Column(type: 'string', length: 255)]
     protected string $title;
 
-    #[Column(type: "text")]
+    #[Column(type: 'text')]
     protected string $description;
 
-    #[Column(type: "datetime")]
+    #[Column(type: 'datetime')]
     protected DateTime $dateStart;
 
-    #[Column(type: "datetime")]
+    #[Column(type: 'datetime')]
     protected DateTime $dateEnd;
 
-    #[Column(type: "datetime")]
+    #[Column(type: 'datetime')]
     protected DateTime $dateCreated;
 
-    #[Column(type: "datetime", nullable: true)]
+    #[Column(type: 'datetime', nullable: true)]
     protected ?DateTime $dateModified;
 
-    #[Column(type: "string", nullable: true)]
+    #[Column(type: 'string', nullable: true)]
     protected ?string $teacher;
 
-    #[Column(type: "string", nullable: true)]
+    #[Column(type: 'string', nullable: true)]
     protected ?string $location;
 
     public function __construct(string $id, DateTime $dateCreated)
@@ -141,7 +143,7 @@ class PlanningItem
         return $this;
     }
 
-    public function update(PlanningItem $i): void
+    public function update(self $i): void
     {
         $this->setTitle($i->getTitle());
         $this->setDescription($i->getDescription());
@@ -151,5 +153,4 @@ class PlanningItem
         $this->setDateEnd($i->getDateEnd());
         $this->setDateModified($i->getDateModified());
     }
-
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Domain\Planning\Entity;
 
 use DateTime;
@@ -14,21 +16,19 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 #[Entity]
 class PlanningLog
 {
+    public const ACTION_TYPE_ADD = 'ADD';
+    public const ACTION_TYPE_UPDATE = 'UPDATE';
+    public const ACTION_TYPE_DELETE = 'DELETE';
 
-    public const ACTION_TYPE_ADD = "ADD";
-    public const ACTION_TYPE_UPDATE = "UPDATE";
-    public const ACTION_TYPE_DELETE = "DELETE";
+    public const FIELD_TITLE = 'title';
+    public const FIELD_DESCRIPTION = 'description';
+    public const FIELD_DATE_START = 'dateStart';
+    public const FIELD_DATE_END = 'dateEnd';
+    public const FIELD_TEACHER = 'teacher';
+    public const FIELD_LOCATION = 'location';
 
-    private const DATE_TIME_COMPARE = "Y-m-d\TH:i:s";
-    private const DATE_TIME_NOTIFY = "2 weeks";
-
-    public const FIELD_TITLE = "title";
-    public const FIELD_DESCRIPTION = "description";
-    public const FIELD_DATE_START = "dateStart";
-    public const FIELD_DATE_END = "dateEnd";
-    public const FIELD_TEACHER = "teacher";
-    public const FIELD_LOCATION = "location";
-
+    private const DATE_TIME_COMPARE = 'Y-m-d\\TH:i:s';
+    private const DATE_TIME_NOTIFY = '2 weeks';
 
     #[Id, GeneratedValue(strategy: 'CUSTOM'), CustomIdGenerator(class: UuidGenerator::class)]
     #[Column(type: 'uuid', unique: true)]
@@ -40,49 +40,49 @@ class PlanningLog
     #[Column(type: 'string', length: 64)]
     protected string $planningUuid;
 
-    #[Column(type: "string", length: 255, nullable: true)]
+    #[Column(type: 'string', length: 255, nullable: true)]
     protected ?string $titlePrevious;
 
-    #[Column(type: "text", nullable: true)]
+    #[Column(type: 'text', nullable: true)]
     protected ?string $descriptionPrevious;
 
-    #[Column(type: "datetime", nullable: true)]
+    #[Column(type: 'datetime', nullable: true)]
     protected ?DateTime $dateStartPrevious;
 
-    #[Column(type: "datetime", nullable: true)]
+    #[Column(type: 'datetime', nullable: true)]
     protected ?DateTime $dateEndPrevious;
 
-    #[Column(type: "string", nullable: true)]
+    #[Column(type: 'string', nullable: true)]
     protected ?string $teacherPrevious;
 
-    #[Column(type: "string", nullable: true)]
+    #[Column(type: 'string', nullable: true)]
     protected ?string $locationPrevious;
 
-    #[Column(type: "string", length: 255, nullable: true)]
+    #[Column(type: 'string', length: 255, nullable: true)]
     protected ?string $titleNext;
 
-    #[Column(type: "text", nullable: true)]
+    #[Column(type: 'text', nullable: true)]
     protected ?string $descriptionNext;
 
-    #[Column(type: "datetime", nullable: true)]
+    #[Column(type: 'datetime', nullable: true)]
     protected ?DateTime $dateStartNext;
 
-    #[Column(type: "datetime", nullable: true)]
+    #[Column(type: 'datetime', nullable: true)]
     protected ?DateTime $dateEndNext;
 
-    #[Column(type: "string", nullable: true)]
+    #[Column(type: 'string', nullable: true)]
     protected ?string $teacherNext;
 
-    #[Column(type: "string", nullable: true)]
+    #[Column(type: 'string', nullable: true)]
     protected ?string $locationNext;
 
-    #[Column(type: "datetime")]
+    #[Column(type: 'datetime')]
     protected DateTime $dateCreate;
 
-    #[Column(type: "boolean")]
+    #[Column(type: 'boolean')]
     protected bool $isDiscordSend;
 
-    #[Column(type: "json")]
+    #[Column(type: 'json')]
     protected array $updatedField;
 
     public function __construct(?PlanningItem $prev = null, ?PlanningItem $next = null)
@@ -109,38 +109,45 @@ class PlanningLog
             $this->planningUuid = $next->getId();
             $this->setNext($next);
 
-            if (new DateTime(self::DATE_TIME_NOTIFY) < $next->getDateStart())
+            if (new DateTime(self::DATE_TIME_NOTIFY) < $next->getDateStart()) {
                 $this->isDiscordSend = true;
-
-        } else if ($prev !== null && $next !== null) {
+            }
+        } elseif ($prev !== null && $next !== null) {
             $this->actionType = self::ACTION_TYPE_UPDATE;
             $this->planningUuid = $next->getId();
             $this->setPrevious($prev);
             $this->setNext($next);
 
-            if ($this->titlePrevious !== $this->titleNext)
+            if ($this->titlePrevious !== $this->titleNext) {
                 $this->updatedField[] = self::FIELD_TITLE;
-            if ($this->descriptionPrevious !== $this->descriptionNext)
+            }
+            if ($this->descriptionPrevious !== $this->descriptionNext) {
                 $this->updatedField[] = self::FIELD_DESCRIPTION;
-            if ($this->dateStartPrevious?->format(self::DATE_TIME_COMPARE) !== $this->dateStartNext?->format(self::DATE_TIME_COMPARE))
+            }
+            if ($this->dateStartPrevious?->format(self::DATE_TIME_COMPARE) !== $this->dateStartNext?->format(self::DATE_TIME_COMPARE)) {
                 $this->updatedField[] = self::FIELD_DATE_START;
-            if ($this->dateEndPrevious?->format(self::DATE_TIME_COMPARE) !== $this->dateEndNext?->format(self::DATE_TIME_COMPARE))
+            }
+            if ($this->dateEndPrevious?->format(self::DATE_TIME_COMPARE) !== $this->dateEndNext?->format(self::DATE_TIME_COMPARE)) {
                 $this->updatedField[] = self::FIELD_DATE_END;
-            if ($this->teacherPrevious !== $this->teacherNext)
+            }
+            if ($this->teacherPrevious !== $this->teacherNext) {
                 $this->updatedField[] = self::FIELD_TEACHER;
-            if ($this->locationPrevious !== $this->locationNext)
+            }
+            if ($this->locationPrevious !== $this->locationNext) {
                 $this->updatedField[] = self::FIELD_LOCATION;
+            }
 
-            if (new DateTime(self::DATE_TIME_NOTIFY) < $next->getDateStart() && new DateTime(self::DATE_TIME_NOTIFY) < $prev->getDateStart())
+            if (new DateTime(self::DATE_TIME_NOTIFY) < $next->getDateStart() && new DateTime(self::DATE_TIME_NOTIFY) < $prev->getDateStart()) {
                 $this->isDiscordSend = true;
-
-        } else if ($prev !== null && $next === null) {
+            }
+        } elseif ($prev !== null && $next === null) {
             $this->actionType = self::ACTION_TYPE_DELETE;
             $this->planningUuid = $prev->getId();
             $this->setPrevious($prev);
 
-            if (new DateTime(self::DATE_TIME_NOTIFY) < $prev->getDateStart())
+            if (new DateTime(self::DATE_TIME_NOTIFY) < $prev->getDateStart()) {
                 $this->isDiscordSend = true;
+            }
         }
     }
 
@@ -164,15 +171,15 @@ class PlanningLog
         $this->locationNext = $next->getLocation();
     }
 
-    #[Pure] public static function isDiff(PlanningItem $prev, PlanningItem $next): bool
+    #[Pure]
+    public static function isDiff(PlanningItem $prev, PlanningItem $next): bool
     {
-        return $prev->getTitle() !== $next->getTitle() ||
-            $prev->getDescription() !== $next->getDescription() ||
-            $prev->getDateStart()->format(self::DATE_TIME_COMPARE) !== $next->getDateStart()->format(self::DATE_TIME_COMPARE) ||
-            $prev->getDateEnd()->format(self::DATE_TIME_COMPARE) !== $next->getDateEnd()->format(self::DATE_TIME_COMPARE) ||
-            $prev->getTeacher() !== $next->getTeacher() ||
-            $prev->getLocation() !== $next->getLocation();
-
+        return $prev->getTitle() !== $next->getTitle()
+            || $prev->getDescription() !== $next->getDescription()
+            || $prev->getDateStart()->format(self::DATE_TIME_COMPARE) !== $next->getDateStart()->format(self::DATE_TIME_COMPARE)
+            || $prev->getDateEnd()->format(self::DATE_TIME_COMPARE) !== $next->getDateEnd()->format(self::DATE_TIME_COMPARE)
+            || $prev->getTeacher() !== $next->getTeacher()
+            || $prev->getLocation() !== $next->getLocation();
     }
 
     public function getId(): string
@@ -271,5 +278,4 @@ class PlanningLog
 
         return $this;
     }
-
 }

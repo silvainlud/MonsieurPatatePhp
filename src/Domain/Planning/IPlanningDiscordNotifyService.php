@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Domain\Planning;
+declare(strict_types=1);
 
-use App\Domain\Planning\Entity\PlanningLog;
+namespace App\Domain\Planning;
 
 interface IPlanningDiscordNotifyService
 {
-    public function notifyLogs() :void;
+    public function notifyLogs(): void;
 }

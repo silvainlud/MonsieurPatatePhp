@@ -12,7 +12,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class IndexController extends AbstractController
 {
-
     public function __construct(private WorkRepository $workRepository, private PlanningItemRepository $planningItemRepository)
     {
     }
@@ -24,8 +23,8 @@ class IndexController extends AbstractController
         $items = $this->planningItemRepository->findFuture();
 
         return $this->render('index.html.twig', [
-            "works" => $works,
-            "items" => $items,
+            'works' => $works,
+            'items' => $items,
         ]);
     }
 

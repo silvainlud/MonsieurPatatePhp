@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Domain\Work\Repository;
 
 use App\Domain\Work\Entity\Work;
@@ -16,13 +18,13 @@ class WorkRepository extends ServiceEntityRepository
     /** @return Work[] */
     public function findCurrentWork(): array
     {
-        return $this->createQueryBuilder("w")
-            ->join("w.work_category", "cat")->addSelect("cat")
-            ->andWhere("w.dueDate >= :now")
-            ->andWhere("cat.active = :active")
-            ->setParameter("active", true)
-            ->orderBy("w.dueDate", "ASC")
-            ->addOrderBy("w.name", "ASC")
-            ->setParameter("now", new \DateTime())->getQuery()->getResult();
+        return $this->createQueryBuilder('w')
+            ->join('w.work_category', 'cat')->addSelect('cat')
+            ->andWhere('w.dueDate >= :now')
+            ->andWhere('cat.active = :active')
+            ->setParameter('active', true)
+            ->orderBy('w.dueDate', 'ASC')
+            ->addOrderBy('w.name', 'ASC')
+            ->setParameter('now', new \DateTime())->getQuery()->getResult();
     }
 }
