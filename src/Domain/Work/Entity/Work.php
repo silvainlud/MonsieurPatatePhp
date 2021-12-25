@@ -43,9 +43,13 @@ class Work
     #[JoinColumn(name: 'work_category_id')]
     private WorkCategory $work_category;
 
+    #[Column(type: 'string', length: 40, nullable: true)]
+    protected ?string $messageId;
+
     public function __construct()
     {
         $this->creationDate = new DateTime();
+        $this->messageId = null;
     }
 
     public function getId(): string
@@ -114,6 +118,18 @@ class Work
     public function setGuild(GuildSettings $guild): self
     {
         $this->guild = $guild;
+
+        return $this;
+    }
+
+    public function getMessageId(): ?string
+    {
+        return $this->messageId;
+    }
+
+    public function setMessageId(?string $messageId): self
+    {
+        $this->messageId = $messageId;
 
         return $this;
     }

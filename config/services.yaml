@@ -58,3 +58,6 @@ services:
     class: 'App\Domain\Planning\PlanningDiscordNotifyService'
     arguments:
       $intlExtension: "@twig.extension.intl"
+
+  App\Domain\Work\IWorkDiscordNotifyService:
+    class: App\Domain\Work\WorkDiscordNotifyService
