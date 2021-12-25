@@ -7,6 +7,7 @@ namespace App\Domain\Planning;
 use App\Domain\Planning\Entity\PlanningItem;
 use App\Domain\Planning\Entity\PlanningLog;
 use App\Infrastructure\Discord\IDiscordGuildService;
+use App\Infrastructure\Discord\IDiscordMessageService;
 use App\Infrastructure\Parameter\IParameterService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,13 +25,14 @@ class PlanningDiscordNotifyService implements IPlanningDiscordNotifyService
     public const HEADER_LOCATION = ':map: Salle';
 
     public function __construct(
-        private IParameterService $parameterService,
+        private IParameterService      $parameterService,
         private EntityManagerInterface $em,
-        private HttpClientInterface $discordClient,
-        private IntlExtension $intlExtension,
-        private IDiscordGuildService $guildService,
-        private Environment $twig
-    ) {
+        private IntlExtension          $intlExtension,
+        private IDiscordGuildService   $guildService,
+        private IDiscordMessageService $messageService,
+        private Environment            $twig
+    )
+    {
     }
 
     public function notifyLogs(): void
@@ -117,29 +119,12 @@ class PlanningDiscordNotifyService implements IPlanningDiscordNotifyService
                 break;
         }
 
-        $resp = $this->discordClient->request(Request::METHOD_POST, 'channels/794344786890719304/messages', ['json' => [
-            'embeds' => [
-                [
-                    'title' => $title,
-                    'description' => $fields,
-                    'author' => [
-                        'name' => 'ADE - Emplois du temps',
-                        'url' => $this->parameterService->getPlanningWebSite(),
-                        'icon_url' => $this->guildService->getCurrentGuildIcon(),
-                    ],
-                ],
-            ],
-        ]]);
-        if ($resp->getStatusCode() === Response::HTTP_OK) {
+        $status = $this->messageService->sendEmbeds("794344786890719304", $title, $fields,
+            'ADE - Emplois du temps', $this->parameterService->getPlanningWebSite(),
+            $this->guildService->getCurrentGuildIcon());
+
+        if ($status) {
             $log->setIsDiscordSend(true);
-        } else {
-            $res = json_decode($resp->getContent(false));
-            if ($res->message === 'You are being rate limited.') {
-                if ($retry) {
-                    sleep((int) round((int) $res->retry_after / 1000 + 1, mode: \PHP_ROUND_HALF_UP));
-                    $this->notify($log, false);
-                }
-            }
         }
     }
 
@@ -149,6 +134,6 @@ class PlanningDiscordNotifyService implements IPlanningDiscordNotifyService
             return '???';
         }
 
-        return (string) $this->intlExtension->formatDateTime($this->twig, $date, pattern: "eeee d MMM HH'h'mm", locale: 'fr');
+        return (string)$this->intlExtension->formatDateTime($this->twig, $date, pattern: "eeee d MMM HH'h'mm", locale: 'fr');
     }
 }
