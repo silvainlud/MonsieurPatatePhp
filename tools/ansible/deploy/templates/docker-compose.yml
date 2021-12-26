@@ -6,10 +6,10 @@ networks:
   host_nginx:
     external:
       name: host_nginx
-
 services:
   mpatate:
     image: nginx
+    restart: always
     depends_on:
       - php
     volumes:
@@ -40,6 +40,7 @@ services:
   {{ db_host }}:
     user: "{{ ansible_user_id.stdout }}:{{ ansible_group_id.stdout }}"
     image: mysql
+    restart: always
     environment:
       MYSQL_USER: "{{ db_user }}"
       MYSQL_PASSWORD: "{{ db_password }}"
@@ -49,6 +50,20 @@ services:
       - db-data:/var/lib/mysql # persist data even
     networks:
       - backend
+  bot:
+    restart: always
+    image: "{{ default_image_bot }}"
+    environment:
+      token: "{{ discord_bot }}"
+      clientId: "{{ oauth_discord_id }}"
+      voiceCategoryName: "Salons vocaux"
+      db_host: "{{ db_host }}"
+      db_username: "{{ db_user }}"
+      db_password: "{{ db_password }}"
+      db_database: "{{ db_database }}"
+    networks:
+      - backend
+
 
 
   redis:

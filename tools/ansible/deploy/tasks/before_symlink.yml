@@ -25,6 +25,11 @@
     src: .env
     dest: "{{ ansistrano_shared_path }}/.env.local"
 
+- name: MakeFile | Template
+  template:
+    src: MakeFile
+    dest: "{{ ansistrano_release_path.stdout }}/Makefile"
+
 # Préparation de docker
 - name: Docker Compose | Docker Compose file
   template:

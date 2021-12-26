@@ -4,6 +4,7 @@ user: "{{ ansible_user }}"
 
 COMPOSE_PROJECT_NAME: "monsieur_patate"
 default_image: "registry.silvain.eu:5000/silvain.eu/monsieurpatatephp:latest"
+default_image_bot: "registry.silvain.eu:5000/silvain/monsieurpatatebot:latest"
 
 ansistrano_git_branch: main
 ansistrano_deploy_to: /MonsieurPatate/
