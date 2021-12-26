@@ -17,7 +17,8 @@ class DiscordMember
         $this->user = $user;
     }
 
-    #[Pure] public function getCompleteName(): string
+    #[Pure]
+    public function getCompleteName(): string
     {
         return $this->nick ?? $this->user->getUsername();
     }

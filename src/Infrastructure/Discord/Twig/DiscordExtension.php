@@ -17,11 +17,12 @@ use Twig\TwigFunction;
 
 class DiscordExtension extends AbstractExtension
 {
-    public function __construct(private DiscordUserService   $userService,
-                                private IDiscordGuildService $guildService,
-                                private IParameterService $parameterService,private Security $security)
-    {
-
+    public function __construct(
+        private DiscordUserService $userService,
+        private IDiscordGuildService $guildService,
+        private IParameterService $parameterService,
+        private Security $security
+    ) {
     }
 
     public function getFunctions(): array
@@ -45,11 +46,14 @@ class DiscordExtension extends AbstractExtension
     public function getDiscordUsername(): string
     {
         $u = $this->security->getUser();
-        if (!$u instanceof User)
-            return "???";
+        if (!$u instanceof User) {
+            return '???';
+        }
         $discordUser = $this->guildService->getGuildMember($this->parameterService->getGuildId(), $u->getDiscordId());
-        if ($discordUser === null)
+        if ($discordUser === null) {
             return $u->getUsername();
+        }
+
         return $discordUser->getCompleteName();
     }
 
