@@ -5,7 +5,14 @@
   environment:
     COMPOSE_PROJECT_NAME: "{{ COMPOSE_PROJECT_NAME }}"
 
-- name: Symfony | Doctrine Migration
+- name: Prod | Symfony | Cache Clear
+  shell: docker-compose -f docker-compose.prod.yml exec php php bin/console cache:clear
+  args:
+    chdir: "{{ ansistrano_release_path.stdout }}"
+  environment:
+    COMPOSE_PROJECT_NAME: "{{ COMPOSE_PROJECT_NAME }}"
+
+- name: Prod | Symfony | Doctrine Migration
   shell: docker-compose -f docker-compose.prod.yml exec php php bin/console doctrine:migration:migrate --allow-no-migration -n
   args:
     chdir: "{{ ansistrano_release_path.stdout }}"
