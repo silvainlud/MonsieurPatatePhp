@@ -10,16 +10,25 @@ use App\Infrastructure\Discord\Entity\Channel\ICategoryChannelParent;
 use App\Infrastructure\Discord\Entity\Channel\TextChannel;
 use App\Infrastructure\Discord\Entity\Channel\VoiceChannel;
 use App\Infrastructure\Discord\Entity\DiscordGuild;
+use App\Infrastructure\Discord\Entity\DiscordMember;
 use App\Infrastructure\Discord\Entity\DiscordRole;
+use App\Infrastructure\Discord\Entity\DiscordUser;
 use App\Infrastructure\Parameter\IParameterService;
 use Psr\Cache\CacheItemPoolInterface;
 use stdClass;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class DiscordGuildService implements IDiscordGuildService
 {
+    private const CACHE_KEY_GUILD_MEMBER = 'guild_member';
+    private const EXPIRE_GUILD_MEMBER = 3600;
+
+    private const CACHE_KEY_GUILD_MEMBERS = 'guild_members_list_';
+    private const EXPIRE_GUILD_MEMBERS = 300;
+
     private const CACHE_KEY_CURRENT_GUILD = 'current_guild';
     private const EXPIRE_CURRENT_GUILD = 259200;
 
@@ -30,10 +39,11 @@ class DiscordGuildService implements IDiscordGuildService
     private const EXPIRE_GUILD_CHANNELS = 300;
 
     public function __construct(
-        private HttpClientInterface $discordClient,
+        private HttpClientInterface    $discordClient,
         private CacheItemPoolInterface $cache,
-        private IParameterService $parameterService
-    ) {
+        private IParameterService      $parameterService
+    )
+    {
     }
 
     public function getCurrentGuild(): DiscordGuild
@@ -47,9 +57,66 @@ class DiscordGuildService implements IDiscordGuildService
             }
 
             $data = json_decode($response->getContent(false));
-            $guild = (new DiscordGuild((int) ($data->id)))->setName($data->name)->setIcon($data->icon);
+            $guild = (new DiscordGuild((int)($data->id)))->setName($data->name)->setIcon($data->icon);
             $i->set($guild);
             $i->expiresAfter(self::EXPIRE_CURRENT_GUILD);
+            $this->cache->save($i);
+        }
+
+        return $i->get();
+    }
+
+    /** @inheritDoc */
+    public function getGuildMembers(string $guildId): array
+    {
+        $i = $this->cache->getItem(self::CACHE_KEY_GUILD_MEMBERS . $guildId);
+        if (!$i->isHit()) {
+            try {
+                $response = $this->discordClient->request(Request::METHOD_GET, 'guilds/' . $guildId . "/members", [
+                    "query" => ["limit" => 1000]
+                ]);
+            } catch (TransportExceptionInterface $e) {
+                return [];
+            }
+            $data = array_reduce(json_decode($response->getContent(false)), function (array $acc, stdClass $d) {
+                $u = (new DiscordUser((string)$d->user->id))
+                    ->setUsername($d->user->username)
+                    ->setAvatar($d->user->avatar)
+                    ->setDiscriminator($d->user->discriminator);
+                $acc[] = (new DiscordMember($u))->setNick($d->nick);
+
+                return $acc;
+            }, []);
+            $i->set($data);
+            $i->expiresAfter(self::EXPIRE_GUILD_MEMBERS);
+            $this->cache->save($i);
+        }
+
+        return $i->get();
+    }
+
+    public function getGuildMember(string $guildId, string $memberId): ?DiscordMember
+    {
+        $i = $this->cache->getItem(self::CACHE_KEY_GUILD_MEMBER . $guildId . "_" . $memberId);
+
+        if (!$i->isHit()) {
+            try {
+                $response = $this->discordClient->request(Request::METHOD_GET, 'guilds/' . $guildId . "/members/" . $memberId);
+            } catch (TransportExceptionInterface $e) {
+                return null;
+            }
+            if ($response->getStatusCode() === Response::HTTP_OK) {
+                $d = json_decode($response->getContent(false));
+                $u = (new DiscordUser((string)$d->user->id))
+                    ->setUsername($d->user->username)
+                    ->setAvatar($d->user->avatar)
+                    ->setDiscriminator($d->user->discriminator);
+                $data = (new DiscordMember($u))->setNick($d->nick);
+            } else
+                $data = null;
+
+            $i->set($data);
+            $i->expiresAfter(self::EXPIRE_GUILD_MEMBER);
             $this->cache->save($i);
         }
 
@@ -72,7 +139,7 @@ class DiscordGuildService implements IDiscordGuildService
                 return [];
             }
             $data = array_reduce(json_decode($response->getContent(false)), function (array $acc, stdClass $d) {
-                $acc[] = (new DiscordRole((int) ($d->id)))
+                $acc[] = (new DiscordRole((int)($d->id)))
                     ->setName($d->name)
                     ->setPosition($d->position)
                     ->setColor($d->color)
@@ -80,7 +147,7 @@ class DiscordGuildService implements IDiscordGuildService
 
                 return $acc;
             }, []);
-            usort($data, fn (DiscordRole $a, DiscordRole $b) => $a->getPosition() > $b->getPosition() ? -1 : ($a->getPosition() === $b->getPosition() ? 0 : 1));
+            usort($data, fn(DiscordRole $a, DiscordRole $b) => $a->getPosition() > $b->getPosition() ? -1 : ($a->getPosition() === $b->getPosition() ? 0 : 1));
 
             $i->set($data);
             $i->expiresAfter(self::EXPIRE_CURRENT_GUILD_ROLES);
@@ -111,11 +178,11 @@ class DiscordGuildService implements IDiscordGuildService
                 return $acc;
             }, []);
 
-            $guildChannels = array_filter($channels, fn (stdClass $obj) => \in_array($obj->type, [AbstractDiscordChannel::TYPE_GUILD_TEXT, AbstractDiscordChannel::TYPE_GUILD_VOICE], true));
+            $guildChannels = array_filter($channels, fn(stdClass $obj) => \in_array($obj->type, [AbstractDiscordChannel::TYPE_GUILD_TEXT, AbstractDiscordChannel::TYPE_GUILD_VOICE], true));
             foreach ($guildChannels as $c) {
                 $nc = $this->_getChannel($c);
                 if ($nc instanceof ICategoryChannelParent && $c->parent_id !== null) {
-                    $ps = array_filter($data, fn (AbstractDiscordChannel $o) => $o->getId() === (int) $c->parent_id);
+                    $ps = array_filter($data, fn(AbstractDiscordChannel $o) => $o->getId() === (int)$c->parent_id);
                     if (\count($ps) !== 0) {
                         $nc->setParent($ps[array_key_first($ps)]);
                     }
@@ -135,9 +202,9 @@ class DiscordGuildService implements IDiscordGuildService
     private function _getChannel(stdClass $obj): ?AbstractDiscordChannel
     {
         return match ($obj->type) {
-            AbstractDiscordChannel::TYPE_GUILD_CATEGORY => (new CategoryChannel((int) $obj->id, $obj->name, $obj->position)),
-            AbstractDiscordChannel::TYPE_GUILD_VOICE => (new VoiceChannel((int) $obj->id, $obj->name, $obj->position)),
-            AbstractDiscordChannel::TYPE_GUILD_TEXT => (new TextChannel((int) $obj->id, $obj->name, $obj->position)),
+            AbstractDiscordChannel::TYPE_GUILD_CATEGORY => (new CategoryChannel((int)$obj->id, $obj->name, $obj->position)),
+            AbstractDiscordChannel::TYPE_GUILD_VOICE => (new VoiceChannel((int)$obj->id, $obj->name, $obj->position)),
+            AbstractDiscordChannel::TYPE_GUILD_TEXT => (new TextChannel((int)$obj->id, $obj->name, $obj->position)),
             default => null,
         };
     }
