@@ -58,7 +58,7 @@ class MigrateFromLastDatabaseCommand extends Command
                                 ->setRoleId($s['roleId'])
                                 ->setCreatorName($s['memberUsernameCreate'])
                                 ->setEmoji(($s['emoticon']))
-                                ->setVisibility($s['show'] ? 'public' : ($s['restricted'] ? 'private' : 'PROTECTED'))
+                                ->setVisibility($s['show'] ? Section::visibility_show : ($s['restricted'] ? Section::visibility_hide : Section::visibility_restrict))
                                 ->setAnnounceChannelId($s['AnnounceChannelId']);
 
                             $gs->addSection($ns);
