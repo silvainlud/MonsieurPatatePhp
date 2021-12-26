@@ -8,8 +8,8 @@ services:
     depends_on:
       - php
     volumes:
-      - ./public:/usr/share/nginx/html/public
-      - ./tools/docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./public:/var/www/public:ro
+      - ./tools/docker/nginx/nginx.local.conf:/etc/nginx/nginx.conf:ro
   php:
     image: registry.silvain.eu:5000/silvain.eu/monsieurpatatephp:latest
     volumes:
