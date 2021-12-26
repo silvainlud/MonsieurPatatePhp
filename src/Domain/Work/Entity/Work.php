@@ -15,6 +15,10 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
+use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\NotNull;
 
 #[Entity(repositoryClass: WorkRepository::class)]
 class Work
@@ -23,16 +27,19 @@ class Work
     #[Column(type: 'uuid', unique: true)]
     protected string $id;
 
-    #[Column(type: 'string', length: 25)]
+    #[Column(type: 'string', length: 50)]
+    #[NotBlank, Length(max: 50)]
     protected string $name;
 
     #[Column(type: 'text')]
+    #[NotBlank]
     protected string $description;
 
     #[Column(type: 'datetime')]
     protected DateTime $creationDate;
 
     #[Column(type: 'datetime')]
+    #[NotNull, GreaterThanOrEqual("now")]
     protected DateTime $dueDate;
 
     #[ManyToOne(targetEntity: GuildSettings::class)]
@@ -95,9 +102,10 @@ class Work
         return $this->dueDate;
     }
 
-    public function setDueDate(DateTime $dueDate): self
+    public function setDueDate(?DateTime $dueDate): self
     {
-        $this->dueDate = $dueDate;
+        if ($dueDate !== null)
+            $this->dueDate = $dueDate;
 
         return $this;
     }

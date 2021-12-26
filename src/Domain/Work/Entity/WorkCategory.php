@@ -22,8 +22,8 @@ class WorkCategory
     #[Column(type: 'uuid')]
     protected string $id;
 
-    #[Column(type: 'string', length: 25)]
-    #[NotBlank, Length(max: 25)]
+    #[Column(type: 'string', length: 50)]
+    #[NotBlank, Length(max: 50)]
     protected string $name;
 
     #[Column(name: 'active', type: 'boolean', options: ['default' => true])]
