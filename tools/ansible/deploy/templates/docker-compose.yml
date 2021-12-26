@@ -1,0 +1,60 @@
+version: '3.4'
+
+networks:
+  backend:
+    driver: "bridge"
+  host_nginx:
+    external:
+      name: host_nginx
+
+services:
+  mpatate:
+    image: nginx
+    depends_on:
+      - php
+    volumes:
+      - ./public:/usr/share/nginx/html/public
+      - ./tools/docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      - host_nginx
+      - backend
+  php:
+    user: "{{ ansible_user_id.stdout }}:{{ ansible_group_id.stdout }}"
+    image: "{{ default_image }}"
+    restart: always
+    volumes:
+      - .:/var/www
+      - {{ ansistrano_shared_path }}/.env.local:/var/www/.env.local
+      - {{ ansistrano_shared_path }}/var/spool:/var/www/var/spool
+      - {{ ansistrano_shared_path }}/var/log:/var/www/var/log
+      - {{ ansistrano_shared_path }}/var/cache:/var/www/var/cache
+    working_dir: /var/www
+    depends_on:
+      - redis
+      - {{ db_host }}
+    networks:
+      - backend
+
+  {{ db_host }}:
+    user: "{{ ansible_user_id.stdout }}:{{ ansible_group_id.stdout }}"
+    image: mysql
+    environment:
+      MYSQL_USER: "{{ db_user }}"
+      MYSQL_PASSWORD: "{{ db_password }}"
+      MYSQL_DATABASE: "{{ db_database }}"
+      MYSQL_ALLOW_EMPTY_PASSWORD: "true"
+    volumes:
+      - db-data:/var/lib/mysql # persist data even
+    networks:
+      - backend
+
+
+  redis:
+    image: redis
+    restart: always
+    networks:
+      - backend
+
+volumes:
+  db-data:
+    driver: local

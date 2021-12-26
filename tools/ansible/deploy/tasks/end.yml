@@ -1,0 +1,6 @@
+- name: Prod | Docker | Up
+  command: docker-compose -f docker-compose.prod.yml up -d
+  args:
+    chdir: "{{ ansistrano_release_path.stdout }}"
+  environment:
+    COMPOSE_PROJECT_NAME: "{{ COMPOSE_PROJECT_NAME }}"

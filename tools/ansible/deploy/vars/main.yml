@@ -1,0 +1,26 @@
+---
+# vars file for ansistrano
+user: "{{ ansible_user }}"
+
+COMPOSE_PROJECT_NAME: "monsieur_patate"
+default_image: "registry.silvain.eu:5000/silvain.eu/monsieurpatatephp:latest"
+
+ansistrano_git_branch: main
+ansistrano_deploy_to: /MonsieurPatate/
+ansistrano_deploy_via: git
+ansistrano_current_via: "symlink"
+ansistrano_allow_anonymous_stats: no
+
+ansistrano_git_repo: "ssh://git@git.silvain.eu:222/Silvain.eu/MonsieurPatatePhp.git"
+ansistrano_shared_paths: ["var/log", "var/cache", "var/spool", "var/mysql"]
+ansistrano_shared_files: [".env.local"]
+ansistrano_ensure_shared_paths_exist: no
+ansistrano_ensure_basedirs_shared_files_exist: no
+ansistrano_keep_releases: 3
+
+ansistrano_before_symlink_shared_tasks_file: "{{ playbook_dir }}/tasks/before_symlink.yml"
+ansistrano_after_symlink_shared_tasks_file: "{{ playbook_dir }}/tasks/after_symlink.yml"
+ansistrano_after_symlink_tasks_file: "{{ playbook_dir }}/tasks/end.yml"
+ansistrano_rollback_after_symlink_tasks_file: "{{ playbook_dir }}/tasks/end.yml"
+
+

@@ -1,0 +1,27 @@
+- name: Prod | Docker | Up
+  command: docker-compose -f docker-compose.prod.yml up --remove-orphans --force-recreate -d php
+  args:
+    chdir: "{{ ansistrano_release_path.stdout }}"
+  environment:
+    COMPOSE_PROJECT_NAME: "{{ COMPOSE_PROJECT_NAME }}"
+
+- name: Symfony | Doctrine Migration
+  shell: docker-compose -f docker-compose.prod.yml exec php php bin/console doctrine:migration:migrate --allow-no-migration -n
+  args:
+    chdir: "{{ ansistrano_release_path.stdout }}"
+  environment:
+    COMPOSE_PROJECT_NAME: "{{ COMPOSE_PROJECT_NAME }}"
+
+- name: Prod | Redis | FlushAll
+  command: docker-compose -f docker-compose.prod.yml exec redis redis-cli flushall
+  environment:
+    COMPOSE_PROJECT_NAME: "{{ COMPOSE_PROJECT_NAME }}"
+  args:
+    chdir: "{{ ansistrano_release_path.stdout }}"
+
+- name: Prod | Symfony | Wrtiable
+  command: docker-compose  -f docker-compose.prod.yml exec php chmod 777 -R vendor/ var/ var/spool/ var/log/
+  args:
+    chdir: "{{ ansistrano_release_path.stdout }}"
+  environment:
+    COMPOSE_PROJECT_NAME: "{{ COMPOSE_PROJECT_NAME }}"

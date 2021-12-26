@@ -1,0 +1,16 @@
+version: '3.4'
+
+services:
+  php:
+    user: "{{ ansible_user_id.stdout }}:{{ ansible_group_id.stdout }}"
+    image: "{{ default_image }}"
+    restart: always
+    volumes:
+      - .:/var/www
+    working_dir: /var/www
+    depends_on:
+      - redis
+
+  redis:
+    image: redis
+    restart: always

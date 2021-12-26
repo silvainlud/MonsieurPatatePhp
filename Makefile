@@ -56,3 +56,7 @@ image: ## Constrction d'une image docker
 .PHONY: php
 php: ## Accéder au conteneur php
 	docker run  -w /app --rm -it -e "TERM=xterm-256color" -v $(PWD):/app registry.silvain.eu:5000/silvain.eu/monsieurpatatephp:latest bash
+
+
+deploy:
+	 ansible-playbook -i tools/ansible/deploy/inventory --extra-vars "ansible_user=ludwig" --ask-vault-password tools/ansible/deploy/deploy.yml

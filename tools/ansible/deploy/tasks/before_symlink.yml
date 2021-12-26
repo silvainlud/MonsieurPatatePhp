@@ -1,0 +1,139 @@
+# Chargement et construction des dépances
+
+- name: ENV | User | Get current uid
+  shell: id -u
+  register: ansible_user_id
+
+- name: ENV | User | Get current gid
+  shell: id -g
+  register: ansible_group_id
+
+- name: Library | Composer
+  command: "docker run --rm --user {{ ansible_user_id.stdout }}:{{ ansible_group_id.stdout }} -v {{ ansistrano_release_path.stdout }}:/var/www -w /var/www {{ default_image }} composer install --optimize-autoloader --no-dev --prefer-dist --no-scripts -vvv"
+- name: Library | Yarn | Install
+  command: "docker run --rm --user {{ ansible_user_id.stdout }}:{{ ansible_group_id.stdout }}  -v {{ ansistrano_release_path.stdout }}:/var/www -w /var/www node yarn install"
+- name: Library | Yarn | Build
+  command: "docker run --rm --user {{ ansible_user_id.stdout }}:{{ ansible_group_id.stdout }} -v {{ ansistrano_release_path.stdout }}:/var/www -w /var/www node yarn build"
+
+- name: ENV | Symfony | Env file
+  template:
+    src: .env
+    dest: "{{ ansistrano_release_path.stdout }}/.env.local"
+
+- name: ENV | Symfony | Env file
+  template:
+    src: .env
+    dest: "{{ ansistrano_shared_path }}/.env.local"
+
+# Préparation de docker
+- name: Docker Compose | Docker Compose file
+  template:
+    src: docker-compose.yml
+    dest: "{{ ansistrano_release_path.stdout }}/docker-compose.prod.yml"
+
+- name: Docker Compose | Docker Compose prepare file
+  template:
+    src: docker-compose.prepare.yml
+    dest: "{{ ansistrano_release_path.stdout }}/docker-compose.prepare.yml"
+
+# Instance de préparation à la production
+- name: Drafting Prod | Docker | Up
+  command: docker-compose -f docker-compose.prepare.yml up --remove-orphans --force-recreate -d php
+  args:
+    chdir: "{{ ansistrano_release_path.stdout }}"
+  environment:
+    COMPOSE_PROJECT_NAME: "{{ COMPOSE_PROJECT_NAME }}-prepare"
+
+- name: Drafting Prod | Symfony | Cache Clear
+  command: docker-compose -f docker-compose.prepare.yml exec php php bin/console cache:clear
+  environment:
+    COMPOSE_PROJECT_NAME: "{{ COMPOSE_PROJECT_NAME }}-prepare"
+  args:
+    chdir: "{{ ansistrano_release_path.stdout }}"
+
+- name: Drafting Prod | Symfony | Assets Install
+  command: docker-compose  -f docker-compose.prepare.yml exec php php bin/console assets:install
+  args:
+    chdir: "{{ ansistrano_release_path.stdout }}"
+  environment:
+    COMPOSE_PROJECT_NAME: "{{ COMPOSE_PROJECT_NAME }}-prepare"
+
+- name: Drafting Prod | Docker | Down
+  command: docker-compose -f docker-compose.prepare.yml down --remove-orphans
+  args:
+    chdir: "{{ ansistrano_release_path.stdout }}"
+  environment:
+    COMPOSE_PROJECT_NAME: "{{ COMPOSE_PROJECT_NAME }}-prepare"
+
+# Fix les permission sur dossiers
+
+- name: Writable | Ansistano
+  file:
+    path: "{{ansistrano_deploy_to}}/releases"
+    state: directory
+    recurse: true
+    owner: "{{user}}"
+
+- name: Writable | Symfony | Remove content
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - "{{ ansistrano_release_path.stdout }}/var/spool"
+    - "{{ ansistrano_release_path.stdout }}/var/log"
+
+- name: Writable | Symfony
+  file:
+    path: "{{ item }}"
+    mode: 0777
+    state: directory
+    owner: "{{user}}"
+    recurse: yes
+  with_items:
+    - "{{ ansistrano_shared_path }}/var/log"
+    - "{{ ansistrano_shared_path }}/var/spool"
+    - "{{ ansistrano_shared_path }}/var/cache"
+    - "{{ ansistrano_shared_path }}/var/mysql"
+    - "{{ ansistrano_release_path.stdout }}/var"
+    - "{{ ansistrano_release_path.stdout }}/var/mysql"
+    - "{{ ansistrano_release_path.stdout }}/var/cache"
+
+#Passage sur l'instance de production
+- name: Prod | Docker | Pull
+  command: docker-compose -f docker-compose.prod.yml pull
+  args:
+    chdir: "{{ ansistrano_release_path.stdout }}"
+  environment:
+    COMPOSE_PROJECT_NAME: "{{ COMPOSE_PROJECT_NAME }}"
+
+- name: Prod | Docker | Down
+  command: docker-compose -f docker-compose.prod.yml down --remove-orphans
+  args:
+    chdir: "{{ ansistrano_release_path.stdout }}"
+  environment:
+    COMPOSE_PROJECT_NAME: "{{ COMPOSE_PROJECT_NAME }}"
+
+- name: Prod | Docker | Up Mysql
+  command: docker-compose -f docker-compose.prod.yml up -d {{ db_host }}
+  args:
+    chdir: "{{ ansistrano_release_path.stdout }}"
+  environment:
+    COMPOSE_PROJECT_NAME: "{{ COMPOSE_PROJECT_NAME }}"
+
+- name: Prod | Docker | Mysql Backup
+  command: docker-compose -f docker-compose.prod.yml exec {{ db_host }} mysqldump --opt -uroot --databases {{ db_database }}
+  args:
+    chdir: "{{ ansistrano_release_path.stdout }}"
+  environment:
+    COMPOSE_PROJECT_NAME: "{{ COMPOSE_PROJECT_NAME }}"
+
+  register: mysql_backup
+
+- copy: content="{{ mysql_backup.stdout }}" dest=/tmp/backup-potato-{{ ansible_date_time.iso8601 }}.sql
+
+- name: Prod | Docker | Down
+  command: docker-compose -f docker-compose.prod.yml down --remove-orphans
+  args:
+    chdir: "{{ ansistrano_release_path.stdout }}"
+  environment:
+    COMPOSE_PROJECT_NAME: "{{ COMPOSE_PROJECT_NAME }}"
