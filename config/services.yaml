@@ -28,7 +28,7 @@ services:
   App\Infrastructure\ViteAsset\ViteAssetExtension:
     arguments:
       $isDev: '%env(VITE_DEV)%'
-      $manifest: '%kernel.project_dir%/public/assets/manifest.json'
+      $manifest: '%kernel.project_dir%/public/build/manifest.json'
 
   App\Infrastructure\Discord\OauthDiscordUrl:
     arguments:
