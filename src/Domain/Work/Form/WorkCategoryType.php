@@ -26,6 +26,7 @@ class WorkCategoryType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => WorkCategory::class,
+            "translation_domain" => false,
         ]);
     }
 
