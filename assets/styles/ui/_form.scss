@@ -60,9 +60,13 @@ input, textarea {
 
 form:not(.no-form), .form {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(375px, 1fr));
+  grid-template-columns: 1fr;
   //grid-template-columns: repeat(2, 1fr);
   grid-gap: 10px 20px;
+
+  @media screen and (min-width: 700px){
+    grid-template-columns: repeat(auto-fit, minmax(375px, 1fr));
+  }
 
   & > .form-row, & > .form-check, & > .form-checkbox {
     grid-column: 1/ -1;
