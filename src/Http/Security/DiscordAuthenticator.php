@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Security;
 
 use App\Domain\User\Entity\User;
+use App\Infrastructure\Discord\IDiscordGuildService;
+use App\Infrastructure\Parameter\IParameterService;
 use Doctrine\ORM\EntityManagerInterface;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use KnpU\OAuth2ClientBundle\Security\Authenticator\OAuth2Authenticator;
@@ -14,6 +16,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
@@ -25,8 +29,13 @@ class DiscordAuthenticator extends OAuth2Authenticator
     private EntityManagerInterface $entityManager;
     private RouterInterface $router;
 
-    public function __construct(ClientRegistry $clientRegistry, EntityManagerInterface $entityManager, RouterInterface $router)
-    {
+    public function __construct(
+        ClientRegistry $clientRegistry,
+        EntityManagerInterface $entityManager,
+        RouterInterface $router,
+        private IDiscordGuildService $guildService,
+        private IParameterService $parameterService
+    ) {
         $this->clientRegistry = $clientRegistry;
         $this->entityManager = $entityManager;
         $this->router = $router;
@@ -49,6 +58,10 @@ class DiscordAuthenticator extends OAuth2Authenticator
                 $discordUser = $client->fetchUserFromToken($accessToken);
 
                 $email = $discordUser->getEmail();
+
+                if (!$this->guildService->isGuildMember($this->parameterService->getGuildId(), (string) $discordUser->getId())) {
+                    throw new UserNotFoundException();
+                }
 
                 $existingUser = $this->entityManager->getRepository(User::class)->findOneBy(['discordId' => $discordUser->getId()]);
 
@@ -82,8 +95,12 @@ class DiscordAuthenticator extends OAuth2Authenticator
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
-        $message = strtr($exception->getMessageKey(), $exception->getMessageData());
+        if ($request->hasSession()) {
+            $request->getSession()->set(Security::AUTHENTICATION_ERROR, $exception);
+        }
 
-        return new Response($message, Response::HTTP_FORBIDDEN);
+        $url = $this->router->generate('login');
+
+        return new RedirectResponse($url);
     }
 }

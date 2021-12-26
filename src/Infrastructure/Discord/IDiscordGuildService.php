@@ -25,4 +25,6 @@ interface IDiscordGuildService
     public function getGuildMembers(string $guildId): array;
 
     public function getGuildMember(string $guildId, string $memberId): ?DiscordMember;
+
+    public function isGuildMember(string $guildId, string $memberId): bool;
 }

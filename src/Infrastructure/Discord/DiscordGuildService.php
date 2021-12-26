@@ -123,6 +123,11 @@ class DiscordGuildService implements IDiscordGuildService
         return $i->get();
     }
 
+    public function isGuildMember(string $guildId, string $memberId): bool
+    {
+        return \in_array($memberId, array_map(fn (DiscordMember $u) => $u->getUser()->getId(), $this->getGuildMembers($guildId)), true);
+    }
+
     public function getCurrentGuildIcon(): string
     {
         return "https://cdn.discordapp.com/icons/{$this->getCurrentGuild()->getId()}/{$this->getCurrentGuild()->getIcon()}.png";
