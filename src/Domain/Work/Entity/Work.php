@@ -39,7 +39,7 @@ class Work
     protected DateTime $creationDate;
 
     #[Column(type: 'datetime')]
-    #[NotNull, GreaterThanOrEqual("now")]
+    #[NotNull, GreaterThanOrEqual('now')]
     protected DateTime $dueDate;
 
     #[ManyToOne(targetEntity: GuildSettings::class)]
@@ -104,8 +104,9 @@ class Work
 
     public function setDueDate(?DateTime $dueDate): self
     {
-        if ($dueDate !== null)
+        if ($dueDate !== null) {
             $this->dueDate = $dueDate;
+        }
 
         return $this;
     }

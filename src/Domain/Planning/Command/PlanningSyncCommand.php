@@ -9,6 +9,7 @@ use App\Domain\Planning\Entity\PlanningLog;
 use App\Domain\Planning\IPlanningDiscordNotifyService;
 use App\Domain\Planning\IPlanningSynchronizeService;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -22,7 +23,8 @@ class PlanningSyncCommand extends Command
     public function __construct(
         private EntityManagerInterface $em,
         private IPlanningSynchronizeService $planningConverterService,
-        private IPlanningDiscordNotifyService $discordMessageService
+        private IPlanningDiscordNotifyService $discordMessageService,
+        private LoggerInterface $appLogger,
     ) {
         parent::__construct(self::$defaultName);
     }
@@ -74,6 +76,7 @@ class PlanningSyncCommand extends Command
         }
 
         $io->success('Importation de ' . \count($data) . " éléments de l'ADE.");
+        $this->appLogger->info('Planning SYnc Recall : Importation de ' . \count($data) . " éléments de l'ADE.");
 
         $this->discordMessageService->notifyLogs();
 

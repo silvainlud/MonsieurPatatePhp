@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Domain\Section\Entity;
 
 use Doctrine\ORM\Mapping\Column;

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Work\Command;
 
 use App\Domain\Work\IWorkDiscordNotifyService;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -16,6 +17,7 @@ class WorkRecallCommand extends Command
 
     public function __construct(
         private IWorkDiscordNotifyService $notifyService,
+        private LoggerInterface $appLogger
     ) {
         parent::__construct(self::$defaultName);
     }
@@ -27,6 +29,7 @@ class WorkRecallCommand extends Command
         $works = $this->notifyService->processRecall();
 
         $io->success('Lancement de ' . \count($works) . ' rappel(s).');
+        $this->appLogger->info('Work Recall : Lancement de ' . \count($works) . ' rappel(s).');
 
         return Command::SUCCESS;
     }

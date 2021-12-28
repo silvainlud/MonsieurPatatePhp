@@ -52,7 +52,7 @@ class WorkType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Work::class,
-            "translation_domain" => false,
+            'translation_domain' => false,
         ]);
     }
 
