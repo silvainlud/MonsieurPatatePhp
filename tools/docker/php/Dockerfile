@@ -1,5 +1,10 @@
 
 FROM php:8.0-fpm-buster
+
+ARG UNAME=appuser
+ARG UID=1001
+ARG GID=1001
+
 RUN apt update -y && apt upgrade -y
 
 RUN apt-get clean && apt-get update && apt-get install --fix-missing wget apt-transport-https lsb-release ca-certificates gnupg2 -y
@@ -76,5 +81,9 @@ RUN wget https://get.symfony.com/cli/installer -O - | bash && \
 
 COPY php.ini /usr/local/etc/php/php.ini
 COPY conf.d /usr/local/etc/php/conf.d/
+
+RUN groupadd -g $GID -o $UNAME
+RUN useradd -m -u $UID -g $GID -o -s /bin/bash $UNAME
+USER $UNAME
 
 CMD ["php-fpm"]

@@ -1,0 +1,2 @@
+30 * * * * /usr/local/bin/php /var/www/bin/console app:planning:sync
+0 */2 * * * /usr/local/bin/php /var/www/bin/console app:work:recall
