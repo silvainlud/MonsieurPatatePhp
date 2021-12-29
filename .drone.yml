@@ -135,3 +135,8 @@ trigger:
     - promote
   target:
     - production
+---
+kind: signature
+hmac: 806054bdccf02ed956f93e026c8a57fbc0c1b381814cb870634f941d6fa0bb92
+
+...
