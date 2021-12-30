@@ -30,6 +30,7 @@ services:
       - {{ ansistrano_shared_path }}/var/spool:/var/www/var/spool
       - {{ ansistrano_shared_path }}/var/log:/var/www/var/log
       - {{ ansistrano_shared_path }}/var/cache:/var/www/var/cache
+      - {{ ansistrano_shared_path }}/var/data:/var/www/var/data
     working_dir: /var/www
     depends_on:
       - redis
