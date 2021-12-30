@@ -1,5 +1,15 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
-    <iframe src="{{ path('planning_index2') }}" frameborder="0" class="w-100 h-100"></iframe>
+    <div class="card w-100">
+        <div class="card-body text-center">
+            <h1>Emplois du temps</h1>
+            <h3 class="text-muted">{{ screen.modifiedDate|date("d/m/Y ~ H:i") }}</h3>
+
+            <img src="{{ path('planning_screen', {"week": screen.week,"year": screen.year}) }}"
+                 class="w-100"
+                 alt="">
+
+        </div>
+    </div>
 {% endblock %}

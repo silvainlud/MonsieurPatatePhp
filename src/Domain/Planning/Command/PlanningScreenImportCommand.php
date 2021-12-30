@@ -19,11 +19,10 @@ class PlanningScreenImportCommand extends Command
     protected static $defaultName = 'app:planning:screen:import';
 
     public function __construct(
-        private KernelInterface        $kernel,
+        private KernelInterface $kernel,
         private EntityManagerInterface $em,
-        private LoggerInterface        $appLogger
-    )
-    {
+        private LoggerInterface $appLogger
+    ) {
         parent::__construct(static::$defaultName);
     }
 
@@ -37,8 +36,8 @@ class PlanningScreenImportCommand extends Command
             foreach ($finder->in($this->getDataDir()) as $f) {
                 $fileName = $f->getFilenameWithoutExtension();
                 $split = explode('_', $fileName);
-                $year = (int)$split[2];
-                $week = (int)$split[1];
+                $year = (int) $split[2];
+                $week = (int) $split[1];
 
                 $screen = $this->em->getRepository(PlanningScreen::class)->findOneBy(['year' => $year, 'week' => $week]);
                 if ($screen === null) {
@@ -47,16 +46,16 @@ class PlanningScreenImportCommand extends Command
                 }
                 $screen->setFile($f->getContents());
 
-
                 $this->em->flush();
                 ++$countImage;
             }
-            if ($countImage > 0)
+            if ($countImage > 0) {
                 $this->em->flush();
+            }
 
-            foreach ($finder->in($this->getDataDir()) as $f)
-                $filesystem->remove((string)$f->getRealPath());
-
+            foreach ($finder->in($this->getDataDir()) as $f) {
+                $filesystem->remove((string) $f->getRealPath());
+            }
         }
 
         $this->appLogger->info('Planning Screen : importation de screenshots ' . $countImage . ' de l\'ADE.');
