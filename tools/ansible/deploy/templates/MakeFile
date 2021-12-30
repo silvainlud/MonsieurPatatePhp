@@ -2,7 +2,10 @@ discord-bot:
 	docker-compose -p {{ COMPOSE_PROJECT_NAME }} -f docker-compose.prod.yml pull bot
 	docker-compose -p {{ COMPOSE_PROJECT_NAME }} -f docker-compose.prod.yml up -d bot
 
-planning_screen_sync:
+planning-sync:
 	docker run --rm --user {{ ansible_user_id.stdout }}:{{ ansible_group_id.stdout }} -v {{ ansistrano_release_path.stdout }}/var/data:/app/data {{ default_image_planning }}
 	docker-compose -p {{ COMPOSE_PROJECT_NAME }} -f docker-compose.prod.yml exec -T php php bin/console app:planning:screen:import
 	docker-compose -p {{ COMPOSE_PROJECT_NAME }} -f docker-compose.prod.yml exec -T php php bin/console app:planning:sync
+
+work-recall:
+	docker-compose -p {{ COMPOSE_PROJECT_NAME }} -f docker-compose.prod.yml exec -T php php bin/console app:work:recall
