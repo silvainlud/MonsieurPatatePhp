@@ -6,6 +6,7 @@ namespace App\Http\Main\Controller;
 
 use App\Domain\Planning\Entity\PlanningScreen;
 use App\Infrastructure\Parameter\IParameterService;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,24 +24,32 @@ class PlanningController extends AbstractController
     }
 
     #[Route('', name: 'planning_index')]
-    public function Index(): Response
+    #[Route('/{year<\d+>}/{week<\d+>}', name: 'planning_day')]
+    public function Index(?int $year = null, ?int $week = null): Response
     {
-        $current = new \DateTime();
-        $screen = $this->em->getRepository(PlanningScreen::class)->findOneBy([
-            'year' => $current->format('Y'),
-            'week' => $current->format('W'),
-        ]);
-
-        if ($screen === null) {
-            throw $this->createNotFoundException();
+        if ($week === null || $year === null) {
+            $current = new \DateTime();
+            $week = (int) $current->format('W');
+            $year = (int) $current->format('Y');
         }
+
+        [$start, $end] = $this->getStartAndEndDate($week, $year);
+
+        $screen = $this->em->getRepository(PlanningScreen::class)->findOneBy([
+            'year' => $year,
+            'week' => $week,
+        ]);
 
         return $this->render('planning/index.html.twig', [
             'screen' => $screen,
+            'start' => $start,
+            'end' => $end,
+            'next' => (clone $start)->modify('+1 weeks'),
+            'previous' => (clone $start)->modify('-1 weeks'),
         ]);
     }
 
-    #[Route('/screen/{year<\d+>}/{week<\d+>}', name: 'planning_screen')]
+    #[Route('/screen/{year<\d+>}/{week<\d+>}/screen', name: 'planning_screen')]
     #[ParamConverter('screen', class: PlanningScreen::class)]
     public function Screen(PlanningScreen $screen): Response
     {
@@ -51,5 +60,17 @@ class PlanningController extends AbstractController
         $response->setContent((string) stream_get_contents($screen->getFile()));
 
         return $response;
+    }
+
+    /** @return DateTime[] */
+    private function getStartAndEndDate(int $week, int $year): array
+    {
+        $dto = new DateTime();
+        $dto->setISODate($year, $week);
+        $ret[0] = clone $dto;
+        $dto->modify('+6 days');
+        $ret[1] = $dto;
+
+        return $ret;
     }
 }
