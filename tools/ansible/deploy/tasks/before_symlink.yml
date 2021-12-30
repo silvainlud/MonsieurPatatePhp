@@ -98,10 +98,12 @@
     - "{{ ansistrano_shared_path }}/var/log"
     - "{{ ansistrano_shared_path }}/var/spool"
     - "{{ ansistrano_shared_path }}/var/cache"
+    - "{{ ansistrano_shared_path }}/var/data"
     - "{{ ansistrano_shared_path }}/var/mysql"
     - "{{ ansistrano_release_path.stdout }}/var"
     - "{{ ansistrano_release_path.stdout }}/var/mysql"
     - "{{ ansistrano_release_path.stdout }}/var/cache"
+    - "{{ ansistrano_release_path.stdout }}/var/data"
 
 #Passage sur l'instance de production
 - name: Prod | Docker | Pull
@@ -110,6 +112,9 @@
     chdir: "{{ ansistrano_release_path.stdout }}"
   environment:
     COMPOSE_PROJECT_NAME: "{{ COMPOSE_PROJECT_NAME }}"
+
+- name: Planning Screen | Docker | Pull
+  command: "docker pull {{ default_image_planning }}"
 
 - name: Prod | Docker | Up Mysql
   command: docker-compose -f docker-compose.prod.yml up -d {{ db_host }}
