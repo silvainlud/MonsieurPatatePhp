@@ -4,9 +4,9 @@
     <div class="card w-100">
         <div class="card-body text-center">
             <h1>
-                {{ start|format_datetime(pattern="d MMM YYYY",locale='fr') }}
+                {{ start|format_datetime(pattern="d MMM",locale='fr') }} {{ start|date("Y") }}
                 <i class="fas fa-long-arrow-alt-right"></i>
-                {{ end|format_datetime(pattern="d MMM YYYY",locale='fr') }}
+                {{ end|format_datetime(pattern="d MMM",locale='fr') }} {{ end|date("Y") }}
             </h1>
 
             {% if screen is not null %}
