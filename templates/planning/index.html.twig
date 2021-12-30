@@ -3,13 +3,19 @@
 {% block content %}
     <div class="card w-100">
         <div class="card-body text-center">
-            <h1>S{{ start|date("W") }} du {{ start|format_datetime(pattern="EEE d",locale='fr') }}
-                au {{ end|format_datetime(pattern="EEE d",locale='fr') }} </h1>
+            <h1>
+                {{ start|format_datetime(pattern="d MMM YYYY",locale='fr') }}
+                <i class="fas fa-long-arrow-alt-right"></i>
+                {{ end|format_datetime(pattern="d MMM YYYY",locale='fr') }}
+            </h1>
 
             {% if screen is not null %}
-                <img src="{{ path('planning_screen', {"week": screen.week,"year": screen.year}) }}"
-                     class="w-100"
-                     alt="">
+                <div class="mx-4">
+                    <img src="{{ path('planning_screen', {"week": screen.week,"year": screen.year}) }}"
+                         class="w-100"
+                         alt="">
+                </div>
+
 
 
                 <p class="text-center">
