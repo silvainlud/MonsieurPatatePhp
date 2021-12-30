@@ -76,7 +76,7 @@ class PlanningSyncCommand extends Command
         }
 
         $io->success('Importation de ' . \count($data) . " éléments de l'ADE.");
-        $this->appLogger->info('Planning SYnc Recall : Importation de ' . \count($data) . " éléments de l'ADE.");
+        $this->appLogger->info('Planning Sync : Importation de ' . \count($data) . " éléments de l'ADE dans la DB.");
 
         $this->discordMessageService->notifyLogs();
 
