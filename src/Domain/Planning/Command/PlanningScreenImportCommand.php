@@ -55,7 +55,7 @@ class PlanningScreenImportCommand extends Command
                 $this->em->flush();
 
             foreach ($finder->in($this->getDataDir()) as $f)
-                $filesystem->remove($f->getRealPath());
+                $filesystem->remove((string)$f->getRealPath());
 
         }
 
