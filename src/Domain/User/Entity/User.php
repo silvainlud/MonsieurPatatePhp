@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace App\Domain\User\Entity;
 
+use App\Domain\User\UserSecretGenerator;
 use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\CustomIdGenerator;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[Entity]
-class User implements UserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[Id, GeneratedValue(strategy: 'AUTO')]
     #[Column(type: 'integer')]
@@ -28,6 +31,15 @@ class User implements UserInterface
 
     #[Column(type: 'string', length: 25)]
     private string $discordId;
+
+    #[Column(type: 'string', length: 32, nullable: false)]
+    private string $secretKey;
+
+
+    public function __construct()
+    {
+        $this->secretKey = UserSecretGenerator::generateSecret();
+    }
 
     public function getRoles(): array
     {
@@ -92,6 +104,18 @@ class User implements UserInterface
     public function setAvatar(string $avatar): self
     {
         $this->avatar = $avatar;
+
+        return $this;
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->secretKey;
+    }
+
+    public function setSecretKey(string $secretKey): self
+    {
+        $this->secretKey = $secretKey;
 
         return $this;
     }

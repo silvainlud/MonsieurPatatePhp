@@ -18,6 +18,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Http\Authenticator\Passport\Badge\RememberMeBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
@@ -82,13 +83,18 @@ class DiscordAuthenticator extends OAuth2Authenticator
                 $this->entityManager->flush();
 
                 return $user;
-            })
+            }),
+            [
+                (new RememberMeBadge())->enable(),
+            ]
         );
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
         $targetUrl = $this->router->generate('index');
+        // Set the rememberMe info for the request so isRememberMeRequested() in AbstractRememberMeServices will return true
+        $request->request->set('_remember_me', '1');
 
         return new RedirectResponse($targetUrl);
     }
