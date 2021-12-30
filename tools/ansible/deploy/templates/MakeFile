@@ -9,3 +9,13 @@ planning-sync:
 
 work-recall:
 	docker-compose -p {{ COMPOSE_PROJECT_NAME }} -f docker-compose.prod.yml exec -T php php bin/console app:work:recall
+
+
+php:
+	docker-compose -p {{ COMPOSE_PROJECT_NAME }} -f docker-compose.prod.yml exec php bash
+
+db:
+	docker-compose -p {{ COMPOSE_PROJECT_NAME }} -f docker-compose.prod.yml exec {{ db_host }} mysql -uroot
+
+bot_log:
+	docker-compose -p {{ COMPOSE_PROJECT_NAME }} -f docker-compose.prod.yml logs -f bot
