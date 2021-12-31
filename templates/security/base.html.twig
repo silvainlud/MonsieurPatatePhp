@@ -15,48 +15,24 @@
             Silvain.eu
         </div>
         <div class="stack-spacer"></div>
-        <div class="login-header">
-            <div class="login-header-icon">
-                <img alt="Logo" class="logo" src="{{ asset('images/books.png') }}">
+        {% block body %}
+            <div class="login-header">
+                <div class="login-header-icon">
+                    {% block header_img %}
+                        <img alt="Logo" class="logo" src="{{ asset('images/books.png') }}">
+                    {% endblock %}
+                </div>
+                <div class="login-header-content">
+                    <h1>Monsieur Patate Bot</h1>
+                    {% block header_content %}
+                        <h2>Se connecter</h2>
+                    {% endblock %}
+                </div>
             </div>
-            <div class="login-header-content">
-                <h1>Monsieur Patate Bot</h1>
-                <h2>Se connecter</h2>
+            <div class="login-zone {% block class_zone %}{% endblock %}">
+                {% block content %}{% endblock %}
             </div>
-        </div>
-        <div class="login-zone {% block class_zone %}{% endblock %}">
-            {% block body %}{% endblock %}
-
-            <form method="post" class="form-zone mt-4">
-                {% if error %}
-                    <p class="color-red">{{ error.messageKey|trans(error.messageData, 'security') }}</p>
-                {% endif %}
-                <div class="form-row">
-                    <label for="inputEmail">Nom d'utilisateur</label>
-                    <input type="email" name="email" id="inputEmail" class="form-control" required autofocus>
-                </div>
-                <div class="form-row">
-                    <label for="inputPassword">Mot de passe</label>
-                    <input type="password" name="password" id="inputPassword"
-                           class="form-control" required>
-                </div>
-
-
-                <div class="form-submit">
-                    <div class="flex-grow-1"></div>
-                    <button class="btn btn-small btn-dark-grey"
-                            type="submit">
-                        Se connecter
-                        <i class="fas fa-sign-in-alt"></i>
-                    </button>
-                </div>
-            </form>
-            <hr>
-            <a href="{{ path('login_discord') }}" class="btn btn-discord mt-4">
-                <img src="{{ asset('images/Discord-Logo-White.svg') }}" alt="Discord Logo">
-                Discord
-            </a>
-        </div>
+        {% endblock %}
         <div class="stack-spacer"></div>
         <footer>
             {% block footer %}{% endblock footer %}

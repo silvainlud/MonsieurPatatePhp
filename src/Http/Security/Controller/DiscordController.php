@@ -22,7 +22,7 @@ class DiscordController extends AbstractController
     {
         $errors = $authenticationUtils->getLastAuthenticationError();
 
-        return $this->render('security/base.html.twig', [
+        return $this->render('security/login.html.twig', [
             'error' => $errors,
         ]);
     }
