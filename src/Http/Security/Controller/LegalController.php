@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Security\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -12,10 +14,7 @@ class LegalController extends AbstractController
     #[Route('/notice', name: 'legal_notice')]
     public function legalNotice(): Response
     {
-
-
         return $this->render('security/legal/notice.html.twig', [
-
         ]);
     }
 }
