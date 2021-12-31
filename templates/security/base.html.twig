@@ -36,7 +36,8 @@
         <div class="stack-spacer"></div>
         <footer>
             {% block footer %}{% endblock footer %}
-            Site réalisé par : Ludwig SILVAIN | Copyright © Ludwig SILVAIN {{ "now"|date("Y") }}
+            <p><a href="{{ path('legal_notice') }}">Mentions légales</a></p>
+            <p>Copyright © Ludwig SILVAIN {{ "now"|date("Y") }}</p>
         </footer>
     </div>
     <div class="login-background"></div>
