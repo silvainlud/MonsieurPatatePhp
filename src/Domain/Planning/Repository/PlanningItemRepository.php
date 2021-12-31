@@ -41,10 +41,9 @@ class PlanningItemRepository extends ServiceEntityRepository
         if ($date === null) {
             $date = new \DateTime();
         }
-//        dd($date->format('Y-m-d 00:00:00'));
 
         return $this->createQueryBuilder('i')
-            ->andWhere('i.dateStart BETWEEN :dateMin AND :dateMax')->setParameters([
+            ->andWhere('(i.dateStart BETWEEN :dateMin AND :dateMax) or (i.dateEnd BETWEEN :dateMin AND :dateMax)')->setParameters([
                 'dateMin' => $date,
                 'dateMax' => $date->format('Y-m-d 23:59:59'),
             ])
