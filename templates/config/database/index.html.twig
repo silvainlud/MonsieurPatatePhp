@@ -77,6 +77,8 @@
                     <tr>
                         <td>Nom</td>
                         <td>Email</td>
+                        <td>Discord</td>
+                        <td>Nick</td>
                     </tr>
                     </thead>
                     <tbody>
@@ -84,6 +86,15 @@
                         <tr>
                             <td>{{ c.username }}</td>
                             <td>{{ c.email }}</td>
+                            {% if members[c.discordId] is defined %}
+                                <td title="{{ c.discordId }}">
+                                    {{ members[c.discordId].user.username -}}#{{- members[c.discordId].user.discriminator }}
+                                </td>
+                                <td>{{ members[c.discordId].nick }}</td>
+                            {% else %}
+                                <td>??</td>
+                                <td>??</td>
+                            {% endif %}
                         </tr>
                     {% endfor %}
                     </tbody>

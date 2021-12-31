@@ -13,6 +13,7 @@ use App\Domain\User\Entity\User;
 use App\Domain\Work\Entity\WorkCategory;
 use App\Domain\Work\Form\WorkCategoryType;
 use App\Infrastructure\Discord\Entity\Channel\CategoryChannel;
+use App\Infrastructure\Discord\Entity\DiscordMember;
 use App\Infrastructure\Discord\Entity\DiscordRole;
 use App\Infrastructure\Discord\IDiscordGuildService;
 use App\Infrastructure\Parameter\IParameterService;
@@ -117,6 +118,13 @@ class ConfigurationController extends AbstractController
             return $acc;
         }, []);
 
+        $members = $this->guildService->getGuildMembers($this->parameterService->getGuildId());
+        $members = array_reduce($members, function (array $acc, DiscordMember $member) {
+            $acc[$member->getUser()->getId()] = $member;
+
+            return $acc;
+        }, []);
+
         return $this->render('config/database/index.html.twig', [
             'users' => $users,
             'sections' => $sections,
@@ -125,6 +133,7 @@ class ConfigurationController extends AbstractController
             'categories' => $categoryChannels,
             'channels' => $otherChannels,
             'roles' => $roles,
+            'members' => $members,
         ]);
     }
 }
