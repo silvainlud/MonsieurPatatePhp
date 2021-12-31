@@ -26,8 +26,10 @@
         </div>
     </form>
     <hr>
-    <a href="{{ path('login_discord') }}" class="btn btn-discord mt-4">
-        <img src="{{ asset('images/Discord-Logo-White.svg') }}" alt="Discord Logo">
-        Discord
-    </a>
+  <div class="hstack stack-center">
+      <a href="{{ path('login_discord') }}" class="btn btn-discord mt-4">
+          <img src="{{ asset('images/Discord-Logo-White.svg') }}" alt="Discord Logo">
+          Discord
+      </a>
+  </div>
 {% endblock %}
