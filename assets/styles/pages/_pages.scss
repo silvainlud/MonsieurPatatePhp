@@ -1,0 +1,36 @@
+@import "dashboard_index";
+
+#dashboard-index {
+  @extend .grid2
+}
+
+#next-planning-item > .card > .card-body {
+  display: grid;
+  grid-template-columns: 1fr;
+
+  .planning-item-time {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    margin-top: 20px;
+
+    & > * {
+      margin-right: 7px;
+    }
+  }
+
+  @media screen and (min-width: 650px) {
+    grid-template-columns: 1fr 150px;
+    .planning-item-time {
+      flex-direction: column;
+      align-items: end;
+      justify-content: center;
+      margin-top: 0;
+
+      & > * {
+        margin-right: 0;
+        margin-bottom: 7px;
+      }
+    }
+  }
+}
