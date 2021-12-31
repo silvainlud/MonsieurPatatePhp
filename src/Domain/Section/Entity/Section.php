@@ -50,7 +50,8 @@ class Section
     protected string $name;
 
     #[Column(type: 'blob')]
-    protected string $emoji;
+    /** @var resource */
+    protected mixed $emoji;
 
     #[Column(type: 'string', length: 10)]
     protected string $visibility;
@@ -150,12 +151,14 @@ class Section
         return $this;
     }
 
-    public function getEmoji(): string
+    /** @return resource */
+    public function getEmoji(): mixed
     {
         return $this->emoji;
     }
 
-    public function setEmoji(string $emoji): self
+    /** @param resource $emoji */
+    public function setEmoji(mixed $emoji): self
     {
         $this->emoji = $emoji;
 
@@ -220,5 +223,9 @@ class Section
         $this->guildSettings = $guildSettings;
 
         return $this;
+    }
+
+    public function getEmojiString() : string{
+        return (string)stream_get_contents($this->emoji);
     }
 }

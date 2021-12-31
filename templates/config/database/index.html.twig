@@ -1,0 +1,165 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <div class="content content-center">
+        {# Sections #}
+        <div class="card mt-5">
+            <div class="card-body">
+                <div class="hstack">
+                    <h2 class="text-center">Sections</h2>
+                    <div class="stack-spacer"></div>
+                </div>
+                <table>
+                    <thead>
+                    <tr>
+                        <td>#</td>
+                        <td>Name</td>
+                        <td>Visibilité</td>
+                        <td>Catégorie</td>
+                        <td>Announce</td>
+                        <td>Role</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for c in sections %}
+                        <tr>
+                            <td>{{ c.getEmojiString() }}</td>
+                            <td>{{ c.name }}</td>
+                            <td>{{ c.visibility }}</td>
+                            <td>
+                                {% if c.categoryId is not null and categories[c.categoryId] is defined %}
+                                    {{ categories[c.categoryId].name }}
+                                {% else %}
+                                    ??
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if c.announceChannelId is not null %}
+                                    {% if channels[c.announceChannelId] is defined %}
+
+                                        {% if channels[c.announceChannelId].getParent() is defined
+                                            and channels[c.announceChannelId].getParent().id != c.categoryId %}
+                                            {{ channels[c.announceChannelId].getParent().name }}
+                                        {% endif %}
+                                        {{ channels[c.announceChannelId].name }}
+                                    {% else %}
+                                        ??
+                                    {% endif %}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if c.roleId is not null and roles[c.roleId] is defined %}
+                                    {% if roles[c.roleId].color == 0 %}
+                                        {{ roles[c.roleId].name }}
+                                    {% else %}
+                                        <span style="color: {{ roles[c.roleId].color|discord_color }}">{{ roles[c.roleId].name }}</span>
+                                    {% endif %}
+                                {% else %}
+                                    ??
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        {# Utilisateurs #}
+        <div class="card mt-5">
+            <div class="card-body">
+                <div class="hstack">
+                    <h2 class="text-center">Utilisateurs</h2>
+                    <div class="stack-spacer"></div>
+                </div>
+                <table>
+                    <thead>
+                    <tr>
+                        <td>Nom</td>
+                        <td>Email</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for c in users %}
+                        <tr>
+                            <td>{{ c.username }}</td>
+                            <td>{{ c.email }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        {# Planning Screen #}
+        <div class="card mt-5">
+            <div class="card-body">
+                <div class="hstack">
+                    <h2 class="text-center">Screenshot</h2>
+                    <div class="stack-spacer"></div>
+                </div>
+                <table>
+                    <thead>
+                    <tr>
+                        <td>Année</td>
+                        <td>Semaine</td>
+                        <td>Date de modification</td>
+                        <td>Lien</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for c in screens %}
+                        <tr>
+                            <td>{{ c.year }}</td>
+                            <td>{{ c.week }}</td>
+                            <td>{{ c.modifiedDate|date("d/m/Y H:i") }}</td>
+                            <td>
+                                <a href="{{ path('planning_screen', {'week': c.week, 'year': c.year}) }}"
+                                   target="_blank">
+                                    Ici
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        {# Planning Logs #}
+        <div class="card mt-5">
+            <div class="card-body">
+                <div class="hstack">
+                    <h2 class="text-center">ADE Logs</h2>
+                    <div class="stack-spacer"></div>
+                </div>
+                <table>
+                    <thead>
+                    <tr>
+                        <td>Type</td>
+                        <td>Ajout</td>
+                        <td>Date</td>
+                        <td>Titre</td>
+                        <td>Champs</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for c in itemLogs %}
+                        <tr>
+                            <td>{{ c.actionType }}</td>
+                            <td>{{ c.dateCreate|date("d/m/Y H:i") }}</td>
+                            <td>
+                                {{ (c.dateStartNext ?? c.dateStartPrevious?? "01/01/1970")|date("d/m/Y - H:i") }}
+                                {{ (c.dateEndNext ?? c.dateEndPrevious ?? "01/01/1970")|date("H:i") }}
+                            </td>
+                            <td>{{ c.titleNext ?? c.titlePrevious ?? "??" }}</td>
+                            <td>{{ c.updatedField|serialize }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
