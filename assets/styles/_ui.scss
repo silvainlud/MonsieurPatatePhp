@@ -24,17 +24,27 @@ body {
   box-sizing: inherit;
 }
 
+a:not(.btn) {
+  color: var(--color-text_href);
+  text-decoration: none;
+  transition: color 0.3ms;
 
-h1, h2, h3, h4 {
-  a {
-    color: inherit;
-    text-decoration: none;
-    transition: color 0.3ms;
-    &:hover{
-      color: var(--color-text_hover);
-    }
+  &:hover {
+    color: var(--color-text_href_hover);
   }
 }
+
+//h1, h2, h3, h4 {
+//  a {
+//    color: inherit;
+//    text-decoration: none;
+//    transition: color 0.3ms;
+//
+//    &:hover {
+//      color: var(--color-text_href_hover);
+//    }
+//  }
+//}
 
 h1 {
   margin: 4px 0;

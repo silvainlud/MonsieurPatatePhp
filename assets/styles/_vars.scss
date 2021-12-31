@@ -47,6 +47,8 @@ $colors: (
   --color-main-background: #353b48;
   --color-text: white;
   --color-text_inverse: black;
+  --color-text_href: #{darken(white, 30%)};
+  --color-text_href_hover: #{darken(white, 10%)};
   --color-text_hover: #{darken(white, 25%)};
 
   --color-input-color: #ecf0f1;
