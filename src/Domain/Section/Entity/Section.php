@@ -225,7 +225,8 @@ class Section
         return $this;
     }
 
-    public function getEmojiString() : string{
-        return (string)stream_get_contents($this->emoji);
+    public function getEmojiString(): string
+    {
+        return (string) stream_get_contents($this->emoji);
     }
 }
