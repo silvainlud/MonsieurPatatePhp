@@ -6,7 +6,6 @@ namespace App\Domain\User\Entity;
 
 use App\Domain\User\UserSecretGenerator;
 use Doctrine\ORM\Mapping\Column;
-use Doctrine\ORM\Mapping\CustomIdGenerator;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
@@ -34,7 +33,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[Column(type: 'string', length: 32, nullable: false)]
     private string $secretKey;
-
 
     public function __construct()
     {

@@ -21,10 +21,12 @@ class IndexController extends AbstractController
     {
         $works = $this->workRepository->findCurrentWork();
         $items = $this->planningItemRepository->findFuture();
+        $todayItems = $this->planningItemRepository->findDate();
 
         return $this->render('index.html.twig', [
             'works' => $works,
             'items' => $items,
+            'todayItems' => $todayItems,
         ]);
     }
 

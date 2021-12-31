@@ -34,4 +34,22 @@ class PlanningItemRepository extends ServiceEntityRepository
             ->addOrderBy('i.dateEnd', 'ASC')
             ->setMaxResults($limit)->getQuery()->getResult();
     }
+
+    /** @return PlanningItem[] */
+    public function findDate(?\DateTime $date = null): array
+    {
+        if ($date === null) {
+            $date = new \DateTime();
+        }
+//        dd($date->format('Y-m-d 00:00:00'));
+
+        return $this->createQueryBuilder('i')
+            ->andWhere('i.dateStart BETWEEN :dateMin AND :dateMax')->setParameters([
+                'dateMin' => $date,
+                'dateMax' => $date->format('Y-m-d 23:59:59'),
+            ])
+            ->addOrderBy('i.dateStart', 'ASC')
+            ->addOrderBy('i.dateEnd', 'ASC')
+            ->getQuery()->getResult();
+    }
 }
