@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
+#[Route('/login')]
 class DiscordController extends AbstractController
 {
     public function __construct(private OauthDiscordUrl $discordUrl)
@@ -27,13 +28,13 @@ class DiscordController extends AbstractController
         ]);
     }
 
-    #[Route('discord', name: 'login_discord')]
+    #[Route('/discord', name: 'login_discord')]
     public function discord(): Response
     {
         return $this->redirect($this->discordUrl->getUrlLogin());
     }
 
-    #[Route('discord/check', name: 'login_discord_check')]
+    #[Route('/discord/check', name: 'login_discord_check')]
     public function check(Request $request): Response
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
