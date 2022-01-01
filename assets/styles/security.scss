@@ -27,7 +27,7 @@ body {
 
 body > .login-content {
 
-  background-image: linear-gradient(to right, #272a37 750px, rgba(255, 255, 255, 0)), url("/images/login-screen.jpg");
+  background-image: linear-gradient(to right, #272a37 750px, rgba(255, 255, 255, 0)), url("../images/login-screen.jpg");
   color: var(--color-text);
   flex-direction: column;
   justify-content: center;
