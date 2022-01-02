@@ -23,6 +23,7 @@ RUN apt install libssl-dev -y
 RUN apt install libcurl4-openssl-dev -y
 RUN apt install unixodbc-dev -y
 RUN apt install libpng-dev -y
+RUN apt install logrotate -y
 
 RUN set -ex; \
 	docker-php-source extract; \
