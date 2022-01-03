@@ -74,7 +74,7 @@ class PlanningSynchronizeService implements IPlanningSynchronizeService
 
     public function filter(PlanningItem $i): bool
     {
-        return $i->getDateStart() >= (new DateTime()) && (
+        return $i->getDateEnd() >= (new DateTime()) && (
             !str_contains('vacance', strtolower($i->getTitle()))
                 && !str_contains('vacances', strtolower($i->getTitle()))
         );
