@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App\Domain\Work\Command;
 
 use App\Domain\Work\IWorkDiscordNotifyService;
+use App\Domain\Work\IWorkService;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -17,6 +19,7 @@ class WorkRecallCommand extends Command
 
     public function __construct(
         private IWorkDiscordNotifyService $notifyService,
+        private IWorkService $workService,
         private LoggerInterface $appLogger
     ) {
         parent::__construct(self::$defaultName);
@@ -25,6 +28,11 @@ class WorkRecallCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
+        $allMode = (bool) $input->getOption('all');
+
+        if ($allMode) {
+            $this->workService->resetAllRecallDate();
+        }
 
         $works = $this->notifyService->processRecall();
 
@@ -36,6 +44,7 @@ class WorkRecallCommand extends Command
 
     protected function configure(): void
     {
-        $this->setDescription('Lancement des rappel concernant les devoirs.');
+        $this->setDescription('Lancement des rappel concernant les devoirs.')
+            ->addOption('all', null, InputOption::VALUE_NONE, 'Fixer toutes les dates de rappel de pour les devoirs.');
     }
 }

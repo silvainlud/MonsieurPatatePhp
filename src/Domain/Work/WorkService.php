@@ -5,10 +5,16 @@ declare(strict_types=1);
 namespace App\Domain\Work;
 
 use App\Domain\Work\Entity\Work;
+use App\Domain\Work\Repository\WorkRepository;
 use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
 
 class WorkService implements IWorkService
 {
+    public function __construct(private WorkRepository $workRepository, private EntityManagerInterface $em)
+    {
+    }
+
     public function calculateNextRecallDate(Work $work): Work
     {
         $now = new DateTime();
@@ -26,5 +32,14 @@ class WorkService implements IWorkService
         }
 
         return $work;
+    }
+
+    public function resetAllRecallDate(): void
+    {
+        $works = $this->workRepository->findCurrentWork();
+        foreach ($works as $w) {
+            $this->calculateNextRecallDate($w);
+        }
+        $this->em->flush();
     }
 }

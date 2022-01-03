@@ -11,4 +11,6 @@ interface IWorkService
     public const RECALL_PERIOD = ['- 2 weeks', '- 1 weeks', '- 3 days', '- 17 hours'];
 
     public function calculateNextRecallDate(Work $work): Work;
+
+    public function resetAllRecallDate(): void;
 }
