@@ -137,6 +137,36 @@
             </div>
         </div>
 
+        {# Devoirs #}
+        <div class="card mt-5">
+            <div class="card-body">
+                <div class="hstack">
+                    <h2 class="text-center">Devoirs</h2>
+                    <div class="stack-spacer"></div>
+                </div>
+                <table>
+                    <thead>
+                    <tr>
+                        <td>Nom</td>
+                        <td>Catégorie</td>
+                        <td>Date</td>
+                        <td>Rappel</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for c in works %}
+                        <tr>
+                            <td>{{ c.name }}</td>
+                            <td>{{ c.workCategory.name }}</td>
+                            <td>{{ c.dueDate|date("d/m/Y H:i") }}</td>
+                            <td>{{ c.recallDate|date("d/m/Y H:i") }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
         {# Planning Logs #}
         <div class="card mt-5">
             <div class="card-body">

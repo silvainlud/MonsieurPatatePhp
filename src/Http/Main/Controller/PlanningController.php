@@ -18,10 +18,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class PlanningController extends AbstractController
 {
     public function __construct(
-        private IParameterService      $parameterService,
+        private IParameterService $parameterService,
         private EntityManagerInterface $em
-    )
-    {
+    ) {
     }
 
     #[Route('', name: 'planning_index')]
@@ -30,8 +29,8 @@ class PlanningController extends AbstractController
     {
         if ($week === null || $year === null) {
             $current = new \DateTime();
-            $week = (int)$current->format('W');
-            $year = (int)$current->format('o');
+            $week = (int) $current->format('W');
+            $year = (int) $current->format('o');
         }
 
         [$start, $end] = $this->getStartAndEndDate($week, $year);
@@ -58,7 +57,7 @@ class PlanningController extends AbstractController
         $disposition = $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_INLINE, md5(uniqid()));
         $response->headers->set('Content-Disposition', $disposition);
         $response->headers->set('Content-Type', 'image/png');
-        $response->setContent((string)stream_get_contents($screen->getFile()));
+        $response->setContent((string) stream_get_contents($screen->getFile()));
 
         return $response;
     }

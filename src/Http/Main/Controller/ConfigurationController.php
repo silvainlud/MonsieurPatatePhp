@@ -12,6 +12,7 @@ use App\Domain\Section\Entity\Section;
 use App\Domain\User\Entity\User;
 use App\Domain\Work\Entity\WorkCategory;
 use App\Domain\Work\Form\WorkCategoryType;
+use App\Domain\Work\Repository\WorkRepository;
 use App\Infrastructure\Discord\Entity\Channel\CategoryChannel;
 use App\Infrastructure\Discord\Entity\DiscordMember;
 use App\Infrastructure\Discord\Entity\DiscordRole;
@@ -33,6 +34,7 @@ class ConfigurationController extends AbstractController
     public function __construct(
         private IParameterService $parameterService,
         private EntityManagerInterface $em,
+        private WorkRepository $workRepository,
         private IDiscordGuildService $guildService,
     ) {
     }
@@ -125,6 +127,8 @@ class ConfigurationController extends AbstractController
             return $acc;
         }, []);
 
+        $works = $this->workRepository->findCurrentWork();
+
         return $this->render('config/database/index.html.twig', [
             'users' => $users,
             'sections' => $sections,
@@ -134,6 +138,7 @@ class ConfigurationController extends AbstractController
             'channels' => $otherChannels,
             'roles' => $roles,
             'members' => $members,
+            'works' => $works,
         ]);
     }
 }
