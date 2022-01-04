@@ -52,6 +52,7 @@ services:
     networks:
       - backend
   bot:
+    user: "{{ ansible_user_id.stdout }}:{{ ansible_group_id.stdout }}"
     restart: always
     image: "{{ default_image_bot }}"
     environment:
@@ -62,6 +63,8 @@ services:
       db_username: "{{ db_user }}"
       db_password: "{{ db_password }}"
       db_database: "{{ db_database }}"
+    volumes:
+      - {{ ansistrano_shared_path }}/var/log:/usr/src/app/var/log
     networks:
       - backend
 
