@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Main\Controller;
 
+use App\Domain\Planning\Entity\PlanningItem;
 use App\Domain\Planning\Entity\PlanningScreen;
 use App\Infrastructure\Parameter\IParameterService;
 use DateTime;
@@ -31,6 +32,18 @@ class PlanningController extends AbstractController
             $current = new \DateTime();
             $week = (int)$current->format('W');
             $year = (int)$current->format('o');
+            [, $end] = $this->getStartAndEndDate($week, $year);
+            $items = $this->em->getRepository(PlanningItem::class)->findBetweenDates(
+                $current,
+                $end->format("Y-m-d 23:59:59")
+            );
+
+            if (count($items) === 0){
+                $current = $current->modify("+ 7 days");
+                $week = (int)$current->format('W');
+                $year = (int)$current->format('o');
+            }
+
         }
 
         [$start, $end] = $this->getStartAndEndDate($week, $year);
@@ -55,7 +68,7 @@ class PlanningController extends AbstractController
     {
         $response = new Response();
         $disposition = $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_INLINE,
-            md5($screen->getWeek() . "_" . $screen->getYear()).".png");
+            md5($screen->getWeek() . "_" . $screen->getYear()) . ".png");
         $response->headers->set('Content-Disposition', $disposition);
         $response->headers->set('Content-Type', 'image/png');
         $response->setContent((string)stream_get_contents($screen->getFile()));
