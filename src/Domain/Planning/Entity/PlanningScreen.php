@@ -54,7 +54,6 @@ class PlanningScreen
         return $this->file;
     }
 
-    /** @var resource|string $file */
     public function setFile(mixed $file): self
     {
         $this->file = $file;

@@ -18,7 +18,6 @@ use Symfony\Component\Routing\Annotation\Route;
 class PlanningController extends AbstractController
 {
     public function __construct(
-        private IParameterService      $parameterService,
         private EntityManagerInterface $em
     )
     {

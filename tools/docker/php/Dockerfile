@@ -1,5 +1,5 @@
 
-FROM php:8.0-fpm-buster
+FROM php:8.1-fpm-buster
 
 ARG UNAME=appuser
 ARG UID=1001
