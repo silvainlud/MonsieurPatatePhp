@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Discord\Subscriber;
 
-use App\Domain\User\Entity\User;
+use App\Domain\User\Entity\AbstractUser;
+use App\Domain\User\Entity\DiscordUser;
 use App\Infrastructure\Discord\DiscordUserService;
 use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -24,7 +25,7 @@ class LoginCacheSubscriber implements EventSubscriberInterface
     public function onLoginSuccess(LoginSuccessEvent $event): void
     {
         $u = $event->getUser();
-        if ($u instanceof User) {
+        if ($u instanceof DiscordUser) {
             $this->cache->deleteItem(DiscordUserService::CACHE_KEY_USER_ROLES . $u->getDiscordId());
         }
     }

@@ -9,7 +9,7 @@ use App\Domain\Guild\Form\GuildSettingsType;
 use App\Domain\Planning\Entity\PlanningLog;
 use App\Domain\Planning\Entity\PlanningScreen;
 use App\Domain\Section\Entity\Section;
-use App\Domain\User\Entity\User;
+use App\Domain\User\Entity\AbstractUser;
 use App\Domain\Work\Entity\WorkCategory;
 use App\Domain\Work\Form\WorkCategoryType;
 use App\Domain\Work\Repository\WorkRepository;
@@ -94,7 +94,7 @@ class ConfigurationController extends AbstractController
     public function database(): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        $users = $this->em->getRepository(User::class)->findAll();
+        $users = $this->em->getRepository(AbstractUser::class)->findAll();
         $sections = $this->em->getRepository(Section::class)->findBy(['guildSettings' => $this->parameterService->getGuildId()]);
         $screens = $this->em->getRepository(PlanningScreen::class)->findBy([], ['year' => 'desc', 'week' => 'desc']);
         $itemLogs = $this->em->getRepository(PlanningLog::class)->findBy([], ['dateCreate' => 'desc']);

@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Security;
 
-use App\Domain\User\Entity\User;
+use App\Domain\User\Entity\AbstractUser;
+use App\Domain\User\Entity\DiscordUser;
 use App\Infrastructure\Discord\IDiscordGuildService;
 use App\Infrastructure\Parameter\IParameterService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -64,15 +65,16 @@ class DiscordAuthenticator extends OAuth2Authenticator
                     throw new UserNotFoundException();
                 }
 
-                $existingUser = $this->entityManager->getRepository(User::class)->findOneBy(['discordId' => $discordUser->getId()]);
+                $existingUser = $this->entityManager->getRepository(DiscordUser::class)->findOneBy(['discordId' => $discordUser->getId()]);
 
                 if ($existingUser) {
                     return $existingUser;
                 }
 
-                $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $email]);
+                $user = $this->entityManager->getRepository(DiscordUser::class)->findOneBy(['email' => $email]);
                 if ($user === null) {
-                    $user = (new User())->setEmail((string) $email);
+                    $user = (new DiscordUser());
+                    $user->setEmail((string) $email);
                 }
 
                 $user->setAvatar((string) $discordUser->getAvatarHash());

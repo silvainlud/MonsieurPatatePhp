@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 #[Route('/login')]
-class DiscordController extends AbstractController
+class LoginController extends AbstractController
 {
     public function __construct(private OauthDiscordUrl $discordUrl)
     {
@@ -21,11 +21,14 @@ class DiscordController extends AbstractController
     #[Route('', name: 'login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        $errors = $authenticationUtils->getLastAuthenticationError();
+        if ($this->getUser()) {
+            return $this->redirectToRoute('index');
+        }
 
-        return $this->render('security/login.html.twig', [
-            'error' => $errors,
-        ]);
+        $error = $authenticationUtils->getLastAuthenticationError();
+        $lastUsername = $authenticationUtils->getLastUsername();
+
+        return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
 
     #[Route('/discord', name: 'login_discord')]

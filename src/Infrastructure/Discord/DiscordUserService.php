@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Discord;
 
-use App\Domain\User\Entity\User;
+use App\Domain\User\Entity\AbstractUser;
+use App\Domain\User\Entity\DiscordUser;
 use App\Infrastructure\Discord\Entity\DiscordRole;
 use App\Infrastructure\Parameter\IParameterService;
 use Psr\Cache\CacheItemPoolInterface;
@@ -25,13 +26,13 @@ class DiscordUserService implements IDiscordUserService
     ) {
     }
 
-    public function getAvatarUser(User $user): string
+    public function getAvatarUser(DiscordUser $user): string
     {
         return "https://cdn.discordapp.com/avatars/{$user->getDiscordId()}/{$user->getAvatar()}.png";
     }
 
     /** {@inheritDoc} */
-    public function getRoles(User $user): array
+    public function getRoles(DiscordUser $user): array
     {
         $i = $this->cache->getItem(self::CACHE_KEY_USER_ROLES . $user->getDiscordId());
         if (!$i->isHit()) {

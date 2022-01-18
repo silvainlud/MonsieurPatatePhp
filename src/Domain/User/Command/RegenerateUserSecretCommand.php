@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\User\Command;
 
-use App\Domain\User\Entity\User;
+use App\Domain\User\Entity\AbstractUser;
+use App\Domain\User\Entity\DiscordUser;
 use App\Domain\User\UserSecretGenerator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -23,7 +24,7 @@ class RegenerateUserSecretCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $users = $this->em->getRepository(User::class)->findAll();
+        $users = $this->em->getRepository(DiscordUser::class)->findAll();
         foreach ($users as $u) {
             $u->setSecretKey(UserSecretGenerator::generateSecret());
         }

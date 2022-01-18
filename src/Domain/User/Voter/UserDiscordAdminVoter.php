@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\User\Voter;
 
-use App\Domain\User\Entity\User;
+use App\Domain\User\Entity\AbstractUser;
+use App\Domain\User\Entity\DiscordUser;
 use App\Infrastructure\Discord\IDiscordGuildService;
 use App\Infrastructure\Discord\IDiscordUserService;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -20,24 +21,27 @@ class UserDiscordAdminVoter extends Voter
 
     protected function supports(string $attribute, mixed $subject): bool
     {
-        return $attribute === self::DISCORD_ADMIN_ROLE_ADMIN && ($subject === null || $subject instanceof User);
+        return $attribute === self::DISCORD_ADMIN_ROLE_ADMIN && ($subject === null || $subject instanceof AbstractUser);
     }
 
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
-        /** @var User $user */
-        $user = ($subject instanceof User) ? $subject : $token->getUser();
+        /** @var AbstractUser $user */
+        $user = ($subject instanceof AbstractUser) ? $subject : $token->getUser();
 
-        $userRoles = $this->discordUserService->getRoles($user);
-        if (\count($userRoles) === 0) {
-            return false;
-        }
-        $guildRoles = $this->discordGuildService->getRoles();
-        if (\count($guildRoles) === 0) {
-            return false;
-        }
+        if ($user instanceof DiscordUser) {
+            $userRoles = $this->discordUserService->getRoles($user);
+            if (\count($userRoles) === 0) {
+                return false;
+            }
+            $guildRoles = $this->discordGuildService->getRoles();
+            if (\count($guildRoles) === 0) {
+                return false;
+            }
 
-        return $userRoles[array_key_first($userRoles)]->getId() === $guildRoles[array_key_first($guildRoles)]->getId()
-            && ($userRoles[array_key_first($userRoles)]->getPermission() & 0x0000000008) === 0x0000000008;
+            return $userRoles[array_key_first($userRoles)]->getId() === $guildRoles[array_key_first($guildRoles)]->getId()
+                && ($userRoles[array_key_first($userRoles)]->getPermission() & 0x0000000008) === 0x0000000008;
+        }
+        return false;
     }
 }

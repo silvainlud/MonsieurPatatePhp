@@ -7,13 +7,20 @@
         {% endif %}
         <div class="form-row">
             <label for="inputEmail">Nom d'utilisateur</label>
-            <input type="email" name="email" id="inputEmail" class="form-control" required autofocus>
+            <input type="email" name="email" id="inputEmail" class="form-control" required autofocus
+                   value="{{ last_username }}">
         </div>
         <div class="form-row">
             <label for="inputPassword">Mot de passe</label>
             <input type="password" name="password" id="inputPassword"
                    class="form-control" required>
         </div>
+
+        <div class="form-row">
+            <input type="hidden" name="_csrf_token"
+                   value="{{ csrf_token('authenticate') }}">
+        </div>
+
 
 
         <div class="form-submit">
@@ -26,10 +33,10 @@
         </div>
     </form>
     <hr>
-  <div class="hstack stack-center">
-      <a href="{{ path('login_discord') }}" class="btn btn-discord mt-4">
-          <img src="{{ asset('images/Discord-Logo-White.svg') }}" alt="Discord Logo">
-          Discord
-      </a>
-  </div>
+    <div class="hstack stack-center">
+        <a href="{{ path('login_discord') }}" class="btn btn-discord mt-4">
+            <img src="{{ asset('images/Discord-Logo-White.svg') }}" alt="Discord Logo">
+            Discord
+        </a>
+    </div>
 {% endblock %}
