@@ -62,8 +62,8 @@ class ConfigurationController extends AbstractController
             return $this->redirectToRoute('config');
         }
 
-        return $this->render('config/workChannel.html.twig', [
-            'form' => $form->createView(),
+        return $this->renderForm('config/workChannel.html.twig', [
+            'form' => $form,
             'categories' => $categories,
         ]);
     }
@@ -85,8 +85,8 @@ class ConfigurationController extends AbstractController
             return $this->redirectToRoute('config');
         }
 
-        return $this->render('config/work_category/form.html.twig', [
-            'form' => $form->createView(),
+        return $this->renderForm('config/work_category/form.html.twig', [
+            'form' => $form,
         ]);
     }
 

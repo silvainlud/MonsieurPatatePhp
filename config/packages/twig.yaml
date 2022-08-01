@@ -1,6 +1,11 @@
 twig:
     default_path: '%kernel.project_dir%/templates'
 
+when@dev:
+    twig:
+        paths:
+            '%kernel.project_dir%/vendor/symfony/web-profiler-bundle/Resources/views': WebProfilerBundle
+
 when@test:
     twig:
         strict_variables: true

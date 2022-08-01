@@ -1,0 +1,3 @@
+{% set content = include('@WebProfilerBundle/Profiler/toolbar.html.twig') %}
+
+{{ content|replace({"data-no-turbolink": "data-no-turbolink data-turbo=\"false\""})|raw }}

@@ -21,7 +21,7 @@ class WorkType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name', TextType::class, ['label' => 'Titre', 'row_attr' => ['class' => 'form-row']])
+            ->add('name', TextType::class, ['label' => 'Titre', 'row_attr' => ['class' => 'form-row'], "required" => false])
             ->add(
                 'workCategory',
                 EntityType::class,
@@ -36,14 +36,17 @@ class WorkType extends AbstractType
                             ->orderBy('c.name', 'ASC');
                     },
                     'attr' => ['class' => 'ts-select'],
+                    "required" => false
                 ]
             )
             ->add('dueDate', DateTimeType::class, [
                 'widget' => 'single_text',
                 'label' => 'Date du devoir',
+                "required" => false
             ])->add('description', TextareaType::class, [
                 'label' => 'Commentaire',
                 'row_attr' => ['class' => 'form-row'],
+                "required" => false
             ])
             ->add('submit', SubmitType::class, ['label' => 'Sauvegarder']);
     }

@@ -48,8 +48,8 @@ class WorkController extends AbstractController
             return $this->redirectToRoute('index');
         }
 
-        return $this->render('work/form.html.twig', [
-            'form' => $form->createView(),
+        return $this->renderForm('work/form.html.twig', [
+            'form' => $form,
         ]);
     }
 

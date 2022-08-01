@@ -45,10 +45,10 @@ class ViteAssetExtension extends AbstractExtension
     public function assetDev(string $entry, array $deps): string
     {
         $html = <<<'HTML'
-            <script type="module" src="http://localhost:3000/build/@vite/client"></script>
+            <script type="module" src="http://localhost:3000/build/@vite/client"  data-turbo-track="reload"></script>
             HTML;
         if (\in_array('react', $deps, true)) {
-            $html .= '<script type="module">
+            $html .= '<script type="module"  data-turbo-track="reload">
                 import RefreshRuntime from "http://localhost:3000/build/@react-refresh"
     RefreshRuntime.injectIntoGlobalHook(window)
     window.$RefreshReg$ = () => {}
@@ -57,7 +57,7 @@ class ViteAssetExtension extends AbstractExtension
         </script>';
         }
         $html .= <<<HTML
-            <script type="module" src="http://localhost:3000/build/{$entry}" defer></script>
+            <script type="module" src="http://localhost:3000/build/{$entry}"  data-turbo-track="reload"defer></script>
             HTML;
         $host = $this->requestStack->getCurrentRequest()?->getHost();
 
@@ -80,17 +80,17 @@ class ViteAssetExtension extends AbstractExtension
         $css = $this->manifestData[$entry]['css'] ?? [];
         $imports = $this->manifestData[$entry]['imports'] ?? [];
         $html = <<<HTML
-            <script type="module" src="/build/{$file}" defer></script>
+            <script type="module" src="/build/{$file}" data-turbo-track="reload" defer></script>
             HTML;
         foreach ($css as $cssFile) {
             $html .= <<<HTML
-                <link rel="stylesheet" media="screen" href="/build/{$cssFile}"/>
+                <link rel="stylesheet" media="screen" href="/build/{$cssFile}"  data-turbo-track="reload"/>
                 HTML;
         }
 
         foreach ($imports as $import) {
             $html .= <<<HTML
-                <link rel="modulepreload" href="/build/{$import}"/>
+                <link rel="modulepreload" href="/build/{$import}"  data-turbo-track="reload"/>
                 HTML;
         }
 

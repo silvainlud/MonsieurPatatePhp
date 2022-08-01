@@ -17,7 +17,7 @@
         {% block content %}{% endblock %}
     </main>
 
-    <footer>
+    <footer data-turbo-permanent>
         {% block footer %}{% endblock footer %}
         <p><a href="{{ path('legal_notice') }}">Mentions légales</a></p>
         <p>Copyright © Ludwig SILVAIN {{ "now"|date("Y") }}</p>
