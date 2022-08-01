@@ -4,7 +4,7 @@ group := $(shell id -g)
 
 
 ifeq ($(isDocker), 1)
-	dc := USER_ID=$(user) GROUP_ID=$(group) docker-compose
+	dc := USER_ID=$(user) GROUP_ID=$(group) docker-compose -f docker-compose.yml -f docker-compose.override.yml
 	de := docker-compose exec
 	dr := $(dc) run --rm
 	sy := $(de) php bin/console
