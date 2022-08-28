@@ -125,7 +125,7 @@
 
 - name: Prod | Docker | Waiting Up Mysql
   pause:
-    seconds: 5
+    seconds: 20
 
 - name: Prod | Docker | Mysql Backup
   command: docker-compose -f docker-compose.prod.yml exec {{ db_host }} mysqldump --opt -uroot --databases {{ db_database }}
