@@ -29,6 +29,8 @@ steps:
         path: /drone/src/node_modules/
       - name: build
         path: /drone/src/public/build/
+    depends_on:
+      - Composer
   - name: Lint
     image: registry.silvain.eu:5000/silvain.eu/monsieurpatatephp:latest
     commands:
@@ -137,6 +139,6 @@ trigger:
     - production
 ---
 kind: signature
-hmac: 806054bdccf02ed956f93e026c8a57fbc0c1b381814cb870634f941d6fa0bb92
+hmac: c2e9752a8d734dd08934e998f2f872a50ffa90645bb493f8dc7feefeca73e05a
 
 ...
