@@ -20,7 +20,7 @@ use Symfony\Component\Uid\Uuid;
 
 #[Entity]
 #[Table(options: ['collate' => 'utf8mb4_unicode_ci', 'charset' => 'utf8mb4'])]
-//#[UniqueConstraint(name: "emoji_guild_unique", columns: ["server_id", "emoji"])]
+// #[UniqueConstraint(name: "emoji_guild_unique", columns: ["server_id", "emoji"])]
 #[UniqueConstraint(name: 'name_guild_unique', columns: ['server_id', 'name'])]
 #[UniqueConstraint(name: 'category_guild_unique', columns: ['server_id', 'category_id'])]
 class Section

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Security;
 
 use App\Domain\User\Entity\InternalUser;
@@ -20,38 +22,36 @@ use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
 class InternalAuthenticator extends AbstractLoginFormAuthenticator
 {
-
     use TargetPathTrait;
 
     public function __construct(
-        private UrlGeneratorInterface  $urlGenerator,
+        private UrlGeneratorInterface $urlGenerator,
         private EntityManagerInterface $em
-    )
-    {
+    ) {
     }
 
     public function supports(Request $request): bool
     {
-        return $request->attributes->get('_route') === 'login' && $request->getMethod() == "POST";
+        return $request->attributes->get('_route') === 'login' && $request->getMethod() === 'POST';
     }
 
     public function authenticate(Request $request): Passport
     {
-        $email = (string)$request->request->get("email", '');
+        $email = (string) $request->request->get('email', '');
         $request->getSession()->set(Security::LAST_USERNAME, $email);
 
         $em = $this->em;
 
         return new Passport(
             new UserBadge($email, function ($userIdentifier) use ($em) {
-                $user = $em->getRepository(InternalUser::class)->findOneBy(["email" => $userIdentifier]);
+                $user = $em->getRepository(InternalUser::class)->findOneBy(['email' => $userIdentifier]);
                 if ($user === null) {
                     throw new UserNotFoundException();
                 }
 
                 return $user;
             }),
-            new PasswordCredentials((string)$request->request->get('password', '')),
+            new PasswordCredentials((string) $request->request->get('password', '')),
             [
                 new CsrfTokenBadge('authenticate', $request->get('_csrf_token')),
             ]
@@ -69,6 +69,6 @@ class InternalAuthenticator extends AbstractLoginFormAuthenticator
 
     protected function getLoginUrl(Request $request): string
     {
-        return $this->urlGenerator->generate("login");
+        return $this->urlGenerator->generate('login');
     }
 }

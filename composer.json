@@ -17,6 +17,7 @@
     "johngrogg/ics-parser": "^3.0",
     "knpuniversity/oauth2-client-bundle": "^2.9",
     "league/commonmark": "^2.1",
+    "minishlink/web-push": "^7.0",
     "phpdocumentor/reflection-docblock": "^5.2",
     "sensio/framework-extra-bundle": "^6.2",
     "symfony/asset": "6.0.*",

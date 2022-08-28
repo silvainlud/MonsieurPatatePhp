@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Domain\User\Entity;
 
-use App\Domain\User\UserSecretGenerator;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\DiscriminatorColumn;
 use Doctrine\ORM\Mapping\DiscriminatorMap;
@@ -17,10 +16,10 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[Entity]
-#[Table(name: "user")]
+#[Table(name: 'user')]
 #[InheritanceType(value: 'SINGLE_TABLE')]
 #[DiscriminatorColumn(name: 'discr', type: 'string')]
-#[DiscriminatorMap(["discord" => DiscordUser::class, 'internal' => InternalUser::class])]
+#[DiscriminatorMap(['discord' => DiscordUser::class, 'internal' => InternalUser::class])]
 abstract class AbstractUser implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[Id, GeneratedValue(strategy: 'AUTO')]
@@ -35,7 +34,6 @@ abstract class AbstractUser implements UserInterface, PasswordAuthenticatedUserI
 
     public function __construct()
     {
-
     }
 
     public function getRoles(): array
@@ -81,5 +79,5 @@ abstract class AbstractUser implements UserInterface, PasswordAuthenticatedUserI
         return $this;
     }
 
-   public abstract function getPassword(): ?string;
+    abstract public function getPassword(): ?string;
 }

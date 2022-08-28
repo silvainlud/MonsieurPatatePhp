@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Domain\Work\Voter;
 
 use App\Domain\User\Entity\AbstractUser;
@@ -10,16 +12,17 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class WorkVoter extends Voter
 {
-
     protected function supports(string $attribute, mixed $subject): bool
     {
-        return $attribute == "ROLE_WORK" && ($subject === null || $subject instanceof Request || $subject instanceof AbstractUser);
+        return $attribute === 'ROLE_WORK'
+            && ($subject === null || $subject instanceof Request || $subject instanceof AbstractUser);
     }
 
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
         /** @var AbstractUser? $user */
         $user = ($subject instanceof AbstractUser) ? $subject : $token->getUser();
+
         return $user instanceof DiscordUser;
     }
 }

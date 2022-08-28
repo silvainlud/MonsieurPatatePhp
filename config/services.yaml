@@ -65,6 +65,20 @@ services:
   App\Domain\Work\IWorkService:
     class: App\Domain\Work\WorkService
 
+
+  App\Domain\NotificationSubscriber\IUserPushSubscriberService:
+    class: App\Domain\NotificationSubscriber\UserPushSubscriberService
+    arguments:
+      $pushPublicKey: "%env(resolve:PUSH_PUBLIC_KEY)%"
+
+  Minishlink\WebPush\WebPush:
+    arguments:
+      $auth:
+        VAPID:
+          subject: "mailto:contact@silvain.eu"
+          publicKey: "%env(resolve:PUSH_PUBLIC_KEY)%"
+          privateKey: "%env(resolve:PUSH_PRIVATE_KEY)%"
+
   Redis:
     # you can also use \RedisArray, \RedisCluster or \Predis\Client classes
     class: Redis

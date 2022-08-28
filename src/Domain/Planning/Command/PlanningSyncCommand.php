@@ -66,6 +66,7 @@ class PlanningSyncCommand extends Command
         if ($initMode) {
             $previousLogUuid = array_map(fn (PlanningLog $l) => $l->getId(), $previousLog);
             $previousLog = $this->em->getRepository(PlanningLog::class)->findBy(['isDiscordSend' => false]);
+
             /** @var PlanningLog $l */
             foreach ($previousLog as $l) {
                 if (!\in_array($l->getId(), $previousLogUuid, true) && !$l->isDiscordSend()) {

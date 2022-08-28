@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Discord\Subscriber;
 
-use App\Domain\User\Entity\AbstractUser;
 use App\Domain\User\Entity\DiscordUser;
 use App\Infrastructure\Discord\DiscordUserService;
 use Psr\Cache\CacheItemPoolInterface;

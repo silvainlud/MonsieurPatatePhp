@@ -13,9 +13,12 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class UserDiscordAdminVoter extends Voter
 {
-    const DISCORD_ADMIN_ROLE_ADMIN = 'ROLE_ADMIN_DISCORD';
+    private const DISCORD_ADMIN_ROLE_ADMIN = 'ROLE_ADMIN_DISCORD';
 
-    public function __construct(private IDiscordUserService $discordUserService, private IDiscordGuildService $discordGuildService)
+    public function __construct(
+        private readonly  IDiscordUserService $discordUserService,
+        private readonly IDiscordGuildService $discordGuildService
+    )
     {
     }
 
@@ -39,9 +42,11 @@ class UserDiscordAdminVoter extends Voter
                 return false;
             }
 
-            return $userRoles[array_key_first($userRoles)]->getId() === $guildRoles[array_key_first($guildRoles)]->getId()
+            return
+                $userRoles[array_key_first($userRoles)]->getId() === $guildRoles[array_key_first($guildRoles)]->getId()
                 && ($userRoles[array_key_first($userRoles)]->getPermission() & 0x0000000008) === 0x0000000008;
         }
+
         return false;
     }
 }

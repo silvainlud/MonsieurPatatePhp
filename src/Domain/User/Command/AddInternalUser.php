@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Domain\User\Command;
 
 use App\Domain\User\Entity\InternalUser;
@@ -15,8 +17,7 @@ class AddInternalUser extends Command
 
     public function __construct(
         private EntityManagerInterface $em,
-    )
-    {
+    ) {
         parent::__construct(self::$defaultName);
     }
 

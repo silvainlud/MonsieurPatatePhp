@@ -1,4 +1,7 @@
 {
+    "brick/math": {
+        "version": "0.9.3"
+    },
     "composer/package-versions-deprecated": {
         "version": "1.11.99.4"
     },
@@ -97,6 +100,9 @@
     "egulias/email-validator": {
         "version": "3.1.1"
     },
+    "fgrosse/phpasn1": {
+        "version": "v2.4.0"
+    },
     "friendsofphp/php-cs-fixer": {
         "version": "2.19",
         "recipe": {
@@ -157,6 +163,9 @@
     "league/oauth2-client": {
         "version": "2.6.0"
     },
+    "minishlink/web-push": {
+        "version": "v7.0.0"
+    },
     "monolog/monolog": {
         "version": "2.3.4"
     },
@@ -171,6 +180,9 @@
     },
     "nikic/php-parser": {
         "version": "v4.13.0"
+    },
+    "paragonie/constant_time_encoding": {
+        "version": "v2.6.3"
     },
     "paragonie/random_compat": {
         "version": "v9.99.100"
@@ -326,6 +338,9 @@
         "files": [
             "config/packages/sensio_framework_extra.yaml"
         ]
+    },
+    "spomky-labs/base64url": {
+        "version": "v2.0.4"
     },
     "squizlabs/php_codesniffer": {
         "version": "3.6",
@@ -751,6 +766,21 @@
     },
     "twig/twig": {
         "version": "v3.3.3"
+    },
+    "web-token/jwt-core": {
+        "version": "v3.0.6"
+    },
+    "web-token/jwt-key-mgmt": {
+        "version": "v3.0.6"
+    },
+    "web-token/jwt-signature": {
+        "version": "v3.0.6"
+    },
+    "web-token/jwt-signature-algorithm-ecdsa": {
+        "version": "v3.0.6"
+    },
+    "web-token/jwt-util-ecc": {
+        "version": "v3.0.6"
     },
     "webmozart/assert": {
         "version": "1.10.0"

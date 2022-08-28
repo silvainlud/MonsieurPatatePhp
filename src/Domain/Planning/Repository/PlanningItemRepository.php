@@ -42,17 +42,17 @@ class PlanningItemRepository extends ServiceEntityRepository
             $date = new \DateTime();
         }
 
-        return $this->findBetweenDates($date,$date->format("Y-m-d 23:59:59"));
+        return $this->findBetweenDates($date, $date->format('Y-m-d 23:59:59'));
     }
 
     /** @return PlanningItem[] */
-    public function findBetweenDates(\DateTime|string $start,\DateTime|string $end): array
+    public function findBetweenDates(\DateTime|string $start, \DateTime|string $end): array
     {
-
         return $this->createQueryBuilder('i')
-            ->andWhere('(i.dateStart BETWEEN :dateMin AND :dateMax) or (i.dateEnd BETWEEN :dateMin AND :dateMax)')->setParameters([
-                'dateMin' => is_string($start) ? $start : $start->format("Y-m-d H:i:s"),
-                'dateMax' => is_string($end) ? $end : $end->format('Y-m-d H:i:s'),
+            ->andWhere('(i.dateStart BETWEEN :dateMin AND :dateMax) or (i.dateEnd BETWEEN :dateMin AND :dateMax)')
+            ->setParameters([
+                'dateMin' => \is_string($start) ? $start : $start->format('Y-m-d H:i:s'),
+                'dateMax' => \is_string($end) ? $end : $end->format('Y-m-d H:i:s'),
             ])
             ->addOrderBy('i.dateStart', 'ASC')
             ->addOrderBy('i.dateEnd', 'ASC')

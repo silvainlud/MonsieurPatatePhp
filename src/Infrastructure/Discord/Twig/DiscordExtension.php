@@ -19,12 +19,11 @@ use Twig\TwigFunction;
 class DiscordExtension extends AbstractExtension
 {
     public function __construct(
-        private DiscordUserService   $userService,
+        private DiscordUserService $userService,
         private IDiscordGuildService $guildService,
-        private IParameterService    $parameterService,
-        private Security             $security
-    )
-    {
+        private IParameterService $parameterService,
+        private Security $security
+    ) {
     }
 
     public function getFunctions(): array
@@ -49,18 +48,19 @@ class DiscordExtension extends AbstractExtension
     {
         $u = $this->security->getUser();
         if ($u instanceof DiscordUser) {
-            $discordUser = $this->guildService->getGuildMember($this->parameterService->getGuildId(), $u->getDiscordId());
+            $discordUser = $this->guildService
+                ->getGuildMember($this->parameterService->getGuildId(), $u->getDiscordId());
             if ($discordUser === null) {
                 return $u->getUsername();
             }
+
             return $discordUser->getCompleteName();
-        } elseif ($u instanceof AbstractUser) {
+        }
+        if ($u instanceof AbstractUser) {
             return $u->getUserIdentifier();
         }
 
-        return "???";
-
-
+        return '???';
     }
 
     public function getAvatarUser(AbstractUser $user): string
@@ -68,6 +68,7 @@ class DiscordExtension extends AbstractExtension
         if (!$user instanceof DiscordUser) {
             return '/images/touch/favicon_48.png';
         }
+
         return $this->userService->getAvatarUser($user);
     }
 
@@ -84,7 +85,7 @@ class DiscordExtension extends AbstractExtension
     public function getHighestRole(AbstractUser $user): ?DiscordRole
     {
         if (!$user instanceof DiscordUser) {
-            return (new DiscordRole(-1))->setName("Interne")->setPermission(0)->setColor(8359053);
+            return (new DiscordRole(-1))->setName('Interne')->setPermission(0)->setColor(8359053);
         }
         $roles = $this->userService->getRoles($user);
         if (\count($roles) === 0) {

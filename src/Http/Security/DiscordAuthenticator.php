@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Security;
 
-use App\Domain\User\Entity\AbstractUser;
 use App\Domain\User\Entity\DiscordUser;
 use App\Infrastructure\Discord\IDiscordGuildService;
 use App\Infrastructure\Parameter\IParameterService;
@@ -61,11 +60,13 @@ class DiscordAuthenticator extends OAuth2Authenticator
 
                 $email = $discordUser->getEmail();
 
-                if (!$this->guildService->isGuildMember($this->parameterService->getGuildId(), (string) $discordUser->getId())) {
+                if (!$this->guildService
+                    ->isGuildMember($this->parameterService->getGuildId(), (string) $discordUser->getId())) {
                     throw new UserNotFoundException();
                 }
 
-                $existingUser = $this->entityManager->getRepository(DiscordUser::class)->findOneBy(['discordId' => $discordUser->getId()]);
+                $existingUser = $this->entityManager->getRepository(DiscordUser::class)
+                    ->findOneBy(['discordId' => $discordUser->getId()]);
 
                 if ($existingUser) {
                     return $existingUser;
@@ -95,7 +96,8 @@ class DiscordAuthenticator extends OAuth2Authenticator
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
         $targetUrl = $this->router->generate('index');
-        // Set the rememberMe info for the request so isRememberMeRequested() in AbstractRememberMeServices will return true
+        // Set the rememberMe info for the request so isRememberMeRequested() in AbstractRememberMeServices
+        // will return true
         $request->request->set('_remember_me', '1');
 
         return new RedirectResponse($targetUrl);

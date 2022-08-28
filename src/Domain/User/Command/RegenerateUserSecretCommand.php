@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Domain\User\Command;
 
-use App\Domain\User\Entity\AbstractUser;
 use App\Domain\User\Entity\DiscordUser;
 use App\Domain\User\UserSecretGenerator;
 use Doctrine\ORM\EntityManagerInterface;
