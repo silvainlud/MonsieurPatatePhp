@@ -12,7 +12,7 @@ services:
       - ./public:/var/www/public:ro
       - ./tools/docker/nginx/nginx.local.conf:/etc/nginx/nginx.conf:ro
   php:
-    image: registry.silvain.eu:5000/silvain.eu/monsieurpatatephp:latest
+    image: git.silvain.eu/silvain.eu/monsieurpatatephp:latest
     volumes:
       - .:/var/www
     working_dir: /var/www

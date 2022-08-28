@@ -9,11 +9,11 @@ workspace:
 
 steps:
   - name: SymfonyCheckSecurity
-    image: registry.silvain.eu:5000/silvain.eu/monsieurpatatephp:latest
+    image: git.silvain.eu/silvain.eu/monsieurpatatephp:latest
     commands:
       - symfony security:check
   - name: Composer
-    image: registry.silvain.eu:5000/silvain.eu/monsieurpatatephp:latest
+    image: git.silvain.eu/silvain.eu/monsieurpatatephp:latest
     commands:
       - composer install --prefer-dist --no-ansi --no-interaction --no-progress
     volumes:
@@ -29,10 +29,12 @@ steps:
         path: /drone/src/node_modules/
       - name: build
         path: /drone/src/public/build/
+      - name: composer
+        path: /drone/src/vendor/
     depends_on:
       - Composer
   - name: Lint
-    image: registry.silvain.eu:5000/silvain.eu/monsieurpatatephp:latest
+    image: git.silvain.eu/silvain.eu/monsieurpatatephp:latest
     commands:
       - make lint
     volumes:
@@ -41,7 +43,7 @@ steps:
     depends_on:
       - Composer
 #  - name: phpunit
-#    image: registry.silvain.eu:5000/silvain.eu/monsieurpatatephp:latest
+#    image: git.silvain.eu/silvain.eu/monsieurpatatephp:latest
 #    commands:
 #      - php bin/phpunit
 #    depends_on:
@@ -139,6 +141,6 @@ trigger:
     - production
 ---
 kind: signature
-hmac: c2e9752a8d734dd08934e998f2f872a50ffa90645bb493f8dc7feefeca73e05a
+hmac: db8eb14a16bf9e4791d56268f7a728c3227939aaaac3d07bdc0ec33c0810f780
 
 ...

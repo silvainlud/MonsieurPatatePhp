@@ -74,7 +74,7 @@ RUN apt install libxslt1-dev -y && docker-php-ext-configure xsl && docker-php-ex
 
 # Symfony tool
 RUN wget https://get.symfony.com/cli/installer -O - | bash && \
-  mv /root/.symfony/bin/symfony /usr/local/bin/symfony \
+  mv /root/.symfony5/bin/symfony /usr/local/bin/symfony \
   && addgroup --force-badname _www \
   && adduser --no-create-home --force-badname --disabled-login --disabled-password --system _www \
   && addgroup _www _www

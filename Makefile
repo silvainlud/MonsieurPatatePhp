@@ -50,8 +50,8 @@ test: ## Lancer les tests unitaire
 
 .PHONY: image
 image: ## Constrction d'une image docker
-	docker build tools/docker/php -t registry.silvain.eu:5000/silvain.eu/monsieurpatatephp:latest
-	docker push registry.silvain.eu:5000/silvain.eu/monsieurpatatephp:latest
+	docker build tools/docker/php -t git.silvain.eu/silvain.eu/monsieurpatatephp:latest
+	docker push git.silvain.eu/silvain.eu/monsieurpatatephp:latest
 
 .PHONY: php
 php: ## Accéder au conteneur php
