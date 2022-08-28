@@ -12,7 +12,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class IndexController extends AbstractController
 {
-    public function __construct(private WorkRepository $workRepository, private PlanningItemRepository $planningItemRepository)
+    public function __construct(
+        private readonly WorkRepository         $workRepository,
+        private readonly PlanningItemRepository $planningItemRepository)
     {
     }
 
