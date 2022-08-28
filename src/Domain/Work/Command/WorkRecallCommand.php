@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Work\Command;
 
-use App\Domain\Work\IWorkDiscordNotifyService;
+use App\Domain\Work\IWorkProcessNotifyService;
 use App\Domain\Work\IWorkService;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -18,9 +18,9 @@ class WorkRecallCommand extends Command
     protected static $defaultName = 'app:work:recall';
 
     public function __construct(
-        private IWorkDiscordNotifyService $notifyService,
-        private IWorkService $workService,
-        private LoggerInterface $appLogger
+        private readonly IWorkProcessNotifyService $notifyService,
+        private readonly IWorkService $workService,
+        private readonly LoggerInterface $appLogger
     ) {
         parent::__construct(self::$defaultName);
     }

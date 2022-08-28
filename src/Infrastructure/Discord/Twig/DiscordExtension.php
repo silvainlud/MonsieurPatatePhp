@@ -89,7 +89,7 @@ class DiscordExtension extends AbstractExtension
         }
         $roles = $this->userService->getRoles($user);
         if (\count($roles) === 0) {
-            return null;
+            return (new DiscordRole(-1))->setName('Interne')->setPermission(0)->setColor(8359053);
         }
 
         return $roles[array_key_first($roles)];

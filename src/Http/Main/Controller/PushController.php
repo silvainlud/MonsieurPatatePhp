@@ -48,4 +48,12 @@ class PushController extends AbstractController
             'key' => $this->userPushSubscriberService->getPublicKey(),
         ]);
     }
+
+    #[Route('send')]
+    public function send(): Response
+    {
+        $this->userPushSubscriberService->sendAll('Bonjour les gens', 'ceci est un tritre');
+
+        return $this->json([]);
+    }
 }

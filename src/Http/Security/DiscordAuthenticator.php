@@ -60,8 +60,10 @@ class DiscordAuthenticator extends OAuth2Authenticator
 
                 $email = $discordUser->getEmail();
 
-                if (!$this->guildService
-                    ->isGuildMember($this->parameterService->getGuildId(), (string) $discordUser->getId())) {
+                if (
+                    !$this->guildService
+                        ->isGuildMember($this->parameterService->getGuildId(), (string) $discordUser->getId())
+                ) {
                     throw new UserNotFoundException();
                 }
 

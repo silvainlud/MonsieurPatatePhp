@@ -6,7 +6,7 @@ namespace App\Domain\Work;
 
 use App\Domain\Work\Entity\Work;
 
-interface IWorkDiscordNotifyService
+interface IWorkProcessNotifyService
 {
     public function notifyAdd(Work $work): void;
 

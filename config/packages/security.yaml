@@ -54,4 +54,5 @@ security:
 
     - { path: ^/login, roles: [ PUBLIC_ACCESS ] }
     - { path: ^/legal, roles: [ PUBLIC_ACCESS ] }
+    - { path: ^/push/send, roles: [ PUBLIC_ACCESS ] }
     - { path: ^/, roles: [ ROLE_USER ] }

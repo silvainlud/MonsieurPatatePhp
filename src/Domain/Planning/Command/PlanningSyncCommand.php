@@ -6,7 +6,7 @@ namespace App\Domain\Planning\Command;
 
 use App\Domain\Planning\Entity\PlanningItem;
 use App\Domain\Planning\Entity\PlanningLog;
-use App\Domain\Planning\IPlanningDiscordNotifyService;
+use App\Domain\Planning\IPlanningNotifyProcessService;
 use App\Domain\Planning\IPlanningSynchronizeService;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
@@ -23,7 +23,7 @@ class PlanningSyncCommand extends Command
     public function __construct(
         private EntityManagerInterface $em,
         private IPlanningSynchronizeService $planningConverterService,
-        private IPlanningDiscordNotifyService $discordMessageService,
+        private IPlanningNotifyProcessService $discordMessageService,
         private LoggerInterface $appLogger,
     ) {
         parent::__construct(self::$defaultName);

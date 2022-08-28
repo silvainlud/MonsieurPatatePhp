@@ -54,13 +54,11 @@ services:
     arguments:
       $calendarUrl: '%env(APP_CALENDAR_URL)%'
 
-  App\Domain\Planning\IPlanningDiscordNotifyService:
-    class: 'App\Domain\Planning\PlanningDiscordNotifyService'
-    arguments:
-      $intlExtension: "@twig.extension.intl"
+  App\Domain\Planning\IPlanningNotifyProcessService:
+    class: 'App\Domain\Planning\PlanningNotifyProcessService'
 
-  App\Domain\Work\IWorkDiscordNotifyService:
-    class: App\Domain\Work\WorkDiscordNotifyService
+  App\Domain\Work\IWorkProcessNotifyService:
+    class: App\Domain\Work\WorkProcessNotifyService
 
   App\Domain\Work\IWorkService:
     class: App\Domain\Work\WorkService
@@ -93,3 +91,18 @@ services:
   Symfony\Component\HttpFoundation\Session\Storage\Handler\RedisSessionHandler:
     arguments:
       - '@Redis'
+
+  App\Infrastructure\Notification\IUserSendNotification:
+    class: 'App\Infrastructure\Notification\UserSendNotification'
+    arguments:
+      $notifiers: !tagged_iterator app.user.notifier
+
+  App\Infrastructure\Notification\DiscordUserSendNotification:
+    tags: ['app.user.notifier']
+    arguments:
+      $intlExtension: "@twig.extension.intl"
+
+  App\Infrastructure\Notification\WebPushUserSendNotification:
+    tags: ['app.user.notifier']
+    arguments:
+      $intlExtension: "@twig.extension.intl"

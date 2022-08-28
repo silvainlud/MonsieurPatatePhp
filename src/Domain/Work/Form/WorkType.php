@@ -24,8 +24,7 @@ class WorkType extends AbstractType
             ->add('name', TextType::class, [
                 'label' => 'Titre',
                 'row_attr' => ['class' => 'form-row'],
-                'required' => false]
-            )
+                'required' => false, ])
             ->add(
                 'workCategory',
                 EntityType::class,

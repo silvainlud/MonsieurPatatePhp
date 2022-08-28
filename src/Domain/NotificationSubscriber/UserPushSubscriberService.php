@@ -39,13 +39,14 @@ class UserPushSubscriberService implements IUserPushSubscriberService
         return $this->repository->exist($endpoint);
     }
 
-    public function send(UserPushSubscriber $subscriber, string $title, string $msg): void
+    public function send(UserPushSubscriber $subscriber, string $title, ?string $msg): void
     {
         $this->_addWebPUsh($subscriber, $title, $msg);
-        $this->webPush->flush();
+
+        foreach ($this->webPush->flush() as $ignore);
     }
 
-    public function sendAll(string $title, string $msg): void
+    public function sendAll(string $title, ?string $msg): void
     {
         $subscribers = $this->em->getRepository(UserPushSubscriber::class)->findAll();
 
@@ -54,7 +55,7 @@ class UserPushSubscriberService implements IUserPushSubscriberService
             $this->_addWebPUsh($subscriber, $title, $msg);
         }
 
-        $this->webPush->flush();
+        foreach ($this->webPush->flush() as $ignore);
     }
 
     public function getPublicKey(): string
@@ -62,11 +63,11 @@ class UserPushSubscriberService implements IUserPushSubscriberService
         return $this->pushPublicKey;
     }
 
-    private function _addWebPUsh(UserPushSubscriber $subscriber, string $title, string $msg): void
+    private function _addWebPUsh(UserPushSubscriber $subscriber, string $title, ?string $msg): void
     {
         $payload = json_encode([
-            'message' => $this,
-            'title' => $msg,
+            'message' => $msg ?? '',
+            'title' => $title,
         ]);
         if ($payload === false) {
             throw new \InvalidArgumentException();

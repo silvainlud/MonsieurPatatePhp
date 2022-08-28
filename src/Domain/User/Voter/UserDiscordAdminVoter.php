@@ -16,10 +16,9 @@ class UserDiscordAdminVoter extends Voter
     private const DISCORD_ADMIN_ROLE_ADMIN = 'ROLE_ADMIN_DISCORD';
 
     public function __construct(
-        private readonly  IDiscordUserService $discordUserService,
+        private readonly IDiscordUserService $discordUserService,
         private readonly IDiscordGuildService $discordGuildService
-    )
-    {
+    ) {
     }
 
     protected function supports(string $attribute, mixed $subject): bool

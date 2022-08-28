@@ -13,9 +13,9 @@ interface IUserPushSubscriberService
 
     public function exist(string $endpoint): bool;
 
-    public function send(UserPushSubscriber $subscriber, string $title, string $msg): void;
+    public function send(UserPushSubscriber $subscriber, string $title, ?string $msg): void;
 
-    public function sendAll(string $title, string $msg): void;
+    public function sendAll(string $title, ?string $msg): void;
 
     public function getPublicKey(): string;
 }

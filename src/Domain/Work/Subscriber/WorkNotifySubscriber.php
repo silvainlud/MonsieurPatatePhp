@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace App\Domain\Work\Subscriber;
 
 use App\Domain\Work\Event\WorkEvent;
-use App\Domain\Work\IWorkDiscordNotifyService;
+use App\Domain\Work\IWorkProcessNotifyService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class WorkNotifySubscriber implements EventSubscriberInterface
 {
-    public function __construct(private IWorkDiscordNotifyService $notifyService)
+    public function __construct(private IWorkProcessNotifyService $notifyService)
     {
     }
 
