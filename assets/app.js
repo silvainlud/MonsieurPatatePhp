@@ -4,6 +4,8 @@ import TomSelect from "tom-select";
 import 'tom-select/src/scss/tom-select.scss'
 import * as Turbo from "@hotwired/turbo"
 import {registerServiceWorker} from "./ServiceWorkerRegister";
+import '@fontsource/open-sans'
+import '@fontsource/roboto'
 
 document.addEventListener("turbo:load", function () {
     document.dispatchEvent(new CustomEvent("onLoad"))
