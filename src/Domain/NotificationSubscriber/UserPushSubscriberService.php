@@ -95,6 +95,7 @@ class UserPushSubscriberService implements IUserPushSubscriberService
 
     public function sendToUser(AbstractUser $user, string $title, ?string $msg): void
     {
+        /** @var UserPushSubscriber[] $subscribers */
         $subscribers = $this->repository->findBy(["user" => $user]);
 
         foreach ($subscribers as $subscriber) {
