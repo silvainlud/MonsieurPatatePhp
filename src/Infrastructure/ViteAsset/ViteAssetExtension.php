@@ -11,19 +11,15 @@ use Twig\TwigFunction;
 
 class ViteAssetExtension extends AbstractExtension
 {
-    const CACHE_KEY = 'vite_manifest';
+    public final const CACHE_KEY = 'vite_manifest';
     private ?array $manifestData = null;
-    private CacheItemPoolInterface $cache;
-    private string $manifest;
-    private bool $isDev;
-    private RequestStack $requestStack;
 
-    public function __construct(bool $isDev, string $manifest, CacheItemPoolInterface $cache, RequestStack $requestStack)
-    {
-        $this->isDev = $isDev;
-        $this->manifest = $manifest;
-        $this->cache = $cache;
-        $this->requestStack = $requestStack;
+    public function __construct(
+        private readonly bool $isDev,
+        private readonly string $manifest,
+        private readonly CacheItemPoolInterface $cache,
+        private readonly RequestStack $requestStack
+    ) {
     }
 
     public function getFunctions(): array
@@ -57,7 +53,7 @@ class ViteAssetExtension extends AbstractExtension
         </script>';
         }
         $html .= <<<HTML
-            <script type="module" src="http://localhost:3000/build/{$entry}"  data-turbo-track="reload"defer></script>
+            <script type="module" src="http://localhost:3000/build/{$entry}"  data-turbo-track="reload" defer></script>
             HTML;
         $host = $this->requestStack->getCurrentRequest()?->getHost();
 
@@ -71,7 +67,7 @@ class ViteAssetExtension extends AbstractExtension
             if ($item->isHit()) {
                 $this->manifestData = $item->get();
             } else {
-                $this->manifestData = json_decode((string) file_get_contents($this->manifest), true);
+                $this->manifestData = json_decode((string)file_get_contents($this->manifest), true);
                 $item->set($this->manifestData);
                 $this->cache->save($item);
             }
@@ -89,9 +85,13 @@ class ViteAssetExtension extends AbstractExtension
         }
 
         foreach ($imports as $import) {
-            $html .= <<<HTML
+            if (array_key_exists($import, $this->manifestData)) {
+                $html .= $this->assetProd($import);
+            } else {
+                $html .= <<<HTML
                 <link rel="modulepreload" href="/build/{$import}"  data-turbo-track="reload"/>
                 HTML;
+            }
         }
 
         return $html;
