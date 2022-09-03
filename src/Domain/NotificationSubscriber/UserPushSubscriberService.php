@@ -72,7 +72,9 @@ class UserPushSubscriberService implements IUserPushSubscriberService
     {
         $payload = json_encode([
             'message' => $msg ?? '',
+            'body' => $msg ?? '',
             'title' => $title,
+            "icon" => "/favicon.png"
         ]);
         if ($payload === false) {
             throw new \InvalidArgumentException();
