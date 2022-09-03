@@ -14,11 +14,12 @@ use Minishlink\WebPush\WebPush;
 class UserPushSubscriberService implements IUserPushSubscriberService
 {
     public function __construct(
-        private readonly EntityManagerInterface $em,
+        private readonly EntityManagerInterface       $em,
         private readonly UserPushSubscriberRepository $repository,
-        private readonly string $pushPublicKey,
-        private readonly WebPush $webPush,
-    ) {
+        private readonly string                       $pushPublicKey,
+        private readonly WebPush                      $webPush,
+    )
+    {
     }
 
     public function register(AbstractUser $user, string $endpoint, string $p256dh, string $authKey): UserPushSubscriber
@@ -43,7 +44,9 @@ class UserPushSubscriberService implements IUserPushSubscriberService
     {
         $this->_addWebPUsh($subscriber, $title, $msg);
 
-        foreach ($this->webPush->flush() as $ignore);
+        /** @noinspection PhpStatementHasEmptyBodyInspection */
+        foreach ($this->webPush->flush() as $ignore) {
+        }
     }
 
     public function sendAll(string $title, ?string $msg): void
@@ -55,7 +58,9 @@ class UserPushSubscriberService implements IUserPushSubscriberService
             $this->_addWebPUsh($subscriber, $title, $msg);
         }
 
-        foreach ($this->webPush->flush() as $ignore);
+        /** @noinspection PhpStatementHasEmptyBodyInspection */
+        foreach ($this->webPush->flush() as $ignore) {
+        }
     }
 
     public function getPublicKey(): string
@@ -80,5 +85,24 @@ class UserPushSubscriberService implements IUserPushSubscriberService
             ]),
             $payload
         );
+    }
+
+    /** {@inheritDoc} */
+    public function getRegisteredUsers(): array
+    {
+        return $this->repository->getRegisteredUsers();
+    }
+
+    public function sendToUser(AbstractUser $user, string $title, ?string $msg): void
+    {
+        $subscribers = $this->repository->findBy(["user" => $user]);
+
+        foreach ($subscribers as $subscriber) {
+            $this->_addWebPUsh($subscriber, $title, $msg);
+        }
+
+        /** @noinspection PhpStatementHasEmptyBodyInspection */
+        foreach ($this->webPush->flush() as $ignore) {
+        }
     }
 }
