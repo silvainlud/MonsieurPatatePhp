@@ -123,7 +123,6 @@ class ConfigurationController extends AbstractController
     #[Route('db', name: 'config_database')]
     public function database(): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $users = $this->em->getRepository(AbstractUser::class)->findAll();
         $sections = $this->em->getRepository(Section::class)
             ->findBy(['guildSettings' => $this->parameterService->getGuildId()]);
