@@ -47,7 +47,7 @@ class DiscordUserService implements IDiscordUserService
 
             $i->set(array_filter(
                 $this->guildService->getRoles(),
-                fn (DiscordRole $r) => \in_array((string) ($r->getId()), $userRoles, true)
+                fn (DiscordRole $r) => \in_array((string) $r->getId(), $userRoles, true)
             ));
 
             $i->expiresAfter(self::EXPIRE_USER_ROLES);

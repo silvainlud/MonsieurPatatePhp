@@ -56,7 +56,7 @@ class DiscordGuildService implements IDiscordGuildService
             }
 
             $data = json_decode($response->getContent(false));
-            $guild = (new DiscordGuild((int) ($data->id)))->setName($data->name)->setIcon($data->icon);
+            $guild = (new DiscordGuild((int) $data->id))->setName($data->name)->setIcon($data->icon);
             $i->set($guild);
             $i->expiresAfter(self::EXPIRE_CURRENT_GUILD);
             $this->cache->save($i);
@@ -144,7 +144,7 @@ class DiscordGuildService implements IDiscordGuildService
                 return [];
             }
             $data = array_reduce(json_decode($response->getContent(false)), function (array $acc, stdClass $d) {
-                $acc[] = (new DiscordRole((int) ($d->id)))
+                $acc[] = (new DiscordRole((int) $d->id))
                     ->setName($d->name)
                     ->setPosition($d->position)
                     ->setColor($d->color)

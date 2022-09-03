@@ -20,7 +20,6 @@ use App\Infrastructure\Discord\Entity\Channel\CategoryChannel;
 use App\Infrastructure\Discord\Entity\DiscordMember;
 use App\Infrastructure\Discord\Entity\DiscordRole;
 use App\Infrastructure\Discord\IDiscordGuildService;
-use App\Infrastructure\Notification\IUserSendNotification;
 use App\Infrastructure\Parameter\IParameterService;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -36,13 +35,12 @@ class ConfigurationController extends AbstractController
     public const QUERY_HIDDEN_CATEGORIES = 'display_hidden_categories';
 
     public function __construct(
-        private readonly IParameterService          $parameterService,
-        private readonly EntityManagerInterface     $em,
-        private readonly WorkRepository             $workRepository,
-        private readonly IDiscordGuildService       $guildService,
+        private readonly IParameterService $parameterService,
+        private readonly EntityManagerInterface $em,
+        private readonly WorkRepository $workRepository,
+        private readonly IDiscordGuildService $guildService,
         private readonly IUserPushSubscriberService $userPushSubscriberService,
-    )
-    {
+    ) {
     }
 
     #[Route('', name: 'config')]
@@ -53,7 +51,7 @@ class ConfigurationController extends AbstractController
             $guildSettings = new GuildSettings($this->parameterService->getGuildId());
         }
 
-        if ((bool)$request->query->get(self::QUERY_HIDDEN_CATEGORIES, null) === true) {
+        if ((bool) $request->query->get(self::QUERY_HIDDEN_CATEGORIES, null) === true) {
             $categories = $this->em->getRepository(WorkCategory::class)->findBy([], ['name' => 'asc']);
         } else {
             $categories = $this->em->getRepository(WorkCategory::class)->findBy(['active' => true], ['name' => 'asc']);
@@ -99,17 +97,22 @@ class ConfigurationController extends AbstractController
     #[Route('notification/send', name: 'notification_send')]
     public function sendNotification(Request $request): Response
     {
-
         $data = new SendNotificationData();
         $form = $this->createForm(SendNotificationType::class, $data, [
-            "users" => $this->userPushSubscriberService->getRegisteredUsers(),
+            'users' => $this->userPushSubscriberService->getRegisteredUsers(),
         ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->userPushSubscriberService->sendToUser($data->getUser(), $data->getTitle(), $data->getMessage());
+            if (!$data->isSendAll()) {
+                /** @var AbstractUser $user */
+                $user = $data->getUser();
+                $this->userPushSubscriberService->sendToUser($user, $data->getTitle(), $data->getMessage());
+            } else {
+                $this->userPushSubscriberService->sendAll($data->getTitle(), $data->getMessage());
+            }
 
-            return $this->redirectToRoute("config");
+            return $this->redirectToRoute('config');
         }
 
         return $this->renderForm('config/notification/send.html.twig', [
@@ -127,7 +130,7 @@ class ConfigurationController extends AbstractController
         $screens = $this->em->getRepository(PlanningScreen::class)->findBy([], ['year' => 'desc', 'week' => 'desc']);
         $itemLogs = $this->em->getRepository(PlanningLog::class)->findBy([], ['dateCreate' => 'desc']);
 
-        $channels = $this->guildService->getChannels((int)$this->parameterService->getGuildId());
+        $channels = $this->guildService->getChannels((int) $this->parameterService->getGuildId());
         $categoryChannels = [];
         $otherChannels = [];
         foreach ($channels as $c) {

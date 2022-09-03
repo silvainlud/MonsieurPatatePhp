@@ -71,7 +71,7 @@ class Section
 
     public function __construct()
     {
-        $this->id = (Uuid::v6())->toRfc4122();
+        $this->id = Uuid::v6()->toRfc4122();
         $this->allowRoles = new ArrayCollection();
     }
 

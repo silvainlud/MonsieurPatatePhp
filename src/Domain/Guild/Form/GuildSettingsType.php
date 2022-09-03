@@ -73,7 +73,7 @@ class GuildSettingsType extends AbstractType
     public function _formatChannel(array $channels): array
     {
         return array_reduce($channels, function (array $acc, AbstractDiscordChannel $channel) {
-            $acc[$this->_getChannelLabel($channel)] = (string) ($channel->getId());
+            $acc[$this->_getChannelLabel($channel)] = (string) $channel->getId();
 
             return $acc;
         }, []);

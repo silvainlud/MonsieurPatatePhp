@@ -13,9 +13,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class IndexController extends AbstractController
 {
     public function __construct(
-        private readonly WorkRepository         $workRepository,
-        private readonly PlanningItemRepository $planningItemRepository)
-    {
+        private readonly WorkRepository $workRepository,
+        private readonly PlanningItemRepository $planningItemRepository
+    ) {
     }
 
     #[Route('/', name: 'index')]

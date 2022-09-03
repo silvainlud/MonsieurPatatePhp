@@ -57,7 +57,7 @@ class MigrateFromLastDatabaseCommand extends Command
                                 ->setDate(new \DateTime(str_replace('_', ' ', $s['dateCreate'])))
                                 ->setRoleId($s['roleId'])
                                 ->setCreatorName($s['memberUsernameCreate'])
-                                ->setEmoji(($s['emoticon']))
+                                ->setEmoji($s['emoticon'])
                                 ->setVisibility($s['show'] ? Section::visibility_show : ($s['restricted'] ? Section::visibility_hide : Section::visibility_restrict))
                                 ->setAnnounceChannelId($s['AnnounceChannelId']);
 
@@ -84,7 +84,7 @@ class MigrateFromLastDatabaseCommand extends Command
         } catch (Exception $e) {
             $output->writeln("Impossible d'accéder à la base de données SQLite : " . $e->getMessage());
 
-            exit();
+            exit;
         }
 
         return Command::SUCCESS;
