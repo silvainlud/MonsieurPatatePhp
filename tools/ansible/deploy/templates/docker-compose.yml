@@ -3,9 +3,7 @@ version: '3.4'
 networks:
   backend:
     driver: "bridge"
-  host_nginx:
-    external:
-      name: host_nginx
+
 services:
   mpatate:
     image: nginx
@@ -18,8 +16,9 @@ services:
       - ./tools/docker/nginx/nginxconfig.io:/etc/nginx/nginxconfig.io:ro
       - ./tools/docker/nginx/sites-available:/etc/nginx/sites-enabled:ro
     networks:
-      - host_nginx
       - backend
+    ports:
+      - 127.0.0.1:3010:80
   php:
     user: "{{ ansible_user_id.stdout }}:{{ ansible_group_id.stdout }}"
     image: "{{ default_image }}"

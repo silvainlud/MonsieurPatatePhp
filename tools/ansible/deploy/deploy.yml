@@ -7,5 +7,9 @@
         file: vars/main.yml
     - include_vars:
         file: "{{ playbook_dir }}/vars/prod.yml"
+    - name: get the username running the deploy
+      command: whoami
+      register: username_on_the_host
+    - debug: var=username_on_the_host
     - include_role:
         name: "ansistrano.deploy"

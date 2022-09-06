@@ -3,12 +3,12 @@
 user: "{{ ansible_user }}"
 
 COMPOSE_PROJECT_NAME: "monsieur_patate"
-default_image: "registry.silvain.eu:5000/silvain.eu/monsieurpatatephp:latest"
-default_image_bot: "registry.silvain.eu:5000/silvain/monsieurpatatebot:latest"
-default_image_planning: "registry.silvain.eu:5000/silvain.eu/monsieurpatateplanning:latest"
+default_image: "git.silvain.eu/silvain.eu/monsieurpatatephp:latest"
+default_image_bot: "git.silvain.eu/silvain.eu/monsieurpatatebot"
+default_image_planning: "git.silvain.eu/silvain.eu/monsieurpatateplanning:latest"
 
 ansistrano_git_branch: main
-ansistrano_deploy_to: /MonsieurPatate/
+ansistrano_deploy_to: /home/ludwig/app/MonsieurPatate
 ansistrano_deploy_via: git
 ansistrano_current_via: "symlink"
 ansistrano_allow_anonymous_stats: no
