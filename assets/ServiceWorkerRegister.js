@@ -1,4 +1,5 @@
-export async function registerServiceWorker() {
+export async function registerServiceWorker()
+{
     const registration = await navigator.serviceWorker.register("/sw.js");
     let subscription = await registration.pushManager.getSubscription();
 
@@ -15,7 +16,8 @@ export async function registerServiceWorker() {
     await saveSubscription(subscription);
 }
 
-async function getPublicKey() {
+async function getPublicKey()
+{
     const {key} = await fetch("/push/key", {
         headers: {
             Accept: "application/json",
@@ -28,7 +30,8 @@ async function getPublicKey() {
  * @param {PushSubscription} subscription
  * @returns {Promise<void>}
  */
-async function saveSubscription(subscription) {
+async function saveSubscription(subscription)
+{
     await fetch("/push/subscribe", {
         method: "post",
         headers: {
