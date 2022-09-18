@@ -89,6 +89,20 @@
             <div class="hstack stack-vcenter px-2">
                 <h2><i class="fas fa-business-time"></i> Emplois du temps</h2>
             </div>
+            {% if screen is not null %}
+                <div class="planning-screen-img">
+                   <div>
+                       <img src="{{ path('planning_screen', {"week": screen.week,"year": screen.year}) }}"
+                            class="w-100"
+                            alt="{{ screen.week }}-{{ screen.year }}">
+                   </div>
+                    <p class="text-muted text-right">
+                        {{ screen_start|format_datetime(pattern="d MMM",locale='fr') }} {{ screen_start|date("Y") }}
+                        <i class="fas fa-long-arrow-alt-right"></i>
+                        {{ screen_end|format_datetime(pattern="d MMM",locale='fr') }} {{ screen_end|date("Y") }}
+                    </p>
+                </div>
+            {% endif %}
             {% for i in items %}
                 <div class="card mb-3" title="{{ i.description }}">
                     <div class="card-body">
@@ -117,6 +131,9 @@
 {% endblock %}
 
 {% block script %}
+    <script>
+        document.querySelectorAll("#next-planning-item .planning-screen-img").forEach(x => x.addEventListener("click", () => x.classList.toggle("planning-screen-img-open")))
+    </script>
     {#    <script> #}
     {#        const eventSource = new EventSource("{{ mercure('https://example.com/books/1')|escape('js') }}"); #}
     {#        eventSource.onmessage = event => { #}
