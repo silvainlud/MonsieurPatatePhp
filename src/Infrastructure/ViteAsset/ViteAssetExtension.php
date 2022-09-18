@@ -67,7 +67,7 @@ class ViteAssetExtension extends AbstractExtension
             if ($item->isHit()) {
                 $this->manifestData = $item->get();
             } else {
-                $this->manifestData = json_decode((string)file_get_contents($this->manifest), true);
+                $this->manifestData = json_decode((string) file_get_contents($this->manifest), true);
                 $item->set($this->manifestData);
                 $this->cache->save($item);
             }
@@ -85,12 +85,12 @@ class ViteAssetExtension extends AbstractExtension
         }
 
         foreach ($imports as $import) {
-            if (array_key_exists($import, $this->manifestData)) {
+            if (\array_key_exists($import, $this->manifestData)) {
                 $html .= $this->assetProd($import);
             } else {
                 $html .= <<<HTML
-                <link rel="modulepreload" href="/build/{$import}"  data-turbo-track="reload"/>
-                HTML;
+                    <link rel="modulepreload" href="/build/{$import}"  data-turbo-track="reload"/>
+                    HTML;
             }
         }
 

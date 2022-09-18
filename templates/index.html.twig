@@ -35,6 +35,33 @@
             </div>
         {% endif %}
         <div class="vstack">
+            {% if lastMessage is not  null %}
+                <div class="hstack stack-vcenter px-2">
+                    <h2><i class="fas fa-bullhorn"></i> Dernière annonce</h2>
+                </div>
+                <div class="card mb-5">
+                    <div class="card-body">
+                        {% for embed in lastMessage.embeds %}
+                            <div class="hstack stack-vcenter">
+                                <h3>{{ embed.title }}</h3>
+                                {% if embed.author is not null %}
+                                    {% if embed.author.url is not null %}
+                                        <a href="{{ embed.author.url }}" class="text-muted">{{ embed.author.name }}</a>
+                                    {% else %}
+                                        <span class="text-muted">{{ embed.author.name }}</span>
+                                    {% endif %}
+
+                                {% endif %}
+
+                                <div class="stack-spacer"></div>
+                                <span><i class="fa fa-calendar-alt mr-2"></i> {{ lastMessage.dateSend|format_datetime(pattern="EEE d MMM HH'h'mm",locale='fr') }}</span>
+                            </div>
+                            {{ embed.content|nl2br|markdown_to_html }}
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+
             <div class="hstack stack-vcenter px-2">
                 <h2><i class="fas fa-briefcase"></i> Devoirs</h2>
                 <div class="stack-spacer"></div>
@@ -90,11 +117,11 @@
 {% endblock %}
 
 {% block script %}
-{#    <script>#}
-{#        const eventSource = new EventSource("{{ mercure('https://example.com/books/1')|escape('js') }}");#}
-{#        eventSource.onmessage = event => {#}
-{#        //     Will be called every time an update is published by the server#}
-{#            console.log(JSON.parse(event.data));#}
-{#        }#}
-{#    </script>#}
+    {#    <script> #}
+    {#        const eventSource = new EventSource("{{ mercure('https://example.com/books/1')|escape('js') }}"); #}
+    {#        eventSource.onmessage = event => { #}
+    {#        //     Will be called every time an update is published by the server #}
+    {#            console.log(JSON.parse(event.data)); #}
+    {#        } #}
+    {#    </script> #}
 {% endblock %}

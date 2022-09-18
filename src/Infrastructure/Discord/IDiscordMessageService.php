@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Discord;
 
+use App\Infrastructure\Discord\Entity\Channel\Message\DiscordMessage;
 use DateTime;
 
 interface IDiscordMessageService
@@ -44,4 +45,6 @@ interface IDiscordMessageService
     public function remove(string $channelId, string $messageId, bool $retry = true): bool;
 
     public function isMessageExist(string $channelId, string $messageId): bool;
+
+    public function getLastMessage(string $channelId): ?DiscordMessage;
 }

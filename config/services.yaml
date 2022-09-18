@@ -106,3 +106,6 @@ services:
     tags: ['app.user.notifier']
     arguments:
       $intlExtension: "@twig.extension.intl"
+
+  App\Domain\Guild\IGuildSettingsService:
+    class: 'App\Domain\Guild\GuildSettingsService'
