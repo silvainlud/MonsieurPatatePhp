@@ -2,12 +2,17 @@
 
 namespace App\Domain\Planning\Repository;
 
-use App\Domain\Planning\Entity\PlanningItem;
 use App\Domain\Planning\Entity\PlanningScreen;
 use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @method PlanningScreen|null find($id, $lockMode = null, $lockVersion = null)
+ * @method PlanningScreen|null findOneBy(array $criteria, array $orderBy = null)
+ * @method PlanningScreen[]    findAll()
+ * @method PlanningScreen[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ */
 class PlanningScreenRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry, private readonly PlanningItemRepository $itemRepository)
@@ -33,10 +38,14 @@ class PlanningScreenRepository extends ServiceEntityRepository
             $year = (int)$current->format('o');
         }
 
-        return $this->findOneBy([
+        $screen = $this->findOneBy([
             'year' => 2022,
             'week' => 20,
         ]);
+
+        if ($screen instanceof PlanningScreen)
+            return $screen;
+        return null;
     }
 
     /** @return DateTime[] */
