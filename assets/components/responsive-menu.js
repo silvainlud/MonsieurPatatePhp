@@ -11,4 +11,9 @@ window.addEventListener('resize', function () {
         toggleMenu()
 })
 
+document.addEventListener('turbo:visit', function (){
+    if (isMenuOpen())
+        toggleMenu()
+})
+
 document.querySelectorAll("#nav-responsive_close, #nav-responsive_open").forEach(x=>x.addEventListener("click", toggleMenu))
