@@ -39,8 +39,8 @@ class PlanningScreenRepository extends ServiceEntityRepository
         }
 
         $screen = $this->findOneBy([
-            'year' => 2022,
-            'week' => 20,
+            'year' => $year,
+            'week' => $week,
         ]);
 
         if ($screen instanceof PlanningScreen)
