@@ -67,4 +67,4 @@ L'objectif de cette automatisation est de lancer les conteneurs :
 
 ## Licence
 
-Ce projet est sous la licence [GNU General Public License v3.0](LICENSE.md) - voir le fichier  [LICENSE.md](LICENSE.md) pour les détails.
+Ce projet est sous la licence [GNU General Public License v3.0](LICENSE) - voir le fichier  [LICENSE.md](LICENSE) pour les détails.
