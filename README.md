@@ -2,10 +2,10 @@
 
 Récupération de l'emploi du temps de ADE ULCO (https://edt.univ-littoral.fr/) et gestion des devoirs.
 
-Ce dépôt s'inscrit dans le cadre d'un projet composé de 3 dépôts :
-- **MonsieurPatatePhp** : Site web peremettant la consultation de l'emploi du temps et la gestion des devoirs. Cette application embarque également les scripts réalisant l'actualisation de l'emploi du temps (et d'envoyer les notifications en conséquences)
-- [MonsieurPatatePlanning](https://github.com/silvain-eu/MonsieurPatatePlanning) : Script JS faisant des captures d'écran de l'emploi du temps
-- [MonsieurPatateBot](https://github.com/silvain-eu/MonsieurPatateBot) : Bot discord pour consulter l'emploi du temps
+Cette application s'inscrit dans le cadre d'un projet composé de 3 dépôts :
+- **MonsieurPatatePhp** : Site web permettant la consultation de l'emploi du temps et la gestion des devoirs. Cette application embarque également les scripts réalisant l'actualisation de l'emploi du temps et l'envoie de notifications lorsque cela est nécessaire.
+- [MonsieurPatatePlanning](https://github.com/silvainlud/MonsieurPatatePlanning) : Script JS faisant des captures d'écran de l'emploi du temps fourni par ADE ULCO
+- [MonsieurPatateBot](https://github.com/silvainlud/MonsieurPatateBot) : Bot discord pour consulter l'emploi du temps
 
 ## Technologie
 
@@ -19,16 +19,16 @@ Cette organisation est inspirée : [https://grafikart.fr/blog/structure-code-sym
 
 ## Fonctionnalités
 
-- Consulter les captures d'écran de l'emploi du temps, et importation des nouvelles
+- Consulter les captures d'écran de l'emploi du temps et importation des nouvelles
 - Gestion des devoirs avec système de rappel
 - Notification Discord et WebPush
 - Application PWA
-- Récupération et analyze du fichier ICal fourni par l'université du Littoral Côte d'Opale avec notification en cas de changement
+- Récupération et analyse du fichier ICal fourni par l'université du Littoral Côte d'Opale avec notification en cas de changement
 
 
 ## Installation de l'environnement de développement
 
-### Prerequisites
+### Pré-requis
 
 Pour démarrer l'environnement, vous devez avoir les outils suivants :
 - [Docker](https://docs.docker.com/compose/)
@@ -41,9 +41,9 @@ Pour lancer l'application, il suffit d'utiliser le fichier de configuration de D
 ```bash
 make dev
 ```
-Il faut alors configurer l'application, pour cela il suffit de créer un fichier `.env.local` en se basant sur le fichier `.env`.
+Il faut alors configurer l'application, pour cela, il suffit de créer un fichier `.env.local` en se basant sur le fichier `.env`.
 
-Une fois le site web configuré, il faut créer la base données : 
+Une fois le site web configuré, il faut créer la base de données : 
 
 ```bash
 make cmd # pour se connecter au containeur PHP
@@ -57,15 +57,14 @@ L'application est alors accessible à l'adresse  : http://localhost:8000
 ## Déploiement
 
 Ce projet est déployé automatiquement par un service [Drone.Io](https://www.drone.io/) à l'adresse [mpatate.silvain.eu](https://mpatate.silvain.eu/). 
-Pour cela, j'utilise notamment ansible avec [ansistrano](https://github.com/ansistrano/deploy) pour automatiser cette tâche : [/tools/ansible/deploy/deploy.yml](https://github.com/silvain-eu/MonsieurPatatePhp/tree/main/tools/ansible/deploy).
+Pour cela, j'utilise notamment Ansible avec [ansistrano](https://github.com/ansistrano/deploy) pour automatiser cette tâche : [/tools/ansible/deploy/deploy.yml](https://github.com/silvain-eu/MonsieurPatatePhp/tree/main/tools/ansible/deploy).
 
-L'objectif de cette automatisation est de lancer les containeurs :
+L'objectif de cette automatisation est de lancer les conteneurs :
  - Image PHP avec les fichiers de l'application
- - Nginx avec les fichiers statique de l'application
+ - Nginx avec les fichiers statiques de l'application
  - Redis pour le cache
  - Mysql pour la base de données
 
-## License
+## Licence
 
-This project is licensed under the [GNU General Public License v3.0](LICENSE.md)- see the [LICENSE.md](LICENSE.md) file for
-details
+Ce projet est sous la licence [GNU General Public License v3.0](LICENSE.md) - voir le fichier  [LICENSE.md](LICENSE.md) pour les détails.
