@@ -1,4 +1,17 @@
-# Monsieur Patate
+# 
+
+<p align="center">
+  <a href="https://mpatate.silvain.eu/">
+    <img alt="decathlon" src="public/favicon.png" width="220"/>
+  </a>
+</p>
+
+<h1 align="center">Monsieur Patate</h1>
+<p align="center">
+ <a href="https://drone.silvain.eu/Silvain.eu/MonsieurPatatePhp">
+  <img src="https://drone.silvain.eu/api/badges/Silvain.eu/MonsieurPatatePhp/status.svg"/>
+ </a>
+</p>
 
 Récupération de l'emploi du temps de ADE ULCO (https://edt.univ-littoral.fr/) et gestion des devoirs.
 
