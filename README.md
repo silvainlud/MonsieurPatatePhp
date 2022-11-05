@@ -1,8 +1,6 @@
-# 
-
 <p align="center">
   <a href="https://mpatate.silvain.eu/">
-    <img alt="decathlon" src="public/favicon.png" width="220"/>
+    <img alt="mpatate" src="public/favicon.png" width="220"/>
   </a>
 </p>
 
