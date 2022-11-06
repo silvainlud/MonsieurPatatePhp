@@ -14,16 +14,16 @@
 Récupération de l'emploi du temps de ADE ULCO (https://edt.univ-littoral.fr/) et gestion des devoirs.
 
 Cette application s'inscrit dans le cadre d'un projet composé de 3 dépôts :
-- **MonsieurPatatePhp** : Site web permettant la consultation de l'emploi du temps et la gestion des devoirs. Cette application embarque également les scripts réalisant l'actualisation de l'emploi du temps et l'envoie de notifications lorsque cela est nécessaire.
+- **MonsieurPatatePhp** : Site web permettant la consultation de l'emploi du temps et la gestion des devoirs. Cette application embarque également les scripts réalisant l'actualisation de l'emploi du temps et l'envoi de notifications lorsque cela est nécessaire.
 - [MonsieurPatatePlanning](https://github.com/silvainlud/MonsieurPatatePlanning) : Script JS faisant des captures d'écran de l'emploi du temps fourni par ADE ULCO
 - [MonsieurPatateBot](https://github.com/silvainlud/MonsieurPatateBot) : Bot discord pour consulter l'emploi du temps
 
 ## Technologie
 
 Ce projet est développé en PHP avec le framework Symfony `6.0`. Pour des raisons d'organisation, ce projet n'utilise pas la hiérarchie de dossiers par défaut : 
-- `src/Http` : contient l'ensemble des éléments qui concerne directement la couche Http (ex : Controller)
+- `src/Http` : contient l'ensemble des éléments qui concernent directement la couche Http (ex : Controller)
 - `src/Domain/{name}` : correspond à la logique métier (Entity, Repository, Fomulaire liè à une Entity, ...).
-- `src/Infrastrcuture/{name}` : cela définit les éléments de l'infrastructure (ex : envoie de notification Push ou Discord, ... )
+- `src/Infrastrcuture/{name}` : cela définit les éléments de l'infrastructure (ex : envoi de notifications Push ou Discord, ... )
 
 Cette organisation est inspirée : [https://grafikart.fr/blog/structure-code-symfony](https://grafikart.fr/blog/structure-code-symfony).
 
