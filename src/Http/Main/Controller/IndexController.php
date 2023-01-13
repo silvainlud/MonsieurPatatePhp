@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Main\Controller;
 
 use App\Domain\Guild\IGuildSettingsService;
-use App\Domain\Planning\Entity\PlanningScreen;
 use App\Domain\Planning\Repository\PlanningItemRepository;
 use App\Domain\Planning\Repository\PlanningScreenRepository;
 use App\Domain\Work\Repository\WorkRepository;
@@ -19,14 +18,13 @@ use Symfony\Component\Routing\Annotation\Route;
 class IndexController extends AbstractController
 {
     public function __construct(
-        private readonly WorkRepository           $workRepository,
-        private readonly PlanningItemRepository   $planningItemRepository,
-        private readonly IGuildSettingsService    $guildSettingsService,
-        private readonly IDiscordMessageService   $discordMessageService,
-        private readonly CacheItemPoolInterface   $cache,
+        private readonly WorkRepository $workRepository,
+        private readonly PlanningItemRepository $planningItemRepository,
+        private readonly IGuildSettingsService $guildSettingsService,
+        private readonly IDiscordMessageService $discordMessageService,
+        private readonly CacheItemPoolInterface $cache,
         private readonly PlanningScreenRepository $planningScreenRepository,
-    )
-    {
+    ) {
     }
 
     #[Route('/', name: 'index')]
@@ -62,9 +60,9 @@ class IndexController extends AbstractController
             'items' => $items,
             'todayItems' => $todayItems,
             'lastMessage' => $lastMessage,
-            "screen" => $screen,
-            "screen_start" => $start,
-            "screen_end" => $end,
+            'screen' => $screen,
+            'screen_start' => $start,
+            'screen_end' => $end,
         ]);
     }
 

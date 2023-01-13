@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Domain\Planning\Entity;
 
 use App\Domain\Planning\Repository\PlanningItemRepository;
-use DateTime;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Id;
@@ -23,16 +22,16 @@ class PlanningItem
     protected string $description;
 
     #[Column(type: 'datetime')]
-    protected DateTime $dateStart;
+    protected \DateTime $dateStart;
 
     #[Column(type: 'datetime')]
-    protected DateTime $dateEnd;
+    protected \DateTime $dateEnd;
 
     #[Column(type: 'datetime')]
-    protected DateTime $dateCreated;
+    protected \DateTime $dateCreated;
 
     #[Column(type: 'datetime', nullable: true)]
-    protected ?DateTime $dateModified;
+    protected ?\DateTime $dateModified;
 
     #[Column(type: 'string', nullable: true)]
     protected ?string $teacher;
@@ -40,7 +39,7 @@ class PlanningItem
     #[Column(type: 'string', nullable: true)]
     protected ?string $location;
 
-    public function __construct(string $id, DateTime $dateCreated)
+    public function __construct(string $id, \DateTime $dateCreated)
     {
         $this->id = $id;
         $this->dateCreated = $dateCreated;
@@ -66,43 +65,43 @@ class PlanningItem
         return $this;
     }
 
-    public function getDateStart(): DateTime
+    public function getDateStart(): \DateTime
     {
         return $this->dateStart;
     }
 
-    public function setDateStart(DateTime $dateStart): self
+    public function setDateStart(\DateTime $dateStart): self
     {
         $this->dateStart = $dateStart;
 
         return $this;
     }
 
-    public function getDateEnd(): DateTime
+    public function getDateEnd(): \DateTime
     {
         return $this->dateEnd;
     }
 
-    public function setDateEnd(DateTime $dateEnd): self
+    public function setDateEnd(\DateTime $dateEnd): self
     {
         $this->dateEnd = $dateEnd;
 
         return $this;
     }
 
-    public function getDateCreated(): DateTime
+    public function getDateCreated(): \DateTime
     {
         return $this->dateCreated;
     }
 
-    public function setDateModified(?DateTime $dateModified): self
+    public function setDateModified(?\DateTime $dateModified): self
     {
         $this->dateModified = $dateModified;
 
         return $this;
     }
 
-    public function getDateModified(): ?DateTime
+    public function getDateModified(): ?\DateTime
     {
         return $this->dateModified;
     }

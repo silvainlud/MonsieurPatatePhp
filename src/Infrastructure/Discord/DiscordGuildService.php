@@ -15,7 +15,6 @@ use App\Infrastructure\Discord\Entity\DiscordRole;
 use App\Infrastructure\Discord\Entity\DiscordUser;
 use App\Infrastructure\Parameter\IParameterService;
 use Psr\Cache\CacheItemPoolInterface;
-use stdClass;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
@@ -77,7 +76,7 @@ class DiscordGuildService implements IDiscordGuildService
             } catch (TransportExceptionInterface $e) {
                 return [];
             }
-            $data = array_reduce(json_decode($response->getContent(false)), function (array $acc, stdClass $d) {
+            $data = array_reduce(json_decode($response->getContent(false)), function (array $acc, \stdClass $d) {
                 $u = (new DiscordUser((string) $d->user->id))
                     ->setUsername($d->user->username)
                     ->setAvatar($d->user->avatar)
@@ -143,7 +142,7 @@ class DiscordGuildService implements IDiscordGuildService
             } catch (TransportExceptionInterface $e) {
                 return [];
             }
-            $data = array_reduce(json_decode($response->getContent(false)), function (array $acc, stdClass $d) {
+            $data = array_reduce(json_decode($response->getContent(false)), function (array $acc, \stdClass $d) {
                 $acc[] = (new DiscordRole((int) $d->id))
                     ->setName($d->name)
                     ->setPosition($d->position)
@@ -175,7 +174,7 @@ class DiscordGuildService implements IDiscordGuildService
 
             $channels = json_decode($response->getContent(false));
 
-            $data = array_reduce($channels, function (array $acc, stdClass $d) {
+            $data = array_reduce($channels, function (array $acc, \stdClass $d) {
                 if ($d->type === AbstractDiscordChannel::TYPE_GUILD_CATEGORY) {
                     $acc[] = $this->_getChannel($d);
                 }
@@ -183,7 +182,7 @@ class DiscordGuildService implements IDiscordGuildService
                 return $acc;
             }, []);
 
-            $guildChannels = array_filter($channels, fn (stdClass $obj) => \in_array($obj->type, [AbstractDiscordChannel::TYPE_GUILD_TEXT, AbstractDiscordChannel::TYPE_GUILD_VOICE], true));
+            $guildChannels = array_filter($channels, fn (\stdClass $obj) => \in_array($obj->type, [AbstractDiscordChannel::TYPE_GUILD_TEXT, AbstractDiscordChannel::TYPE_GUILD_VOICE], true));
             foreach ($guildChannels as $c) {
                 $nc = $this->_getChannel($c);
                 if ($nc instanceof ICategoryChannelParent && $c->parent_id !== null) {
@@ -204,7 +203,7 @@ class DiscordGuildService implements IDiscordGuildService
         return $i->get();
     }
 
-    private function _getChannel(stdClass $obj): ?AbstractDiscordChannel
+    private function _getChannel(\stdClass $obj): ?AbstractDiscordChannel
     {
         return match ($obj->type) {
             AbstractDiscordChannel::TYPE_GUILD_CATEGORY => (new CategoryChannel((int) $obj->id, $obj->name, $obj->position)),

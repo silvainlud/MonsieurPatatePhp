@@ -6,7 +6,6 @@ namespace App\Http\Main\Controller;
 
 use App\Domain\Planning\Entity\PlanningItem;
 use App\Domain\Planning\Entity\PlanningScreen;
-use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -75,10 +74,10 @@ class PlanningController extends AbstractController
         return $response;
     }
 
-    /** @return DateTime[] */
+    /** @return \DateTime[] */
     private function getStartAndEndDate(int $week, int $year): array
     {
-        $dto = new DateTime();
+        $dto = new \DateTime();
         $dto->setISODate($year, $week);
         $ret[0] = clone $dto;
         $dto->modify('+6 days');

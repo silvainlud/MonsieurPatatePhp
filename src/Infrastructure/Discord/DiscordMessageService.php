@@ -9,8 +9,6 @@ use App\Infrastructure\Discord\Entity\Channel\Message\Embed\DiscordEmbed;
 use App\Infrastructure\Discord\Entity\Channel\Message\Embed\DiscordEmbedAuthor;
 use App\Infrastructure\Discord\Entity\Channel\Message\EmojiIndex;
 use App\Infrastructure\Discord\Entity\DiscordUser;
-use DateTime;
-use DateTimeInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -29,7 +27,7 @@ class DiscordMessageService implements IDiscordMessageService
         string $authorName = IDiscordMessageService::DEFAULT_AUTHOR_NAME,
         ?string $authorUrl = IDiscordMessageService::DEFAULT_AUTHOR_URL,
         ?string $authorIconUrl = IDiscordMessageService::DEFAULT_AUTHOR_ICON_URL,
-        ?DateTime $timestamp = null,
+        ?\DateTime $timestamp = null,
         ?string $footerText = null,
         bool $retry = true
     ): string|false {
@@ -38,7 +36,7 @@ class DiscordMessageService implements IDiscordMessageService
                 [
                     'title' => $title,
                     'description' => $description,
-                    'timestamp' => $timestamp?->format(DateTimeInterface::W3C),
+                    'timestamp' => $timestamp?->format(\DateTimeInterface::W3C),
                     'footer' => [
                         'text' => $footerText,
                     ],
@@ -75,14 +73,14 @@ class DiscordMessageService implements IDiscordMessageService
         return $resp->getStatusCode() === Response::HTTP_OK;
     }
 
-    public function editEmbeds(string $channelId, string $messageId, ?string $title = null, ?string $description = null, string $authorName = self::DEFAULT_AUTHOR_NAME, ?string $authorUrl = self::DEFAULT_AUTHOR_URL, ?string $authorIconUrl = self::DEFAULT_AUTHOR_ICON_URL, ?DateTime $timestamp = null, ?string $footerText = null, bool $retry = true): bool
+    public function editEmbeds(string $channelId, string $messageId, ?string $title = null, ?string $description = null, string $authorName = self::DEFAULT_AUTHOR_NAME, ?string $authorUrl = self::DEFAULT_AUTHOR_URL, ?string $authorIconUrl = self::DEFAULT_AUTHOR_ICON_URL, ?\DateTime $timestamp = null, ?string $footerText = null, bool $retry = true): bool
     {
         return $this->edit($channelId, $messageId, [
             'embeds' => [
                 [
                     'title' => $title,
                     'description' => $description,
-                    'timestamp' => $timestamp?->format(DateTimeInterface::W3C),
+                    'timestamp' => $timestamp?->format(\DateTimeInterface::W3C),
                     'footer' => [
                         'text' => $footerText,
                     ],
@@ -149,7 +147,7 @@ class DiscordMessageService implements IDiscordMessageService
             if ($a->timestamp === $b->timestamp) {
                 return 0;
             }
-            if ((int) ($a->timestamp) > (int) ($b->timestamp)) {
+            if ((int) $a->timestamp > (int) $b->timestamp) {
                 return -1;
             }
 
@@ -161,7 +159,7 @@ class DiscordMessageService implements IDiscordMessageService
         $msg = (new DiscordMessage())
             ->setId($value->id)
             ->setChannelId($value->channel_id)
-            ->setDateSend(new DateTime($value->timestamp))
+            ->setDateSend(new \DateTime($value->timestamp))
             ->setAuthor(
                 (new DiscordUser((string) $value->author->id))
                     ->setUsername(EmojiIndex::replaceMessage($value->author->username))

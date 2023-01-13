@@ -6,8 +6,6 @@ namespace App\Domain\Planning;
 
 use App\Domain\Planning\Entity\PlanningItem;
 use App\Domain\Planning\Entity\PlanningLog;
-use DateTime;
-use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
 use ICal\ICal;
 use JetBrains\PhpStorm\NoReturn;
@@ -51,7 +49,7 @@ class PlanningSynchronizeService implements IPlanningSynchronizeService
         $events = (new ICal($this->getCalendarFile()))->events();
         $data = [];
         foreach ($events as $e) {
-            $i = (new PlanningItem($e->uid, new DateTime($e->created)))
+            $i = (new PlanningItem($e->uid, new \DateTime($e->created)))
                 ->setTitle($e->summary)
                 ->setDateStart(self::RemakeDate($e->dtstart))
                 ->setDateEnd(self::RemakeDate($e->dtend))
@@ -74,7 +72,7 @@ class PlanningSynchronizeService implements IPlanningSynchronizeService
 
     public function filter(PlanningItem $i): bool
     {
-        return $i->getDateEnd() >= (new DateTime()) && (
+        return $i->getDateEnd() >= (new \DateTime()) && (
             !str_contains('vacance', strtolower($i->getTitle()))
                 && !str_contains('vacances', strtolower($i->getTitle()))
         );
@@ -116,10 +114,10 @@ class PlanningSynchronizeService implements IPlanningSynchronizeService
         }
     }
 
-    private static function RemakeDate(string $date): DateTime
+    private static function RemakeDate(string $date): \DateTime
     {
-        $paris = new DateTimeZone('Europe/Paris');
+        $paris = new \DateTimeZone('Europe/Paris');
 
-        return new DateTime((new DateTime($date, new DateTimeZone('UTC')))->setTimezone($paris)->format('Y-m-d H:i'));
+        return new \DateTime((new \DateTime($date, new \DateTimeZone('UTC')))->setTimezone($paris)->format('Y-m-d H:i'));
     }
 }

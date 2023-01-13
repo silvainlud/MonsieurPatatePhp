@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Domain\Planning\Entity;
 
-use DateTime;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\CustomIdGenerator;
 use Doctrine\ORM\Mapping\Entity;
@@ -47,10 +46,10 @@ class PlanningLog
     protected ?string $descriptionPrevious;
 
     #[Column(type: 'datetime', nullable: true)]
-    protected ?DateTime $dateStartPrevious;
+    protected ?\DateTime $dateStartPrevious;
 
     #[Column(type: 'datetime', nullable: true)]
-    protected ?DateTime $dateEndPrevious;
+    protected ?\DateTime $dateEndPrevious;
 
     #[Column(type: 'string', nullable: true)]
     protected ?string $teacherPrevious;
@@ -65,10 +64,10 @@ class PlanningLog
     protected ?string $descriptionNext;
 
     #[Column(type: 'datetime', nullable: true)]
-    protected ?DateTime $dateStartNext;
+    protected ?\DateTime $dateStartNext;
 
     #[Column(type: 'datetime', nullable: true)]
-    protected ?DateTime $dateEndNext;
+    protected ?\DateTime $dateEndNext;
 
     #[Column(type: 'string', nullable: true)]
     protected ?string $teacherNext;
@@ -77,7 +76,7 @@ class PlanningLog
     protected ?string $locationNext;
 
     #[Column(type: 'datetime')]
-    protected DateTime $dateCreate;
+    protected \DateTime $dateCreate;
 
     #[Column(type: 'boolean')]
     protected bool $isDiscordSend;
@@ -87,7 +86,7 @@ class PlanningLog
 
     public function __construct(?PlanningItem $prev = null, ?PlanningItem $next = null)
     {
-        $this->dateCreate = new DateTime();
+        $this->dateCreate = new \DateTime();
         $this->isDiscordSend = false;
         $this->updatedField = [];
 
@@ -109,7 +108,7 @@ class PlanningLog
             $this->planningUuid = $next->getId();
             $this->setNext($next);
 
-            if (new DateTime(self::DATE_TIME_NOTIFY) < $next->getDateStart()) {
+            if (new \DateTime(self::DATE_TIME_NOTIFY) < $next->getDateStart()) {
                 $this->isDiscordSend = true;
             }
         } elseif ($prev !== null && $next !== null) {
@@ -137,7 +136,7 @@ class PlanningLog
                 $this->updatedField[] = self::FIELD_LOCATION;
             }
 
-            if (new DateTime(self::DATE_TIME_NOTIFY) < $next->getDateStart() && new DateTime(self::DATE_TIME_NOTIFY) < $prev->getDateStart()) {
+            if (new \DateTime(self::DATE_TIME_NOTIFY) < $next->getDateStart() && new \DateTime(self::DATE_TIME_NOTIFY) < $prev->getDateStart()) {
                 $this->isDiscordSend = true;
             }
         } elseif ($prev !== null && $next === null) {
@@ -145,7 +144,7 @@ class PlanningLog
             $this->planningUuid = $prev->getId();
             $this->setPrevious($prev);
 
-            if (new DateTime(self::DATE_TIME_NOTIFY) < $prev->getDateStart()) {
+            if (new \DateTime(self::DATE_TIME_NOTIFY) < $prev->getDateStart()) {
                 $this->isDiscordSend = true;
             }
         }
@@ -192,27 +191,27 @@ class PlanningLog
         return $this->actionType;
     }
 
-    public function getDateCreate(): DateTime
+    public function getDateCreate(): \DateTime
     {
         return $this->dateCreate;
     }
 
-    public function getDateEndNext(): ?DateTime
+    public function getDateEndNext(): ?\DateTime
     {
         return $this->dateEndNext;
     }
 
-    public function getDateEndPrevious(): ?DateTime
+    public function getDateEndPrevious(): ?\DateTime
     {
         return $this->dateEndPrevious;
     }
 
-    public function getDateStartNext(): ?DateTime
+    public function getDateStartNext(): ?\DateTime
     {
         return $this->dateStartNext;
     }
 
-    public function getDateStartPrevious(): ?DateTime
+    public function getDateStartPrevious(): ?\DateTime
     {
         return $this->dateStartPrevious;
     }

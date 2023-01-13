@@ -6,7 +6,6 @@ namespace App\Domain\Work\Entity;
 
 use App\Domain\Guild\Entity\GuildSettings;
 use App\Domain\Work\Repository\WorkRepository;
-use DateTime;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\CustomIdGenerator;
 use Doctrine\ORM\Mapping\Entity;
@@ -36,11 +35,11 @@ class Work
     protected string $description;
 
     #[Column(type: 'datetime')]
-    protected DateTime $creationDate;
+    protected \DateTime $creationDate;
 
     #[Column(type: 'datetime')]
     #[NotNull, GreaterThanOrEqual('now')]
-    protected DateTime $dueDate;
+    protected \DateTime $dueDate;
 
     #[ManyToOne(targetEntity: GuildSettings::class)]
     #[JoinColumn(name: 'server_id', referencedColumnName: 'GuildId')]
@@ -50,7 +49,7 @@ class Work
     protected ?string $messageId;
 
     #[Column(type: 'datetime', nullable: true)]
-    protected ?DateTime $recallDate;
+    protected ?\DateTime $recallDate;
 
     #[ManyToOne(targetEntity: WorkCategory::class, inversedBy: 'works')]
     #[JoinColumn(name: 'work_category_id')]
@@ -58,7 +57,7 @@ class Work
 
     public function __construct()
     {
-        $this->creationDate = new DateTime();
+        $this->creationDate = new \DateTime();
         $this->recallDate = null;
         $this->messageId = null;
     }
@@ -92,17 +91,17 @@ class Work
         return $this;
     }
 
-    public function getCreationDate(): DateTime
+    public function getCreationDate(): \DateTime
     {
         return $this->creationDate;
     }
 
-    public function getDueDate(): DateTime
+    public function getDueDate(): \DateTime
     {
         return $this->dueDate;
     }
 
-    public function setDueDate(?DateTime $dueDate): self
+    public function setDueDate(?\DateTime $dueDate): self
     {
         if ($dueDate !== null) {
             $this->dueDate = $dueDate;
@@ -147,12 +146,12 @@ class Work
         return $this;
     }
 
-    public function getRecallDate(): ?DateTime
+    public function getRecallDate(): ?\DateTime
     {
         return $this->recallDate;
     }
 
-    public function setRecallDate(?DateTime $recallDate): self
+    public function setRecallDate(?\DateTime $recallDate): self
     {
         $this->recallDate = $recallDate;
 

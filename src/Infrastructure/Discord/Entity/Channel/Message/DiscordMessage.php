@@ -6,13 +6,12 @@ namespace App\Infrastructure\Discord\Entity\Channel\Message;
 
 use App\Infrastructure\Discord\Entity\Channel\Message\Embed\DiscordEmbed;
 use App\Infrastructure\Discord\Entity\DiscordUser;
-use DateTime;
 
 class DiscordMessage
 {
     private string $id;
     private string $channelId;
-    private DateTime $dateSend;
+    private \DateTime $dateSend;
 
     private DiscordUser $author;
 
@@ -45,12 +44,12 @@ class DiscordMessage
         return $this;
     }
 
-    public function getDateSend(): DateTime
+    public function getDateSend(): \DateTime
     {
         return $this->dateSend;
     }
 
-    public function setDateSend(DateTime $dateSend): self
+    public function setDateSend(\DateTime $dateSend): self
     {
         $this->dateSend = $dateSend;
 

@@ -8,7 +8,6 @@ use App\Domain\Work\Entity\Work;
 use App\Domain\Work\Repository\WorkRepository;
 use App\Infrastructure\Notification\Enum\WorkNotificationEnum;
 use App\Infrastructure\Notification\IUserSendNotification;
-use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 
 class WorkProcessNotifyService implements IWorkProcessNotifyService
@@ -38,7 +37,7 @@ class WorkProcessNotifyService implements IWorkProcessNotifyService
 
     public function processRecall(): array
     {
-        $now = new DateTime();
+        $now = new \DateTime();
         $works = $this->workRepository->findNeedRecallWork();
         foreach ($works as $work) {
             if ($work->getRecallDate() <= $now && $work->getDueDate() >= $now) {

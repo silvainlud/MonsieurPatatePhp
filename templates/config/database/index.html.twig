@@ -137,6 +137,38 @@
             </div>
         </div>
 
+        {# Planning Planning #}
+        <div class="card mt-5">
+            <div class="card-body">
+                <div class="hstack">
+                    <h2 class="text-center">ADE</h2>
+                    <div class="stack-spacer"></div>
+                </div>
+                <table>
+                    <thead>
+                    <tr>
+                        <td>Titre</td>
+                        <td>Salle</td>
+                        <td>Professeur</td>
+                        <td>Début</td>
+                        <td>Fin</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for c in planningItems %}
+                        <tr>
+                            <td>{{ c.title }}</td>
+                            <td>{{ c.location }}</td>
+                            <td>{{ c.teacher }}</td>
+                            <td>{{ c.dateStart|date("d/m/Y H:i") }}</td>
+                            <td>{{ c.dateEnd|date("d/m/Y H:i") }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
         {# Devoirs #}
         <div class="card mt-5">
             <div class="card-body">

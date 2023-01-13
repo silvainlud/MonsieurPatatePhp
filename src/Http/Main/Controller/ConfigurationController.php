@@ -11,6 +11,7 @@ use App\Domain\NotificationSubscriber\Form\SendNotificationType;
 use App\Domain\NotificationSubscriber\IUserPushSubscriberService;
 use App\Domain\Planning\Entity\PlanningLog;
 use App\Domain\Planning\Entity\PlanningScreen;
+use App\Domain\Planning\Repository\PlanningItemRepository;
 use App\Domain\Section\Entity\Section;
 use App\Domain\User\Entity\AbstractUser;
 use App\Domain\Work\Entity\WorkCategory;
@@ -40,6 +41,7 @@ class ConfigurationController extends AbstractController
         private readonly WorkRepository $workRepository,
         private readonly IDiscordGuildService $guildService,
         private readonly IUserPushSubscriberService $userPushSubscriberService,
+        private readonly PlanningItemRepository $planningItemRepository
     ) {
     }
 
@@ -159,6 +161,8 @@ class ConfigurationController extends AbstractController
 
         $works = $this->workRepository->findCurrentWork();
 
+        $planningItems = $this->planningItemRepository->findBy([], ['dateStart'=> "ASC"]);
+
         return $this->render('config/database/index.html.twig', [
             'users' => $users,
             'sections' => $sections,
@@ -169,6 +173,7 @@ class ConfigurationController extends AbstractController
             'roles' => $roles,
             'members' => $members,
             'works' => $works,
+            'planningItems' => $planningItems,
         ]);
     }
 }

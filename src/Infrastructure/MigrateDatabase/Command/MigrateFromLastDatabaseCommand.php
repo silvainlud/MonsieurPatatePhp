@@ -8,7 +8,6 @@ use App\Domain\Guild\Entity\GuildSettings;
 use App\Domain\Section\Entity\RoleAllowSection;
 use App\Domain\Section\Entity\Section;
 use Doctrine\ORM\EntityManagerInterface;
-use PDO;
 use PHPUnit\Util\Exception;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -28,8 +27,8 @@ class MigrateFromLastDatabaseCommand extends Command
         try {
             $url = __DIR__ . '/../../../../potatoes.db';
 
-            $pdo = new PDO('sqlite:' . $url);
-            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $pdo = new \PDO('sqlite:' . $url);
+            $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
             $stmt = $pdo->prepare('select * from AnnounceChannel;');
             $stmt->execute();

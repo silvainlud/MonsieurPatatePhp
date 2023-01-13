@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Infrastructure\Discord;
 
 use App\Infrastructure\Discord\Entity\Channel\Message\DiscordMessage;
-use DateTime;
 
 interface IDiscordMessageService
 {
@@ -20,7 +19,7 @@ interface IDiscordMessageService
         string $authorName = self::DEFAULT_AUTHOR_NAME,
         ?string $authorUrl = self::DEFAULT_AUTHOR_URL,
         ?string $authorIconUrl = self::DEFAULT_AUTHOR_ICON_URL,
-        ?DateTime $timestamp = null,
+        ?\DateTime $timestamp = null,
         ?string $footerText = null,
         bool $retry = true
     ): string|false;
@@ -33,7 +32,7 @@ interface IDiscordMessageService
         string $authorName = self::DEFAULT_AUTHOR_NAME,
         ?string $authorUrl = self::DEFAULT_AUTHOR_URL,
         ?string $authorIconUrl = self::DEFAULT_AUTHOR_ICON_URL,
-        ?DateTime $timestamp = null,
+        ?\DateTime $timestamp = null,
         ?string $footerText = null,
         bool $retry = true
     ): bool;
