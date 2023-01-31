@@ -6,19 +6,20 @@ namespace App\Domain\User\Command;
 
 use App\Domain\User\Entity\InternalUser;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand("app:user:internal:add")]
 class AddInternalUser extends Command
 {
-    protected static $defaultName = 'app:user:internal:add';
 
     public function __construct(
         private EntityManagerInterface $em,
     ) {
-        parent::__construct(self::$defaultName);
+        parent::__construct();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

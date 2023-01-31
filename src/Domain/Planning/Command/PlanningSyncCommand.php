@@ -10,15 +10,17 @@ use App\Domain\Planning\IPlanningNotifyProcessService;
 use App\Domain\Planning\IPlanningSynchronizeService;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+
+#[AsCommand("app:planning:sync")]
 class PlanningSyncCommand extends Command
 {
-    protected static $defaultName = 'app:planning:sync';
 
     public function __construct(
         private EntityManagerInterface $em,
@@ -26,7 +28,7 @@ class PlanningSyncCommand extends Command
         private IPlanningNotifyProcessService $discordMessageService,
         private LoggerInterface $appLogger,
     ) {
-        parent::__construct(self::$defaultName);
+        parent::__construct();
     }
 
     public function purge(): void

@@ -7,6 +7,7 @@ namespace App\Domain\Planning\Command;
 use App\Domain\Planning\Entity\PlanningScreen;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -14,16 +15,15 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\KernelInterface;
 
+#[AsCommand("app:planning:screen:import")]
 class PlanningScreenImportCommand extends Command
 {
-    protected static $defaultName = 'app:planning:screen:import';
-
     public function __construct(
         private KernelInterface $kernel,
         private EntityManagerInterface $em,
         private LoggerInterface $appLogger
     ) {
-        parent::__construct(static::$defaultName);
+        parent::__construct();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

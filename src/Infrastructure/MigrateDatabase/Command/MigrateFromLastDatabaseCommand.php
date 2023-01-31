@@ -9,17 +9,18 @@ use App\Domain\Section\Entity\RoleAllowSection;
 use App\Domain\Section\Entity\Section;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Util\Exception;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand("app:migrate:from")]
 class MigrateFromLastDatabaseCommand extends Command
 {
-    protected static $defaultName = 'app:migrate:from';
 
     public function __construct(private EntityManagerInterface $em)
     {
-        parent::__construct(self::$defaultName);
+        parent::__construct();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

@@ -7,22 +7,23 @@ namespace App\Domain\Work\Command;
 use App\Domain\Work\IWorkProcessNotifyService;
 use App\Domain\Work\IWorkService;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand("app:work:recall")]
 class WorkRecallCommand extends Command
 {
-    protected static $defaultName = 'app:work:recall';
 
     public function __construct(
         private readonly IWorkProcessNotifyService $notifyService,
         private readonly IWorkService $workService,
         private readonly LoggerInterface $appLogger
     ) {
-        parent::__construct(self::$defaultName);
+        parent::__construct();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

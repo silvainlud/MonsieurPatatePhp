@@ -11,7 +11,7 @@ use App\Infrastructure\Discord\Entity\DiscordGuild;
 use App\Infrastructure\Discord\Entity\DiscordRole;
 use App\Infrastructure\Discord\IDiscordGuildService;
 use App\Infrastructure\Parameter\IParameterService;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
@@ -19,11 +19,12 @@ use Twig\TwigFunction;
 class DiscordExtension extends AbstractExtension
 {
     public function __construct(
-        private DiscordUserService $userService,
-        private IDiscordGuildService $guildService,
-        private IParameterService $parameterService,
-        private Security $security
-    ) {
+        private readonly DiscordUserService   $userService,
+        private readonly IDiscordGuildService $guildService,
+        private readonly IParameterService    $parameterService,
+        private readonly Security             $security
+    )
+    {
     }
 
     public function getFunctions(): array
