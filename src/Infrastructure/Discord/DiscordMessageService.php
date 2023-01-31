@@ -144,10 +144,12 @@ class DiscordMessageService implements IDiscordMessageService
         }
 
         usort($res, function (\stdClass $a, \stdClass $b) {
-            if ($a->timestamp === $b->timestamp) {
+            $aDate = new \DateTime($a->timestamp);
+            $bDate = new \DateTime($b->timestamp);
+            if ($aDate === $bDate) {
                 return 0;
             }
-            if ((int) $a->timestamp > (int) $b->timestamp) {
+            if ($aDate > $aDate) {
                 return -1;
             }
 

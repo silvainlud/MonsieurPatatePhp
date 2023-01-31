@@ -161,7 +161,7 @@ class ConfigurationController extends AbstractController
 
         $works = $this->workRepository->findCurrentWork();
 
-        $planningItems = $this->planningItemRepository->findBy([], ['dateStart'=> "ASC"]);
+        $planningItems = $this->planningItemRepository->findBy([], ['dateStart' => 'ASC']);
 
         return $this->render('config/database/index.html.twig', [
             'users' => $users,

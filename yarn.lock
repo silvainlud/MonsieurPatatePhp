@@ -237,7 +237,7 @@
     estree-walker "^2.0.1"
     picomatch "^2.2.2"
 
-"@symfony/ux-turbo@file:vendor/symfony/ux-turbo/Resources/assets":
+"@symfony/ux-turbo@file:vendor/symfony/ux-turbo/assets":
   version "0.1.0"
 
 "@types/parse-json@^4.0.0":
