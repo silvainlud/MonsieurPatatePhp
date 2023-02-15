@@ -120,7 +120,7 @@ steps:
       - mkdir -p ~/.ssh
       - chmod 700 ~/.ssh
       - echo "$remoteurl" | tr -d '\r' | ssh-add -
-      - 'echo "Host *\n\tStrictHostKeyChecking no\n\n" >> ~/.ssh/config'
+      - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" >> ~/.ssh/config'
       - echo "$ansible_vault" > /drone/src/secret.txt
       - ansible-playbook -i /drone/src/tools/ansible/deploy/inventory --extra-vars "ansible_user=$ansible_user" --vault-password-file secret.txt /drone/src/tools/ansible/deploy/deploy.yml
       - rm secret.txt
